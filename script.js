@@ -3,7 +3,7 @@ const CONFIG = {
   birthdayISO: "2026-09-10T00:00:00-05:00",
 
   // Para pruebas: true = la sorpresa ocurre 15 segundos después de abrir la página.
-  testMode: true,
+  testMode: false,
   testSeconds: 45,
 
   // Cielo durante las pruebas:
