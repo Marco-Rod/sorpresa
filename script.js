@@ -1,10 +1,10 @@
 const CONFIG = {
-  // Fecha real: 9 de septiembre de 2026 a las 00:00 en Colombia (UTC-5)
-  birthdayISO: "2026-09-09T00:00:00-05:00",
+  // Fecha real: 10 de septiembre de 2026 a las 00:00 en Colombia (UTC-5)
+  birthdayISO: "2026-09-10T00:00:00-05:00",
 
   // Para pruebas: true = la sorpresa ocurre 15 segundos después de abrir la página.
   testMode: true,
-  testSeconds: 15,
+  testSeconds: 45,
 
   // Cielo durante las pruebas:
   // "auto" = hora real de Colombia
