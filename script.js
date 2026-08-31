@@ -1,9 +1,9 @@
 const CONFIG = {
   // Fecha real: 9 de septiembre de 2026 a las 00:00 en Colombia (UTC-5)
-  birthdayISO: "2026-09-10T00:00:00-05:00",
+  birthdayISO: "2026-09-09T00:00:00-05:00",
 
   // Para pruebas: true = la sorpresa ocurre 15 segundos después de abrir la página.
-  testMode: false,
+  testMode: true,
   testSeconds: 15,
 
   // Cielo durante las pruebas:
@@ -12,7 +12,7 @@ const CONFIG = {
   // "day" = tarde (12:00–16:59)
   // "sunset" = atardecer (17:00–18:29)
   // "night" = noche (18:30–05:59)
-  skyMode: "auto",
+  skyMode: "night",
 
   // Diagnóstico: también se activa con ?debug=1 en la URL.
   debugMode: false
@@ -247,9 +247,7 @@ const WHISPER_LIBRARY = {
     "Investigación en curso: determinar cuál de Lucas, Lupe y Max habría revelado primero la sorpresa. 🕵️🐾",
     "⚠️ Información clasificada: Max fue considerado sospechoso de conocer el contenido de esta página. 🐱👀",
     "Lucas y Lupe dicen que la espera sería más rápida si hubiera premios involucrados. 🐶🐶",
-    "Tres mascotas, una cumpleañera y demasiados secretos para una sola página. 🐾🌸",
-    "Kobe y susana estuvieron involucrados en las ideas y el diseño. 🐶🐶",
-    "Kobe y susana saben que pasara cuando lleguemos a 0, pero prometieron no decir nada."
+    "Tres mascotas, una cumpleañera y demasiados secretos para una sola página. 🐾🌸"
   ],
   mysteries: [
     "Momento conspiranoico 👀: existe una teoría que afirma que la Luna podría ser hueca. No hay evidencia científica que la demuestre. 🌙",
@@ -354,12 +352,12 @@ function chooseWhisper() {
     ];
   }
 
-  const available = pool.filter(message => !recentWhispers.includes(message));
+  const available = pool.filter(message => !whisperHistory.includes(message));
   const candidates = available.length ? available : pool;
   const selected = candidates[Math.floor(Math.random() * candidates.length)];
 
-  recentWhispers.push(selected);
-  if (recentWhispers.length > 8) recentWhispers.shift();
+  // showNextWhisper() adds the selected phrase to whisperHistory once it is actually shown.
+  // Here we only use the existing history to avoid selecting a recent phrase again.
   return selected;
 }
 
@@ -367,7 +365,13 @@ function showNextWhisper() {
   if (isBirthday || !tinyMessage) return;
   lastWhisperTick = Date.now();
 
-  const next = chooseWhisper();
+  let next;
+  try {
+    next = chooseWhisper();
+  } catch (error) {
+    diag("whisper-selection-error", { message: String(error) });
+    next = "Algo bonito está cada vez más cerca 🌸";
+  }
   tinyMessage.classList.add("message-changing");
 
   setTimeout(() => {
@@ -375,7 +379,7 @@ function showNextWhisper() {
     tinyMessage.textContent = next;
     lastWhisper = next;
     whisperHistory.push(next);
-    if (whisperHistory.length > 12) whisperHistory.shift();
+    if (whisperHistory.length > 8) whisperHistory.shift();
     tinyMessage.classList.remove("message-changing");
   }, 650);
 

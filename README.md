@@ -86,3 +86,10 @@ Si un navegador excepcionalmente bloquea ese primer intento, el control mostrar�
 - Botón “↻ Volver a vivir este momento” que repite desde 10 segundos sin recargar.
 - Easter egg de huellitas de Lucas, Lupe y Max.
 - Firma final “Un jardín en septiembre 🌷”.
+
+
+## v20.1 — corrección de frases rotatorias
+- Corregido un error de ejecución en `chooseWhisper()`: se estaba consultando `recentWhispers`, variable que no existía.
+- El sistema ahora usa correctamente `whisperHistory`.
+- La ventana antirrepetición queda unificada en 8 frases.
+- Se añadió un fallback defensivo para que un error futuro al escoger una frase no detenga la rotación.
