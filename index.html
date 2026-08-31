@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#090d2d" />
+  <title>Para Ale 🌷</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Parisienne&display=swap" rel="stylesheet">
+  <link rel="preload" href="script.js" as="script">
+  <link rel="stylesheet" href="styles.css" />
+
+  <style id="critical-loader-style">
+    html,body{background:#090d2d}
+    body.garden-loading{overflow:hidden}
+    body.garden-loading #app{opacity:0!important;visibility:hidden}
+    #gardenLoader{
+      position:fixed;inset:0;z-index:99999;
+      display:flex;align-items:center;justify-content:center;
+      background:
+        radial-gradient(circle at 50% 42%,rgba(255,112,177,.13),transparent 34%),
+        linear-gradient(180deg,#090d2d,#16123c);
+      opacity:1;visibility:visible;
+      transition:opacity .7s ease,visibility .7s ease;
+    }
+    #gardenLoader.loader-leaving{opacity:0;visibility:hidden}
+    .garden-loader-inner{
+      display:flex;flex-direction:column;align-items:center;gap:14px;
+      color:#fff;text-align:center;
+      font-family:Inter,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      padding:24px;
+    }
+    .garden-loader-flower{
+      font-size:2rem;
+      animation:gardenLoaderBloom 1.5s ease-in-out infinite;
+      filter:drop-shadow(0 0 12px rgba(255,120,180,.28));
+    }
+    .garden-loader-text{font-size:.98rem;font-weight:500;letter-spacing:.015em;opacity:.9}
+    .garden-loader-dots{display:flex;gap:6px;height:8px}
+    .garden-loader-dots i{
+      width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.72);
+      animation:gardenLoaderDot 1.15s ease-in-out infinite;
+    }
+    .garden-loader-dots i:nth-child(2){animation-delay:.16s}
+    .garden-loader-dots i:nth-child(3){animation-delay:.32s}
+    @keyframes gardenLoaderBloom{
+      0%,100%{transform:translateY(0) scale(.95);opacity:.72}
+      50%{transform:translateY(-4px) scale(1.08);opacity:1}
+    }
+    @keyframes gardenLoaderDot{
+      0%,100%{transform:translateY(0);opacity:.35}
+      50%{transform:translateY(-4px);opacity:1}
+    }
+  </style>
+
+</head>
+<body class="garden-loading">
+
+  <div id="gardenLoader" role="status" aria-live="polite" aria-label="Preparando el jardín">
+    <div class="garden-loader-inner">
+      <div class="garden-loader-flower" aria-hidden="true">🌸</div>
+      <div class="garden-loader-text">Preparando el jardín...</div>
+      <div class="garden-loader-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    </div>
+  </div>
+
+  <div id="app" class="night">
+    <canvas id="confetti"></canvas>
+    <div class="sky">
+      <div class="stars" id="stars"></div>
+      <div class="petal-layer" id="petalLayer" aria-hidden="true"></div>
+      <div class="shooting-star" id="shootingStar" aria-hidden="true"></div>
+      <div class="wish-message" id="wishMessage" aria-hidden="true">Pide un deseo, Ale ✨</div>
+      <div class="fireflies" id="fireflies" aria-hidden="true"></div>
+      <div class="dew-layer" id="dewLayer" aria-hidden="true"></div>
+      <div class="gerbera-field" id="gerberaField" aria-hidden="true"></div>
+      <div class="dandelion-layer" id="dandelionLayer" aria-hidden="true"></div>
+      <div class="butterfly-layer" id="butterflyLayer" aria-hidden="true"></div>
+      <div class="moon-cloud moon-cloud-a" aria-hidden="true"></div>
+      <div class="moon-cloud moon-cloud-b" aria-hidden="true"></div>
+      <div class="virgo-constellation" id="virgoConstellation" aria-hidden="true">
+        <div class="virgo-label">Virgo <span>✦</span></div>
+        <svg viewBox="0 0 190 115" role="presentation">
+          <g class="virgo-lines">
+            <path d="M18 61 L47 48 L72 65 L97 44 L126 51 L152 28 L171 43"/>
+            <path d="M97 44 L106 78 L137 89 L126 51"/>
+            <path d="M72 65 L58 91"/>
+          </g>
+          <g class="virgo-stars">
+            <circle cx="18" cy="61" r="3.4"/>
+            <circle cx="47" cy="48" r="2.7"/>
+            <circle cx="72" cy="65" r="3"/>
+            <circle cx="97" cy="44" r="3.8"/>
+            <circle cx="126" cy="51" r="3"/>
+            <circle cx="152" cy="28" r="4.6"/>
+            <circle cx="171" cy="43" r="2.8"/>
+            <circle cx="106" cy="78" r="2.8"/>
+            <circle cx="137" cy="89" r="3.5"/>
+            <circle cx="58" cy="91" r="2.6"/>
+          </g>
+        </svg>
+      </div>
+      <div class="moon" aria-hidden="true"><span></span></div>
+      <div class="sun" aria-hidden="true"><span></span></div>
+      <div class="cloud cloud-a"></div>
+      <div class="cloud cloud-b"></div>
+      <div class="glow"></div>
+    </div>
+
+    <main>
+      <section id="countdownView" class="view countdown-view">
+        <div class="intro-card glass">
+          <p class="eyebrow">Para Ale 🌷</p>
+          <h1>Hay algo bonito<br>esperando por ti…</h1>
+          <p class="subtitle">Cada segundo nos acerca un poquito más.</p>
+
+          <div id="countdown" class="countdown" aria-live="polite">
+            <div><strong id="days">00</strong><span>Días</span></div>
+            <b>:</b>
+            <div><strong id="hours">00</strong><span>Horas</span></div>
+            <b>:</b>
+            <div><strong id="minutes">00</strong><span>Min</span></div>
+            <b>:</b>
+            <div><strong id="seconds">00</strong><span>Seg</span></div>
+          </div>
+
+          <p id="tinyMessage" class="tiny-message">La luna también está esperando ✨</p>
+
+          <button id="soundButton" class="sound-button" type="button">
+            <span>♫</span>
+            <span id="soundText">Toca para comenzar la música 🎵</span>
+          </button>
+        </div>
+      </section>
+
+
+      <section id="finaleOverlay" class="finale-overlay" hidden aria-live="polite">
+        <div class="finale-shooting-star" aria-hidden="true"></div>
+        <div id="finalCountdownNumber" class="final-countdown-number" aria-hidden="true"></div>
+        <div id="finaleMessage" class="finale-message"></div>
+      </section>
+
+      <section id="birthdayView" class="view birthday-view" hidden>
+        <div class="birthday-copy">
+          <p class="eyebrow">10 de septiembre</p>
+          <h2>¡Feliz cumpleaños,<br><span>Ale!</span></h2>
+          <p>Hoy el mundo tiene una razón más para celebrar. 💗</p>
+        </div>
+
+        <div class="heart-wrap">
+          <div class="heart-glow"></div>
+          <svg class="heart-photo-svg" viewBox="0 0 400 360" role="img" aria-label="Foto de Ale">
+            <defs>
+              <clipPath id="heartClip">
+                <path d="M200 342 C176 321 34 222 34 113 C34 52 79 20 130 20 C164 20 190 39 200 58 C210 39 236 20 270 20 C321 20 366 52 366 113 C366 222 224 321 200 342 Z"/>
+              </clipPath>
+              <filter id="softPhotoGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <image href="assets/ale.jpg" decoding="async"
+                   x="0" y="0" width="400" height="360"
+                   preserveAspectRatio="xMidYMid slice"
+                   clip-path="url(#heartClip)"/>
+            <path d="M200 342 C176 321 34 222 34 113 C34 52 79 20 130 20 C164 20 190 39 200 58 C210 39 236 20 270 20 C321 20 366 52 366 113 C366 222 224 321 200 342 Z"
+                  fill="none" stroke="rgba(255,255,255,.95)" stroke-width="8"
+                  />
+          </svg>
+          <span class="spark s1">✦</span>
+          <span class="spark s2">✦</span>
+          <span class="spark s3">♡</span>
+        </div>
+
+        <p class="dedication">Que este nuevo año de vida te encuentre rodeada de cariño, sueños cumplidos y muchísimas razones para sonreír.</p>
+
+        <button id="letterButton" class="letter-button" type="button" aria-haspopup="dialog">
+          <span class="envelope">💌</span>
+          <span>Hay algo que quiero decirte</span>
+        </button>
+
+        <div class="music-pill">
+          <span class="disc">♪</span>
+          <div>
+            <small>Ahora suena</small>
+            <strong>Tu canción favorita de cumpleaños</strong>
+          </div>
+          <button id="musicToggle" type="button" aria-label="Pausar o reproducir música">Ⅱ</button>
+        </div>
+
+        <div class="birthday-extras">
+          <button id="pawSecret" class="paw-secret" type="button" aria-label="Un pequeño secreto de Lucas, Lupe y Max">🐾</button>
+          <p id="pawSecretMessage" class="paw-secret-message" aria-live="polite"></p>
+          <button id="replayFinalButton" class="replay-final-button" type="button">↻ Volver a vivir este momento</button>
+          <p class="garden-signature">Un jardín en septiembre 🌷</p>
+        </div>
+      </section>
+    </main>
+
+    <div class="side-tulips left-side" aria-hidden="true" id="leftTulips"></div>
+    <div class="side-tulips right-side" aria-hidden="true" id="rightTulips"></div>
+    <div class="tulip-field" aria-hidden="true" id="tulipField"></div>
+
+    <div id="letterModal" class="letter-modal" aria-hidden="true">
+      <div class="letter-backdrop"></div>
+      <article class="letter-paper" role="dialog" aria-modal="true" aria-labelledby="letterTitle">
+        <button id="closeLetter" class="close-letter" type="button" aria-label="Cerrar carta">×</button>
+        <div class="letter-seal">♡</div>
+        <p class="eyebrow">Una carta para ti</p>
+        <h3 id="letterTitle">Ale 🌷</h3>
+        <div id="letterText" class="letter-text">
+          <p>Hoy quiero celebrar algo mucho más grande que una fecha: quiero celebrar que estás aquí, que la vida te regaló un año más y que quienes te queremos tenemos la suerte de compartir un pedacito de nuestro camino contigo.</p>
+          <p>Deseo que este nuevo año te devuelva multiplicado todo el empeño que pones en lo que haces. Que tu inteligencia, tu dedicación y ese perfeccionismo que te impulsa a dar siempre lo mejor de ti te acerquen cada vez más a la mujer que sueñas ser.</p>
+          <p>Ojalá nunca te falten motivos para reír, personas que sepan tratarte con el cariño que mereces y momentos que te recuerden que también está bien consentirte, disfrutar y sentirte como la reina que eres.</p>
+          <p>Que haya muchos tulipanes rosas, helado de chocolate en barquillo, yogurt de frutos rojos, nuevos sueños, aventuras inesperadas y días en los que puedas mirar atrás y sentirte orgullosa de todo lo que has construido.</p>
+          <p>Feliz cumpleaños, Ale. Que la vida te sorprenda bonito. 💗</p>
+        </div>
+        <button id="replayButton" class="replay-button" type="button">✨ Volver a vivir el momento</button>
+      </article>
+    </div>
+
+    <audio id="waitMusic" preload="metadata" loop src="assets/audio/mi-suerte-morat.mp3"></audio>
+    <audio id="birthdayMusic" preload="none" src="assets/audio/tu-cumpleanos.mp3"></audio>
+  <audio id="sunsetMusic" preload="none" src="assets/audio/yellow-coldplay.mp3"></audio>
+  </div>
+
+  <script>
+    function gardenScriptError() {
+      var text = document.querySelector(".garden-loader-text");
+      var dots = document.querySelector(".garden-loader-dots");
+      if (text) text.innerHTML = 'El jardín tardó un poquito más de lo esperado 🌸<br><small>Toca para intentar de nuevo</small>';
+      if (dots) dots.style.display = "none";
+      var loader = document.getElementById("gardenLoader");
+      if (loader) {
+        loader.style.cursor = "pointer";
+        loader.onclick = function(){ location.reload(); };
+      }
+    }
+  </script>
+
+  <script src="script.js" onerror="gardenScriptError()"></script>
+</body>
+</html>

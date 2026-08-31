@@ -1,0 +1,1144 @@
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"DM Sans",system-ui,sans-serif;background:#090d2d;color:#fff}body{overflow-x:hidden}button{font:inherit}
+#app{min-height:100svh;position:relative;overflow:hidden;isolation:isolate;transition:background 4s ease;background:linear-gradient(180deg,#07102f 0%,#111b49 52%,#30224a 100%)}
+#app.day{background:linear-gradient(180deg,#70cfff 0%,#ffb7d3 47%,#ffd8a8 75%,#fff1c7 100%)}
+#confetti{position:fixed;inset:0;width:100%;height:100%;z-index:20;pointer-events:none}
+.sky{position:absolute;inset:0;z-index:-4;overflow:hidden}
+.glow{position:absolute;left:50%;bottom:-18vh;transform:translateX(-50%);width:120vw;height:55vh;border-radius:50%;background:radial-gradient(circle,rgba(255,181,217,.32),transparent 66%);transition:opacity 3s ease}
+.day .glow{background:radial-gradient(circle,rgba(255,239,175,.95),rgba(255,185,184,.34) 42%,transparent 70%)}
+.stars{position:absolute;inset:0;transition:opacity 2.6s ease}.day .stars{opacity:0}
+.star{position:absolute;width:2px;height:2px;background:white;border-radius:50%;box-shadow:0 0 8px #fff;animation:twinkle var(--speed) ease-in-out infinite alternate;opacity:.45}
+@keyframes twinkle{to{opacity:1;transform:scale(1.8)}}
+.moon{position:absolute;width:94px;height:94px;top:7vh;right:8vw;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fffef1,#f9e6bd 68%,#e2c78f);box-shadow:0 0 35px rgba(255,240,196,.42);transition:transform 3.5s ease,opacity 2.5s ease}
+.moon span,.moon:before,.moon:after{content:"";position:absolute;border-radius:50%;background:rgba(184,157,118,.13)}
+.moon span{width:25px;height:25px;left:20px;top:24px}.moon:before{width:14px;height:14px;right:18px;top:18px}.moon:after{width:20px;height:20px;right:20px;bottom:18px}
+.day .moon{opacity:0;transform:translateY(-80px) scale(.7)}
+.sun{position:absolute;width:105px;height:105px;left:7vw;top:10vh;border-radius:50%;background:#fff8b6;box-shadow:0 0 35px #fff3a9,0 0 110px rgba(255,210,91,.75);opacity:0;transform:translateY(180px) scale(.5);transition:all 4s cubic-bezier(.16,.9,.25,1)}
+.day .sun{opacity:1;transform:translateY(0) scale(1)}
+.cloud{position:absolute;width:170px;height:52px;background:rgba(255,255,255,.09);border-radius:50px;filter:blur(.2px);animation:drift 28s linear infinite}.cloud:before,.cloud:after{content:"";position:absolute;background:inherit;border-radius:50%}.cloud:before{width:76px;height:76px;left:28px;bottom:10px}.cloud:after{width:92px;height:92px;right:18px;bottom:2px}.cloud-a{top:25%;left:-190px}.cloud-b{top:44%;left:-240px;animation-duration:38s;transform:scale(.65)}.day .cloud{background:rgba(255,255,255,.42)}
+@keyframes drift{to{left:115vw}}
+main{min-height:100svh;display:grid;place-items:center;padding:40px 18px 190px;position:relative;z-index:3}.view{width:min(100%,720px)}
+.glass{background:linear-gradient(180deg,rgba(15,21,65,.54),rgba(23,25,66,.34));border:1px solid rgba(255,255,255,.15);box-shadow:0 28px 90px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.12);backdrop-filter:blur(18px);border-radius:34px;padding:42px 24px;text-align:center}
+.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.28em;font-weight:700;opacity:.78;margin:0 0 14px}
+h1,h2,h3{font-family:"Parisienne",cursive;font-weight:400}h1{font-size:clamp(3rem,10vw,5rem);line-height:.96;margin:0;text-shadow:0 0 20px rgba(255,161,211,.2)}
+.subtitle{opacity:.72;margin:20px auto 28px;max-width:420px}
+.countdown{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:7px;align-items:center;padding:18px 13px;border-radius:22px;background:rgba(4,7,30,.38);border:1px solid rgba(255,187,222,.22);box-shadow:inset 0 0 30px rgba(238,97,166,.08)}
+.countdown strong{display:block;font-size:clamp(1.45rem,7vw,2.5rem);font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.02em}.countdown span{display:block;font-size:.58rem;text-transform:uppercase;letter-spacing:.09em;opacity:.58;margin-top:5px}.countdown b{opacity:.45;font-size:1.5rem;font-weight:400}
+.tiny-message{font-family:"Parisienne",cursive;font-size:1.45rem;margin:25px 0 18px;color:#ffd8eb}
+.sound-button,.letter-button,.replay-button{border:0;cursor:pointer;color:#fff;background:linear-gradient(135deg,#ef5a9b,#ff87ba);box-shadow:0 10px 35px rgba(235,69,143,.25);transition:transform .2s ease,box-shadow .2s ease}.sound-button:hover,.letter-button:hover,.replay-button:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(235,69,143,.36)}
+.sound-button{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:12px 18px}
+.birthday-view{text-align:center;animation:reveal 1.3s ease both}.birthday-copy{animation:rise .9s .3s both}.birthday-copy h2{font-size:clamp(3.8rem,15vw,7rem);line-height:.76;color:#7c204b;margin:5px 0 18px;text-shadow:0 3px 0 rgba(255,255,255,.5)}.birthday-copy h2 span{color:#f13f8a}.birthday-copy p:not(.eyebrow){color:#70304b;font-weight:600}
+@keyframes reveal{from{opacity:0}to{opacity:1}}@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.heart-wrap{width:min(82vw,390px);aspect-ratio:400/360;margin:28px auto 22px;position:relative;filter:drop-shadow(0 22px 40px rgba(137,32,75,.22));animation:heartPop 1.15s .55s cubic-bezier(.2,1.4,.3,1) both}
+@keyframes heartPop{from{opacity:0;transform:scale(.65) rotate(-5deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+.heart-photo{position:absolute;inset:7%;clip-path:path("M 180 330 C 165 315 35 215 35 115 C 35 50 80 25 125 25 C 158 25 179 46 180 47 C 181 46 202 25 235 25 C 280 25 325 50 325 115 C 325 215 195 315 180 330 Z");background:#fff;overflow:hidden;border:6px solid rgba(255,255,255,.92)}
+.heart-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 44%;transform:scale(1.09)}
+.heart-glow{position:absolute;inset:4%;background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.22),rgba(255,76,159,.18) 48%,transparent 72%);filter:blur(24px);opacity:.48;animation:pulse 2.8s ease-in-out infinite alternate}
+@keyframes pulse{to{transform:scale(1.06);opacity:.72}}
+.spark{position:absolute;color:#fff;font-size:28px;text-shadow:0 0 15px #ff5fa9;animation:float 2.2s ease-in-out infinite alternate}.s1{left:2%;top:25%}.s2{right:3%;top:10%;animation-delay:.5s}.s3{right:8%;bottom:16%;animation-delay:.9s}@keyframes float{to{transform:translateY(-12px) rotate(8deg)}}
+.dedication{color:#6a2c47;max-width:560px;margin:0 auto 22px;font-weight:600;line-height:1.65}
+.letter-button{border-radius:999px;padding:14px 22px;display:inline-flex;align-items:center;gap:10px}.envelope{font-size:1.35rem;animation:bob 1.5s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-4px) rotate(-4deg)}}
+.music-pill{margin:20px auto 0;max-width:360px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-align:left;padding:11px 12px;border-radius:999px;background:rgba(82,21,52,.2);border:1px solid rgba(255,255,255,.48);color:#64203e;backdrop-filter:blur(10px)}.music-pill small,.music-pill strong{display:block}.music-pill small{opacity:.63;font-size:.68rem}.music-pill button{width:38px;height:38px;border:0;border-radius:50%;background:rgba(255,255,255,.72);color:#9d315f;cursor:pointer}.disc{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#fff;color:#e34789;animation:spin 6s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.tulip-field{position:fixed;left:0;right:0;bottom:-2px;height:165px;z-index:2;pointer-events:none;overflow:hidden}.tulip{position:absolute;bottom:-7px;transform-origin:50% 100%;animation:sway var(--dur) ease-in-out infinite alternate;filter:drop-shadow(0 8px 7px rgba(0,0,0,.12))}.stem{width:5px;height:var(--h);background:linear-gradient(#5f9f55,#245f35);margin:auto;border-radius:5px}.flower{position:absolute;top:-24px;left:50%;transform:translateX(-50%);width:34px;height:37px;background:linear-gradient(145deg,#ff9ccb,#ee4f96);border-radius:50% 50% 46% 46%;clip-path:polygon(0 28%,20% 4%,39% 24%,51% 0,66% 24%,88% 6%,100% 30%,92% 100%,10% 100%)}.leaf{position:absolute;width:22px;height:46px;background:#3c833f;border-radius:100% 0 100% 0;bottom:24px}.leaf.l{left:-18px;transform:rotate(-30deg)}.leaf.r{right:-19px;transform:scaleX(-1) rotate(-27deg)}@keyframes sway{from{transform:rotate(-2.5deg)}to{transform:rotate(3.2deg)}}
+.letter-modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:22px;opacity:0;visibility:hidden;transition:.3s ease}.letter-modal.open{opacity:1;visibility:visible}.letter-backdrop{position:absolute;inset:0;background:rgba(35,9,27,.5);backdrop-filter:blur(10px)}.letter-paper{position:relative;width:min(100%,590px);max-height:88svh;overflow:auto;border-radius:28px;padding:45px 26px 28px;background:linear-gradient(180deg,#fffaf8,#fff0f5);color:#6a2945;box-shadow:0 30px 100px rgba(59,15,42,.35);transform:translateY(25px) scale(.96);transition:.4s cubic-bezier(.2,.9,.3,1)}.open .letter-paper{transform:none}.letter-paper h3{font-size:3.6rem;color:#d33e7c;margin:0 0 12px;text-align:center}.letter-paper .eyebrow{text-align:center}.letter-text{font-family:Georgia,serif;line-height:1.75;font-size:1rem}.letter-text p{opacity:0;transform:translateY(10px)}.open .letter-text p{animation:lineIn .65s ease forwards}.open .letter-text p:nth-child(2){animation-delay:.18s}.open .letter-text p:nth-child(3){animation-delay:.36s}.open .letter-text p:nth-child(4){animation-delay:.54s}.open .letter-text p:nth-child(5){animation-delay:.72s}@keyframes lineIn{to{opacity:1;transform:none}}.letter-seal{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:#ef5a9b;color:white;box-shadow:0 6px 15px rgba(214,54,123,.25)}.close-letter{position:absolute;top:12px;right:15px;width:38px;height:38px;border:0;border-radius:50%;background:#ffe0ed;color:#b42f69;font-size:1.4rem;cursor:pointer}.replay-button{display:block;margin:24px auto 0;border-radius:999px;padding:13px 20px}
+@media(max-width:520px){main{padding-top:28px;padding-bottom:160px}.heart-wrap{width:min(88vw,360px);margin:14px auto 20px}.glass{padding:36px 16px 30px;border-radius:28px}.moon{width:72px;height:72px}.countdown{gap:3px}.birthday-copy h2{margin-top:0}.heart-wrap{margin-top:18px}.tulip-field{height:145px}.letter-paper{padding:44px 20px 24px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+/* Ajuste v3: foto más nítida y marco menos intenso */
+.heart-photo-svg{
+  filter:drop-shadow(0 10px 22px rgba(164,45,100,.20));
+}
+.heart-photo-svg path{
+  filter:drop-shadow(0 0 4px rgba(255,255,255,.55))
+         drop-shadow(0 0 8px rgba(255,90,160,.22));
+}
+
+.side-tulips{
+  position:fixed;
+  top:18%;
+  bottom:92px;
+  width:74px;
+  z-index:2;
+  pointer-events:none;
+  overflow:visible;
+  opacity:.96;
+}
+.left-side{left:-14px}
+.right-side{right:-14px;transform:scaleX(-1)}
+.side-tulips .side-tulip{
+  position:absolute;
+  width:54px;
+  height:105px;
+  transform-origin:50% 100%;
+  animation:sideSway var(--dur) ease-in-out infinite alternate;
+  filter:drop-shadow(0 8px 9px rgba(80,25,58,.14));
+}
+.side-tulips .side-stem{
+  position:absolute;
+  left:26px;
+  bottom:0;
+  width:4px;
+  height:74px;
+  border-radius:5px;
+  background:linear-gradient(#66a35b,#2e6a3a);
+}
+.side-tulips .side-flower{
+  position:absolute;
+  left:50%;
+  top:-26px;
+  width:38px;
+  height:41px;
+  transform:translateX(-50%);
+  background:linear-gradient(145deg,#ffb5d4,#f25d9f 65%,#dc3b83);
+  clip-path:polygon(0 28%,20% 4%,39% 24%,51% 0,66% 24%,88% 6%,100% 30%,92% 100%,10% 100%);
+  border-radius:50% 50% 46% 46%;
+}
+.side-tulips .side-leaf{
+  position:absolute;
+  width:22px;
+  height:43px;
+  bottom:17px;
+  background:linear-gradient(#4b914a,#2f713c);
+  border-radius:100% 0 100% 0;
+}
+.side-tulips .side-leaf.l{left:-17px;transform:rotate(-31deg)}
+.side-tulips .side-leaf.r{right:-18px;transform:scaleX(-1) rotate(-28deg)}
+@keyframes sideSway{
+  from{transform:rotate(-3deg)}
+  to{transform:rotate(4deg)}
+}
+
+@media(max-width:520px){
+  .side-tulips{
+    top:24%;
+    bottom:78px;
+    width:60px;
+    opacity:.88;
+  }
+  .left-side{left:-20px}
+  .right-side{right:-20px}
+  .side-tulips .side-tulip{transform:scale(.88)}
+  .tulip-field{height:132px}
+}
+
+/* v4 — Tulipanes diagonales que nacen desde fuera de la pantalla */
+.side-tulips{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:2;
+  pointer-events:none;
+  overflow:hidden;
+  opacity:.94;
+}
+.left-side,.right-side{left:0;right:0;top:0;bottom:0;transform:none}
+
+.side-tulips .side-tulip{
+  position:absolute;
+  width:150px;
+  height:145px;
+  transform-origin:0 100%;
+  animation:diagonalSway var(--dur) ease-in-out infinite alternate;
+  filter:drop-shadow(0 8px 10px rgba(80,25,58,.12));
+}
+
+/* Cada flor es una ramita diagonal completa */
+.side-tulips .side-stem{
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:118px;
+  height:5px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#2e6a3a,#66a35b);
+  transform-origin:0 50%;
+}
+.side-tulips .side-flower{
+  position:absolute;
+  right:-17px;
+  top:50%;
+  left:auto;
+  width:40px;
+  height:44px;
+  transform:translateY(-50%) rotate(90deg);
+  background:linear-gradient(145deg,#ffb5d4,#f25d9f 65%,#dc3b83);
+  clip-path:polygon(0 28%,20% 4%,39% 24%,51% 0,66% 24%,88% 6%,100% 30%,92% 100%,10% 100%);
+  border-radius:50% 50% 46% 46%;
+}
+.side-tulips .side-leaf{
+  position:absolute;
+  width:38px;
+  height:19px;
+  bottom:auto;
+  top:-7px;
+  background:linear-gradient(90deg,#367941,#57a151);
+  border-radius:100% 0 100% 0;
+}
+.side-tulips .side-leaf.l{left:34px;transform:rotate(-18deg)}
+.side-tulips .side-leaf.r{right:30px;transform:scaleY(-1) rotate(14deg)}
+
+.left-side .side-tulip{
+  left:-48px !important;
+  transform-origin:0 50%;
+}
+.left-side .side-stem{transform:rotate(-28deg)}
+.right-side .side-tulip{
+  right:-48px !important;
+  left:auto !important;
+  transform-origin:100% 50%;
+}
+.right-side .side-stem{
+  left:auto;
+  right:0;
+  transform-origin:100% 50%;
+  transform:rotate(208deg);
+}
+
+@keyframes diagonalSway{
+  from{translate:0 0; rotate:-1.5deg}
+  to{translate:0 -3px; rotate:2deg}
+}
+
+@media(max-width:520px){
+  .side-tulips{opacity:.9}
+  .side-tulips .side-tulip{width:122px;height:120px}
+  .side-tulips .side-stem{width:100px}
+  .left-side .side-tulip{left:-45px !important}
+  .right-side .side-tulip{right:-45px !important}
+}
+
+/* =========================
+   v5 — Ajustes de tulipanes
+   ========================= */
+
+/* Los tulipanes inferiores permanecen decorativos y ya no invaden el botón/copy. */
+.tulip-field{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:-10px;
+  height:105px;
+  z-index:2;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.tulip-field .tulip .stem{
+  height:min(var(--h), 78px) !important;
+}
+
+.tulip-field .tulip{
+  bottom:-18px !important;
+}
+
+/* Laterales: el contenedor cubre todo el viewport. */
+.side-tulips{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100svh !important;
+  overflow:hidden !important;
+  pointer-events:none !important;
+  z-index:2 !important;
+  opacity:.94;
+}
+
+/* Ramitas visibles y un poco más largas. */
+.side-tulips .side-tulip{
+  position:absolute !important;
+  width:150px !important;
+  height:100px !important;
+  animation:diagonalSway var(--dur) ease-in-out infinite alternate !important;
+  filter:drop-shadow(0 7px 9px rgba(81,25,58,.13));
+}
+
+.side-tulips .side-stem{
+  position:absolute !important;
+  top:48px !important;
+  bottom:auto !important;
+  width:132px !important;
+  height:5px !important;
+  border-radius:999px;
+  background:linear-gradient(90deg,#2d6739,#66a45b) !important;
+}
+
+/* Izquierda: nace fuera de la pantalla y apunta hacia arriba/dentro. */
+.left-side .side-tulip{
+  left:-54px !important;
+  right:auto !important;
+}
+.left-side .side-stem{
+  left:0 !important;
+  right:auto !important;
+  transform-origin:0 50% !important;
+  transform:rotate(-27deg) !important;
+}
+
+/* Derecha: espejo real del lado izquierdo. */
+.right-side .side-tulip{
+  right:-54px !important;
+  left:auto !important;
+}
+.right-side .side-stem{
+  right:0 !important;
+  left:auto !important;
+  transform-origin:100% 50% !important;
+  transform:rotate(27deg) !important;
+}
+
+/* La flor queda en la punta interior del tallo. */
+.left-side .side-flower{
+  right:-18px !important;
+  left:auto !important;
+  top:50% !important;
+  transform:translateY(-50%) rotate(90deg) !important;
+}
+.right-side .side-flower{
+  left:-18px !important;
+  right:auto !important;
+  top:50% !important;
+  transform:translateY(-50%) rotate(-90deg) !important;
+}
+
+/* Hojas espejadas según el lado. */
+.left-side .side-leaf.l{left:38px !important;right:auto !important}
+.left-side .side-leaf.r{right:35px !important;left:auto !important}
+.right-side .side-leaf.l{right:38px !important;left:auto !important;transform:scaleX(-1) rotate(-18deg) !important}
+.right-side .side-leaf.r{left:35px !important;right:auto !important;transform:rotate(14deg) !important}
+
+@media(max-width:520px){
+  .tulip-field{height:92px;bottom:-10px}
+  .tulip-field .tulip .stem{height:min(var(--h), 66px) !important}
+
+  .side-tulips .side-tulip{
+    width:132px !important;
+    height:92px !important;
+  }
+  .side-tulips .side-stem{
+    width:116px !important;
+    top:44px !important;
+  }
+  .left-side .side-tulip{left:-50px !important}
+  .right-side .side-tulip{right:-50px !important}
+}
+
+/* ==========================================================
+   v6 — Cielo vivo antes del cumpleaños
+   Hora visual calculada con America/Bogota (Colombia)
+   ========================================================== */
+
+#app.waiting-day{
+  background:linear-gradient(180deg,#74ccf4 0%,#a9ddf5 48%,#f7d3dc 82%,#ffd9b6 100%) !important;
+}
+#app.waiting-night{
+  background:linear-gradient(180deg,#07102f 0%,#111b49 52%,#30224a 100%) !important;
+}
+
+/* Sol/luna durante la espera */
+#app.waiting-day .sun{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+#app.waiting-day .moon{
+  opacity:0;
+  transform:translateY(-75px) scale(.7);
+}
+#app.waiting-day .stars{
+  opacity:0;
+}
+#app.waiting-day .cloud{
+  background:rgba(255,255,255,.42);
+}
+
+#app.waiting-night .sun{
+  opacity:0;
+  transform:translateY(180px) scale(.5);
+}
+#app.waiting-night .moon{
+  opacity:1;
+  transform:none;
+}
+#app.waiting-night .stars{
+  opacity:1;
+}
+
+/* El panel sigue legible de día */
+#app.waiting-day .glass{
+  background:linear-gradient(180deg,rgba(255,255,255,.36),rgba(255,219,233,.23));
+  color:#69243f;
+  border-color:rgba(255,255,255,.52);
+  box-shadow:0 28px 90px rgba(82,53,90,.13), inset 0 1px 0 rgba(255,255,255,.65);
+}
+#app.waiting-day .countdown{
+  background:rgba(255,255,255,.31);
+  border-color:rgba(131,51,88,.14);
+}
+#app.waiting-day .tiny-message{color:#a73a6e}
+#app.waiting-day .sound-button{color:#fff}
+
+/* Pétalos suaves que atraviesan toda la experiencia */
+.petal-layer{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  z-index:-1;
+  pointer-events:none;
+}
+.falling-petal{
+  position:absolute;
+  top:-35px;
+  width:12px;
+  height:19px;
+  border-radius:80% 10% 80% 10%;
+  background:linear-gradient(145deg,rgba(255,184,216,.95),rgba(239,83,151,.82));
+  box-shadow:0 0 7px rgba(255,125,180,.18);
+  animation:petalFall var(--fall) linear forwards;
+  opacity:var(--opacity);
+  transform:rotate(var(--rot));
+}
+@keyframes petalFall{
+  0%{
+    translate:0 -30px;
+    rotate:0deg;
+  }
+  35%{
+    translate:var(--driftA) 34vh;
+    rotate:150deg;
+  }
+  70%{
+    translate:var(--driftB) 72vh;
+    rotate:290deg;
+  }
+  100%{
+    translate:var(--driftC) 112vh;
+    rotate:430deg;
+  }
+}
+
+/* Estrella fugaz: aparece deliberadamente poco después de abrir */
+.shooting-star{
+  position:absolute;
+  top:15%;
+  left:10%;
+  width:130px;
+  height:2px;
+  z-index:1;
+  opacity:0;
+  pointer-events:none;
+  transform:rotate(-24deg);
+  transform-origin:right center;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),#fff);
+  filter:drop-shadow(0 0 6px rgba(255,255,255,.95));
+}
+.shooting-star::after{
+  content:"";
+  position:absolute;
+  right:-3px;
+  top:50%;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 11px #fff,0 0 20px rgba(255,207,235,.9);
+  transform:translateY(-50%);
+}
+.shooting-star.fly{
+  animation:shootAcross 1.3s cubic-bezier(.12,.64,.18,1) forwards;
+}
+@keyframes shootAcross{
+  0%{opacity:0;translate:-25vw -10vh}
+  12%{opacity:1}
+  75%{opacity:1}
+  100%{opacity:0;translate:95vw 36vh}
+}
+
+/* Virgo: discreta en una esquina de noche */
+.virgo-constellation{
+  position:absolute;
+  left:4vw;
+  top:8.5vh;
+  width:185px;
+  z-index:0;
+  color:rgba(255,235,247,.92);
+  opacity:0;
+  transform:translateY(-5px);
+  transition:opacity 1.6s ease,transform 1.6s ease;
+  pointer-events:none;
+  filter:drop-shadow(0 0 5px rgba(255,205,233,.22));
+}
+.waiting-night .virgo-constellation{
+  opacity:.72;
+  transform:none;
+}
+.waiting-day .virgo-constellation,
+.day .virgo-constellation{
+  opacity:0;
+}
+.virgo-label{
+  font-size:.62rem;
+  text-transform:uppercase;
+  letter-spacing:.26em;
+  margin-left:13px;
+  margin-bottom:-4px;
+  opacity:.7;
+}
+.virgo-label span{font-size:.7rem}
+.virgo-constellation svg{display:block;width:100%;height:auto}
+.virgo-lines path{
+  fill:none;
+  stroke:currentColor;
+  stroke-width:.85;
+  opacity:.28;
+}
+.virgo-stars circle{
+  fill:#fff6fb;
+  filter:drop-shadow(0 0 4px #ffd1ea);
+  animation:virgoTwinkle 2.8s ease-in-out infinite alternate;
+}
+.virgo-stars circle:nth-child(2n){animation-delay:.7s}
+.virgo-stars circle:nth-child(3n){animation-delay:1.4s}
+@keyframes virgoTwinkle{
+  from{opacity:.48}
+  to{opacity:1}
+}
+
+/* En móvil colocamos Virgo debajo de la luna para que no pelee con el contador */
+@media(max-width:520px){
+  .virgo-constellation{
+    width:125px;
+    left:4vw;
+    top:15vh;
+    opacity:0;
+  }
+  .waiting-night .virgo-constellation{opacity:.62}
+  .virgo-label{font-size:.5rem}
+  .shooting-star{top:13%;width:95px}
+  .falling-petal{width:9px;height:15px}
+}
+
+/* No dejar que elementos de espera interfieran con la celebración */
+#app.day .shooting-star,
+#app.day .virgo-constellation{
+  display:none;
+}
+
+/* v9 — Virgo más alto y visible en móvil */
+@media(max-width:520px){
+  .virgo-constellation{
+    width:118px !important;
+    left:4vw !important;
+    top:5.5vh !important;
+    z-index:3 !important;
+  }
+  .waiting-night .virgo-constellation{
+    opacity:.68 !important;
+  }
+}
+
+/* En móviles muy bajos la acercamos aún más a la esquina superior. */
+@media(max-width:520px) and (max-height:700px){
+  .virgo-constellation{
+    top:3.5vh !important;
+    width:108px !important;
+  }
+}
+
+/* ==========================================================
+   v10 — El jardín/cielo cobra vida
+   ========================================================== */
+
+/* Etapa de atardecer */
+#app.waiting-sunset{
+  background:
+    radial-gradient(circle at 76% 23%,rgba(255,221,174,.42),transparent 22%),
+    linear-gradient(180deg,#70568f 0%,#d47b9c 38%,#f4a487 68%,#f8c69e 100%) !important;
+}
+#app.waiting-sunset .sun{
+  opacity:.82;
+  transform:translateY(105px) scale(.9);
+  filter:drop-shadow(0 0 24px rgba(255,206,137,.5));
+}
+#app.waiting-sunset .moon{opacity:.15;transform:translateY(-22px) scale(.82)}
+#app.waiting-sunset .stars{opacity:.20}
+#app.waiting-sunset .virgo-constellation{opacity:.12}
+#app.waiting-sunset .glass{
+  background:linear-gradient(180deg,rgba(255,255,255,.24),rgba(120,50,91,.14));
+}
+
+/* Más profundidad en las nubes existentes */
+.cloud{will-change:transform;filter:blur(.3px)}
+.cloud:nth-child(2n){opacity:.52;filter:blur(1.2px)}
+.cloud:nth-child(3n){opacity:.34;filter:blur(2px)}
+
+/* Nubes nocturnas translúcidas que ocasionalmente cruzan la luna */
+.moon-cloud{
+  position:absolute;
+  z-index:1;
+  width:190px;
+  height:38px;
+  border-radius:50%;
+  background:
+    radial-gradient(ellipse at 25% 65%,rgba(203,211,238,.22) 0 26%,transparent 28%),
+    radial-gradient(ellipse at 50% 45%,rgba(203,211,238,.18) 0 34%,transparent 36%),
+    radial-gradient(ellipse at 76% 66%,rgba(203,211,238,.17) 0 25%,transparent 27%);
+  filter:blur(4px);
+  opacity:0;
+  pointer-events:none;
+}
+.waiting-night .moon-cloud{opacity:1}
+.waiting-day .moon-cloud,.waiting-sunset .moon-cloud,.day .moon-cloud{opacity:0}
+.moon-cloud-a{
+  top:8%;
+  right:-230px;
+  animation:moonCloudPass 31s linear infinite;
+}
+.moon-cloud-b{
+  top:13%;
+  right:-250px;
+  scale:.72;
+  opacity:.55 !important;
+  animation:moonCloudPass 44s linear 13s infinite;
+}
+@keyframes moonCloudPass{
+  from{translate:0 0}
+  to{translate:-145vw 7px}
+}
+
+/* El jardín respira: balanceo suave, con pequeñas diferencias */
+.tulip-field .tulip,
+.side-tulips .side-tulip{
+  transform-origin:50% 100%;
+}
+.tulip-field .tulip:nth-child(3n){animation-delay:-.8s}
+.tulip-field .tulip:nth-child(4n){animation-delay:-1.6s}
+
+/* Ráfaga ambiental: se añade temporalmente desde JS */
+#app.wind-gust .tulip-field .tulip{
+  animation:gustTulip 2.4s ease-in-out !important;
+}
+#app.wind-gust .side-tulips .side-tulip{
+  animation:gustSide 2.4s ease-in-out !important;
+}
+@keyframes gustTulip{
+  0%,100%{rotate:0deg}
+  35%{rotate:5deg}
+  62%{rotate:-2deg}
+}
+@keyframes gustSide{
+  0%,100%{translate:0 0}
+  38%{translate:7px -2px}
+  68%{translate:-2px 1px}
+}
+
+/* Luciérnagas: solo cerca del jardín y solo de noche */
+.fireflies{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  height:31%;
+  z-index:1;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 1.4s ease;
+}
+.waiting-night .fireflies{opacity:1}
+.waiting-day .fireflies,.waiting-sunset .fireflies,.day .fireflies{opacity:0}
+.firefly{
+  position:absolute;
+  width:4px;height:4px;
+  border-radius:50%;
+  background:#ffeaa5;
+  box-shadow:0 0 7px #ffd879,0 0 13px rgba(255,218,121,.55);
+  animation:fireflyFloat var(--dur) ease-in-out infinite alternate,
+            fireflyGlow 1.8s ease-in-out infinite alternate;
+}
+@keyframes fireflyFloat{
+  from{translate:0 12px}
+  to{translate:var(--dx) -24px}
+}
+@keyframes fireflyGlow{
+  from{opacity:.18;scale:.65}
+  to{opacity:.95;scale:1.18}
+}
+
+/* Mariposa rosa: visitante ocasional durante el día */
+.butterfly-layer{
+  position:absolute;inset:0;
+  z-index:2;
+  overflow:hidden;
+  pointer-events:none;
+}
+.butterfly{
+  position:absolute;
+  left:-50px;
+  top:var(--top);
+  width:28px;height:22px;
+  animation:butterflyTravel 10s cubic-bezier(.22,.6,.45,.94) forwards;
+}
+.butterfly::before,.butterfly::after{
+  content:"";
+  position:absolute;
+  top:5px;
+  width:15px;height:17px;
+  background:linear-gradient(145deg,#ffc0dd,#ed6aa8);
+  border-radius:80% 20% 70% 30%;
+  transform-origin:100% 60%;
+  animation:wingLeft .34s ease-in-out infinite alternate;
+}
+.butterfly::before{left:0}
+.butterfly::after{
+  right:0;
+  transform-origin:0 60%;
+  border-radius:20% 80% 30% 70%;
+  animation-name:wingRight;
+}
+@keyframes wingLeft{from{rotate:8deg;scaleX:1}to{rotate:45deg;scaleX:.42}}
+@keyframes wingRight{from{rotate:-8deg;scaleX:1}to{rotate:-45deg;scaleX:.42}}
+@keyframes butterflyTravel{
+  0%{translate:0 4vh;rotate:-6deg}
+  18%{translate:20vw -3vh;rotate:8deg}
+  38%{translate:42vw 5vh;rotate:-7deg}
+  58%{translate:62vw -5vh;rotate:7deg}
+  78%{translate:82vw 3vh;rotate:-5deg}
+  100%{translate:112vw -2vh;rotate:4deg}
+}
+
+/* Mensaje ligado a la estrella fugaz */
+.wish-message{
+  position:absolute;
+  top:26%;
+  left:50%;
+  z-index:4;
+  translate:-50% 0;
+  padding:8px 15px;
+  border-radius:999px;
+  color:rgba(255,247,252,.96);
+  font-size:.78rem;
+  letter-spacing:.035em;
+  white-space:nowrap;
+  background:rgba(18,20,58,.22);
+  border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(7px);
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(7px);
+}
+.wish-message.show{
+  animation:wishAppear 3.4s ease forwards;
+}
+@keyframes wishAppear{
+  0%{opacity:0;transform:translateY(7px)}
+  18%,68%{opacity:.88;transform:translateY(0)}
+  100%{opacity:0;transform:translateY(-5px)}
+}
+.waiting-day .wish-message{
+  color:#71334f;
+  background:rgba(255,255,255,.30);
+}
+
+/* Virgo se dibuja suavemente cuando aparece de noche */
+.waiting-night .virgo-lines path{
+  stroke-dasharray:260;
+  stroke-dashoffset:260;
+  animation:drawVirgo 3.8s ease 1s forwards;
+}
+@keyframes drawVirgo{to{stroke-dashoffset:0}}
+
+/* El sol respira ligeramente durante el día */
+.waiting-day .sun{
+  animation:sunBreathe 5.5s ease-in-out infinite alternate;
+}
+@keyframes sunBreathe{
+  from{filter:drop-shadow(0 0 12px rgba(255,226,157,.32))}
+  to{filter:drop-shadow(0 0 27px rgba(255,226,157,.58))}
+}
+
+@media(max-width:520px){
+  .moon-cloud{width:145px}
+  .moon-cloud-a{top:7%}
+  .moon-cloud-b{top:11%}
+  .wish-message{top:24%;font-size:.7rem}
+  .fireflies{height:27%}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .moon-cloud,.firefly,.butterfly,
+  .waiting-day .sun,.waiting-night .virgo-lines path{
+    animation:none !important;
+  }
+}
+
+/* v12 — Mañana · Tarde · Atardecer · Noche + gerberas 🌸 */
+#app.waiting-morning{background:radial-gradient(circle at 74% 19%,rgba(255,243,196,.55),transparent 19%),linear-gradient(180deg,#b9dcf1 0%,#d9eaf3 38%,#f8dbe7 76%,#f7cfdc 100%)!important}
+.waiting-morning .sun{opacity:.72;transform:translateY(34px) scale(.86);animation:morningSun 6s ease-in-out infinite alternate}.waiting-morning .moon,.waiting-morning .stars,.waiting-morning .virgo-constellation,.waiting-morning .fireflies,.waiting-morning .moon-cloud{opacity:0!important}@keyframes morningSun{from{filter:drop-shadow(0 0 13px rgba(255,235,177,.34))}to{filter:drop-shadow(0 0 26px rgba(255,235,177,.58))}}
+.dew-layer{position:absolute;left:0;right:0;bottom:0;height:25%;z-index:3;pointer-events:none;opacity:0;transition:opacity 1.8s}.waiting-morning .dew-layer{opacity:1}.dew-drop{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 5px #fff,0 0 10px rgba(255,218,236,.55);animation:dewTwinkle var(--dewDur) ease-in-out infinite alternate}@keyframes dewTwinkle{0%,28%{opacity:.12;scale:.65}70%,100%{opacity:.95;scale:1.35}}
+.gerbera-field{position:absolute;left:0;right:0;bottom:0;height:29%;z-index:2;overflow:hidden;pointer-events:none;opacity:0;transition:opacity 2.4s}.waiting-sunset .gerbera-field,.day .gerbera-field{opacity:1}.waiting-night .gerbera-field{opacity:.72}.waiting-day .gerbera-field{opacity:.16}.waiting-morning .gerbera-field{opacity:0}.gerbera{position:absolute;bottom:-5px;width:54px;height:126px;transform-origin:50% 100%;animation:gerberaSway 4.8s ease-in-out infinite alternate}.gerbera-stem{position:absolute;left:26px;bottom:0;width:3px;height:83px;border-radius:99px;background:linear-gradient(90deg,#5d8f63,#83ad76,#4e8057)}.gerbera-leaf{position:absolute;bottom:28px;left:24px;width:20px;height:9px;border-radius:100% 0 100% 0;background:#6b9a68;transform:rotate(-28deg)}.gerbera-leaf.right{left:29px;bottom:43px;transform:scaleX(-1) rotate(-24deg)}.gerbera-head{position:absolute;left:4px;bottom:74px;width:48px;height:48px;transform-origin:50%;animation:gerberaBloom 2.8s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--bloomDelay)}.gerbera-petal{position:absolute;left:20px;top:1px;width:9px;height:23px;border-radius:75% 75% 55% 55%;transform-origin:50% 23px;background:linear-gradient(180deg,var(--petalLight),var(--petal))}.gerbera-center{position:absolute;left:17px;top:17px;width:15px;height:15px;border-radius:50%;z-index:2;background:radial-gradient(circle at 45% 42%,#f8c875 0 16%,transparent 18%),radial-gradient(circle,#a75e49 0 28%,#7d493d 68%,#613a35 100%)}@keyframes gerberaBloom{0%{scale:.08;rotate:-18deg;opacity:0}55%{scale:1.08;rotate:3deg;opacity:1}100%{scale:1;rotate:0;opacity:1}}@keyframes gerberaSway{from{rotate:-1.5deg}to{rotate:2deg}}.waiting-night .gerbera{filter:brightness(.72) saturate(.85)}#app{transition:background 7s ease}@media(max-width:520px){.gerbera-field{height:25%}.gerbera{scale:.82;transform-origin:50% 100%}.waiting-sunset .gerbera-field{height:27%}.dew-layer{height:22%}}
+
+
+/* ==========================================================
+   v13 — Gerberas fijas en pantalla + ajuste de música
+   ========================================================== */
+
+.gerbera-field{
+  position:fixed !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:-2px !important;
+  height:150px !important;
+  z-index:2 !important;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+#app.day .gerbera-field{
+  opacity:1 !important;
+  height:150px !important;
+}
+
+#app.waiting-sunset .gerbera-field{
+  height:155px !important;
+}
+
+#app.waiting-night .gerbera-field{
+  height:145px !important;
+}
+
+@media(max-width:520px){
+  .gerbera-field{
+    height:128px !important;
+    bottom:-4px !important;
+  }
+
+  #app.day .gerbera-field{
+    height:128px !important;
+  }
+
+  #app.waiting-sunset .gerbera-field{
+    height:132px !important;
+  }
+
+  #app.waiting-night .gerbera-field{
+    height:124px !important;
+  }
+
+  .gerbera{
+    scale:.78;
+    transform-origin:50% 100%;
+  }
+}
+
+/* ==========================================================
+   v14 — Yellow al atardecer + dientes de león 🌼
+   ========================================================== */
+.dandelion-layer{
+  position:fixed;
+  left:0;right:0;bottom:0;
+  height:145px;
+  z-index:2;
+  pointer-events:none;
+  overflow:visible;
+  opacity:0;
+  transition:opacity 3.5s ease;
+}
+.waiting-sunset .dandelion-layer{opacity:.92}
+.waiting-morning .dandelion-layer,
+.waiting-day .dandelion-layer,
+.waiting-night .dandelion-layer,
+.day .dandelion-layer{opacity:0}
+
+.dandelion{
+  position:absolute;
+  bottom:-3px;
+  width:34px;height:116px;
+  transform-origin:50% 100%;
+  rotate:var(--lean);
+  animation:dandelionSway 5s ease-in-out infinite alternate;
+}
+.dandelion-stem{
+  position:absolute;
+  left:16px;bottom:0;
+  width:2px;height:82px;
+  border-radius:99px;
+  background:linear-gradient(90deg,#64895e,#89a977);
+}
+.dandelion-head{
+  position:absolute;
+  left:5px;bottom:77px;
+  width:24px;height:24px;
+  border-radius:50%;
+  background:radial-gradient(circle,#9b7a4b 0 12%,#f4e8c8 15% 22%,transparent 25%);
+  filter:drop-shadow(0 0 5px rgba(255,229,170,.24));
+}
+.dandelion-head b{
+  position:absolute;
+  left:11px;top:11px;
+  width:2px;height:12px;
+  transform-origin:50% 0;
+  background:linear-gradient(#e7d8b5 0 68%,transparent 70%);
+}
+.dandelion-head b::after{
+  content:"";
+  position:absolute;
+  left:-2px;top:8px;
+  width:6px;height:6px;
+  border-radius:50%;
+  border-top:1px solid rgba(247,239,216,.92);
+  border-left:1px solid rgba(247,239,216,.7);
+  rotate:45deg;
+}
+@keyframes dandelionSway{
+  from{transform:rotate(-1.5deg)}
+  to{transform:rotate(2deg)}
+}
+.dandelion-seed{
+  position:absolute;
+  width:2px;height:12px;
+  z-index:5;
+  background:linear-gradient(#e9dec5 0 64%,transparent 66%);
+  opacity:0;
+  animation:seedFloat 6.2s ease-out forwards;
+}
+.dandelion-seed::before,
+.dandelion-seed::after{
+  content:"";
+  position:absolute;
+  top:-2px;left:-3px;
+  width:7px;height:7px;
+  border-top:1px solid rgba(255,244,218,.92);
+  border-radius:50%;
+}
+.dandelion-seed::after{rotate:90deg}
+@keyframes seedFloat{
+  0%{opacity:0;translate:0 0;rotate:0deg}
+  10%{opacity:.9}
+  100%{opacity:0;translate:var(--seedX) var(--seedY);rotate:210deg}
+}
+@media(max-width:520px){
+  .dandelion-layer{height:125px}
+  .dandelion{scale:.82;transform-origin:50% 100%}
+}
+
+
+/* ==========================================================
+   v15 — Audio de un solo gesto + brisa sin recortes
+   ========================================================== */
+
+/* Los tulipanes de la franja inferior necesitan espacio libre para rotar.
+   Antes, durante la ráfaga, partes de las flores podían salir del contenedor
+   y quedar visualmente recortadas. */
+.tulip-field{
+  overflow:visible !important;
+  clip-path:none !important;
+  contain:none !important;
+  padding-bottom:8px;
+}
+
+/* Damos un poco más de aire al borde inferior para que el movimiento
+   no choque con el límite del viewport. */
+.tulip-field .tulip{
+  transform-origin:50% calc(100% - 6px) !important;
+  will-change:transform;
+  backface-visibility:hidden;
+}
+
+/* La ráfaga ahora usa transform en lugar de rotate como propiedad aislada.
+   Esto evita saltos visuales al volver a la animación base del tulipán. */
+#app.wind-gust .tulip-field .tulip{
+  animation:gustTulipV15 2.4s ease-in-out !important;
+}
+
+@keyframes gustTulipV15{
+  0%   { transform:rotate(0deg) translateY(0); }
+  34%  { transform:rotate(4deg) translateY(-1px); }
+  63%  { transform:rotate(-1.5deg) translateY(0); }
+  100% { transform:rotate(0deg) translateY(0); }
+}
+
+/* Lo mismo para los tulipanes laterales: movimiento continuo y sin corte. */
+#app.wind-gust .side-tulips .side-tulip{
+  animation:gustSideV15 2.4s ease-in-out !important;
+}
+@keyframes gustSideV15{
+  0%   { transform:translate(0,0) rotate(0deg); }
+  38%  { transform:translate(6px,-2px) rotate(2deg); }
+  68%  { transform:translate(-1px,1px) rotate(-1deg); }
+  100% { transform:translate(0,0) rotate(0deg); }
+}
+
+/* Un pequeño margen invisible evita que las flores móviles choquen con
+   el borde inferior en pantallas muy compactas. */
+@media(max-width:520px){
+  .tulip-field{
+    bottom:4px !important;
+    padding-bottom:12px;
+  }
+}
+
+
+/* ==========================================================
+   v16 — Mensajes rotativos más legibles
+   ========================================================== */
+#tinyMessage{
+  font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  letter-spacing: .01em;
+  line-height: 1.45;
+  max-width: min(92vw, 650px);
+  min-height: 2.9em;
+  margin-left: auto;
+  margin-right: auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  transition: opacity .65s ease, transform .65s ease;
+}
+#tinyMessage.message-changing{
+  opacity:0;
+  transform:translateY(5px);
+}
+@media(max-width:520px){
+  #tinyMessage{
+    font-size:.92rem !important;
+    max-width:88vw;
+    min-height:3.2em;
+    padding-inline:4px;
+  }
+}
+
+
+/* ==========================================================
+   v17 — Entrada segura para conexiones lentas
+   ========================================================== */
+#app{
+  transition:opacity .8s ease;
+}
+body.garden-ready #app{
+  opacity:1;
+  visibility:visible;
+}
+@media (prefers-reduced-motion: reduce){
+  #app,#gardenLoader{transition:none!important}
+  .garden-loader-flower,.garden-loader-dots i{animation:none!important}
+}
+
+
+/* ==========================================================
+   v18 — Estabilidad móvil + diagnóstico opcional
+   ========================================================== */
+#gardenDebug{
+  position:fixed;
+  top:max(8px,env(safe-area-inset-top));
+  right:8px;
+  z-index:100000;
+  width:min(270px,88vw);
+  padding:9px 11px;
+  border-radius:12px;
+  background:rgba(5,8,28,.88);
+  border:1px solid rgba(255,255,255,.18);
+  color:#fff;
+  font:11px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace;
+  backdrop-filter:blur(9px);
+  pointer-events:none;
+}
+#gardenDebug strong,#gardenDebug span{display:block}
+#gardenDebug strong{margin-bottom:4px;color:#ff9bc9}
+
+@media(max-width:520px){
+  main{
+    place-items:start center !important;
+    padding-top:clamp(118px,20svh,165px) !important;
+    padding-bottom:150px !important;
+  }
+  .countdown-view{width:min(92vw,430px) !important}
+  .intro-card.glass{
+    padding:22px 14px 20px !important;
+    border-radius:24px !important;
+  }
+  .intro-card .eyebrow{
+    margin-bottom:8px !important;
+    font-size:.68rem !important;
+  }
+  .intro-card h1{
+    font-size:clamp(2.25rem,10.2vw,3.15rem) !important;
+    line-height:.95 !important;
+  }
+  .intro-card .subtitle{
+    margin:11px auto 15px !important;
+    font-size:.88rem !important;
+    line-height:1.35;
+  }
+  .intro-card .countdown{
+    padding:12px 8px !important;
+    border-radius:18px !important;
+    gap:2px !important;
+  }
+  .intro-card .countdown strong{
+    font-size:clamp(1.35rem,7vw,1.9rem) !important;
+  }
+  .intro-card #tinyMessage{
+    min-height:2.8em !important;
+    margin-top:13px !important;
+    margin-bottom:11px !important;
+    font-size:.86rem !important;
+    line-height:1.35 !important;
+  }
+  .intro-card .sound-button{
+    padding:11px 16px !important;
+    font-size:.88rem !important;
+  }
+  .virgo-constellation{
+    top:3.5svh !important;
+    width:112px !important;
+    left:4vw !important;
+  }
+}
+@media(max-width:390px){
+  main{padding-top:112px !important}
+  .intro-card.glass{padding:19px 12px 18px !important}
+  .intro-card h1{font-size:2.25rem !important}
+  .intro-card .subtitle{font-size:.82rem !important}
+}
+
+
+/* ==========================================================
+   v20 — El gran momento
+   ========================================================== */
+.finale-overlay{position:fixed;inset:0;z-index:45;display:grid;place-items:center;pointer-events:none;overflow:hidden;background:rgba(6,8,31,.04);transition:opacity .75s ease,background 1.2s ease}
+.finale-overlay[hidden]{display:none}
+.finale-overlay.counting{background:radial-gradient(circle at 50% 48%,rgba(255,123,183,.12),transparent 35%),rgba(5,8,30,.56);backdrop-filter:blur(3px)}
+.final-countdown-number{font-family:"DM Sans",sans-serif;font-size:clamp(6.5rem,28vw,15rem);line-height:1;font-weight:700;color:rgba(255,255,255,.97);text-shadow:0 0 32px rgba(255,128,190,.42),0 8px 30px rgba(0,0,0,.22)}
+.final-countdown-number.tick{animation:v20Tick .72s cubic-bezier(.2,.85,.3,1)}
+@keyframes v20Tick{0%{opacity:.15;transform:scale(.72)}48%{opacity:1;transform:scale(1.08)}100%{opacity:.88;transform:scale(1)}}
+#app.final-countdown .intro-card{opacity:.08!important;transform:scale(.96);filter:blur(3px);transition:opacity .8s ease,transform .8s ease,filter .8s ease}
+#app.final-countdown .tulip,#app.final-countdown .side-tulip{animation-play-state:paused!important}
+#app.final-countdown .petal-layer{opacity:.38}
+.finale-overlay.celebrating{background:radial-gradient(circle at 50% 46%,rgba(255,142,198,.16),transparent 38%),rgba(8,9,35,.52);backdrop-filter:blur(2px)}
+.finale-message{width:min(90vw,820px);padding:20px;text-align:center;color:#fff;font-family:"DM Sans",sans-serif;font-size:clamp(2rem,8vw,4.7rem);font-weight:600;line-height:1.08;opacity:0;transform:translateY(16px) scale(.97);text-shadow:0 8px 40px rgba(0,0,0,.30);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.85,.3,1)}
+.finale-message.show{opacity:1;transform:none}
+.finale-message.moment{font-family:Parisienne,cursive;font-weight:400;font-size:clamp(3rem,12vw,6.7rem)}
+.finale-message.birthday-line{font-family:Parisienne,cursive;font-weight:400;font-size:clamp(3.7rem,14vw,8rem);color:#fff6fa;text-shadow:0 0 26px rgba(255,102,172,.45),0 8px 40px rgba(0,0,0,.28)}
+.finale-shooting-star{position:absolute;left:-30vw;top:24%;width:150px;height:3px;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(255,180,218,.5),#fff);opacity:0;transform:rotate(-16deg);filter:drop-shadow(0 0 9px rgba(255,135,195,.8))}
+.finale-shooting-star:after{content:"";position:absolute;right:-4px;top:-3px;width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 16px #fff,0 0 30px rgba(255,113,183,.95)}
+.finale-overlay.star-flight .finale-shooting-star{animation:v20Star 1.7s cubic-bezier(.1,.55,.22,1) both}
+@keyframes v20Star{0%{opacity:0;transform:translate(0,0) rotate(-16deg) scaleX(.6)}12%{opacity:1}100%{opacity:0;transform:translate(150vw,38vh) rotate(-16deg) scaleX(1.25)}}
+.finale-overlay.leaving{opacity:0}
+#app.birthday-bloom .gerbera,#app.birthday-bloom .tulip{animation:v20Bloom .9s cubic-bezier(.16,.9,.28,1) both!important;animation-delay:var(--bloomDelay,0s)!important}
+@keyframes v20Bloom{0%{opacity:.2;scale:.62;translate:0 20px}70%{opacity:1;scale:1.08}100%{opacity:1;scale:1;translate:0 0}}
+.birthday-view.birthday-enter .birthday-copy{animation:v20Rise .8s .05s both}
+.birthday-view.birthday-enter .heart-wrap{animation:v20Heart 1.15s .65s cubic-bezier(.15,.9,.25,1) both}
+.birthday-view.birthday-enter .dedication{animation:v20Rise .75s 1.2s both}
+.birthday-view.birthday-enter .letter-button{animation:v20Rise .75s 1.55s both}
+.birthday-view.birthday-enter .music-pill{animation:v20Rise .75s 1.75s both}
+.birthday-view.birthday-enter .birthday-extras{animation:v20Rise .75s 2s both}
+@keyframes v20Rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes v20Heart{0%{opacity:0;transform:scale(.72) rotate(-2deg)}66%{opacity:1;transform:scale(1.035) rotate(.5deg)}100%{opacity:1;transform:none}}
+.birthday-extras{margin:18px auto 0;display:flex;flex-direction:column;align-items:center;gap:10px}
+.paw-secret{width:48px;height:48px;display:grid;place-items:center;border:1px solid rgba(145,61,99,.14);border-radius:50%;background:rgba(255,255,255,.45);font-size:1.25rem;cursor:pointer;box-shadow:0 7px 22px rgba(96,32,66,.08)}
+.paw-secret-message{min-height:1.5em;max-width:520px;margin:0;color:#7b3b59;font-size:.88rem;opacity:0;transform:translateY(4px)}
+.paw-secret-message.show{animation:v20Secret .45s ease forwards}
+@keyframes v20Secret{to{opacity:1;transform:none}}
+.replay-final-button{margin-top:5px;border:1px solid rgba(126,40,81,.18);border-radius:999px;padding:12px 18px;background:rgba(255,255,255,.52);color:#812d56;font:600 .9rem "DM Sans",sans-serif;cursor:pointer;backdrop-filter:blur(8px)}
+.garden-signature{margin:4px 0 0;font-family:Parisienne,cursive;font-size:1.35rem;color:rgba(116,51,78,.72)}
+@media(max-width:520px){.finale-message{padding-inline:18px}.birthday-extras{margin-top:14px}.replay-final-button{font-size:.84rem;padding:11px 15px}.garden-signature{font-size:1.22rem}}
+@media(prefers-reduced-motion:reduce){.final-countdown-number.tick,.finale-overlay.star-flight .finale-shooting-star,#app.birthday-bloom .gerbera,#app.birthday-bloom .tulip,.birthday-view.birthday-enter *{animation-duration:.01ms!important;animation-delay:0ms!important}}
