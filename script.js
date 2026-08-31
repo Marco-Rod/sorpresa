@@ -12,7 +12,7 @@ const CONFIG = {
   // "day" = tarde (12:00–16:59)
   // "sunset" = atardecer (17:00–18:29)
   // "night" = noche (18:30–05:59)
-  skyMode: "night",
+  skyMode: "auto",
 
   // Diagnóstico: también se activa con ?debug=1 en la URL.
   debugMode: false
