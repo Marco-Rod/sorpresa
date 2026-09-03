@@ -93,3 +93,19 @@ Si un navegador excepcionalmente bloquea ese primer intento, el control mostrar�
 - El sistema ahora usa correctamente `whisperHistory`.
 - La ventana antirrepetición queda unificada en 8 frases.
 - Se añadió un fallback defensivo para que un error futuro al escoger una frase no detenga la rotación.
+
+
+## v20.2 — gerberas nocturnas
+- Durante la noche aparecen gerberas flotantes en el fondo.
+- Son únicamente las cabezas de las flores: no tienen tallos ni hojas.
+- Usan distintas escalas, opacidades, desenfoque y velocidad para crear profundidad.
+- Solo se muestran en estados `night` / `waiting-night`.
+- En móvil se reduce la cantidad para no saturar la composición.
+
+
+## v20.3 — celebración y nuevas curiosidades
+- La celebración suma flores completas de tulipán y gerbera cayendo suavemente entre el confeti.
+- Se añaden 3 mariposas luminosas con trayectorias curvas y pequeños destellos.
+- Los efectos aparecen escalonados para no competir con el mensaje principal.
+- Se agregan 20 frases “¿Sabías que...?” sobre gastronomía mexicana, colombiana, venezolana y postres.
+- Las nuevas frases entran en la rotación general y respetan el historial antirrepetición.

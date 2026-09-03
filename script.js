@@ -271,7 +271,27 @@ const WHISPER_LIBRARY = {
     "Tu cerebro puede completar información que falta sin que te des cuenta. Por eso algunas ilusiones visuales funcionan tan bien. 👀",
     "El océano cubre alrededor del 71% de la superficie de la Tierra. Y todavía guarda una cantidad enorme de cosas por descubrir. 🌊",
     "Los relámpagos pueden calentar el aire a temperaturas superiores a la superficie del Sol durante un instante. ⚡",
-    "Algunas mariposas pueden saborear usando receptores que tienen en sus patas. 🦋"
+    "Algunas mariposas pueden saborear usando receptores que tienen en sus patas. 🦋",
+    "¿Sabías que? 🌮 El taco al pastor mexicano tiene una historia influida por técnicas de cocción traídas por inmigrantes libaneses.",
+    "¿Sabías que? 🍫 México es parte de la historia ancestral del cacao: pueblos mesoamericanos ya preparaban bebidas de cacao mucho antes del chocolate moderno.",
+    "¿Sabías que? 🌽 La nixtamalización del maíz, usada en México desde hace siglos, mejora su textura y también hace más aprovechables algunos de sus nutrientes.",
+    "¿Sabías que? 🫓 Las arepas forman parte de la tradición culinaria tanto de Colombia como de Venezuela, aunque cada región tiene sus propias versiones y formas de prepararlas.",
+    "¿Sabías que? 🇨🇴 La bandeja paisa reúne varios ingredientes en un solo plato y está especialmente asociada con la región de Antioquia, Colombia.",
+    "¿Sabías que? 🧀 En Colombia existen muchas versiones regionales de arepa: algunas llevan queso, otras huevo y otras son mucho más sencillas.",
+    "¿Sabías que? 🇻🇪 El pabellón criollo venezolano combina tradicionalmente carne mechada, caraotas negras, arroz blanco y plátano maduro.",
+    "¿Sabías que? 🫓 Una de las gracias de la arepa venezolana es que puede abrirse y rellenarse con muchísimas combinaciones distintas.",
+    "¿Sabías que? 🍌 El plátano maduro aparece tanto en platos colombianos como venezolanos y puede funcionar como acompañamiento dulce dentro de una comida salada.",
+    "¿Sabías que? 🍮 El flan llegó a América desde Europa y con el tiempo cada país latinoamericano fue creando sus propias variaciones.",
+    "¿Sabías que? 🥛 El pastel de tres leches recibe su nombre porque se empapa con una mezcla de tres tipos de leche.",
+    "¿Sabías que? 🍚 El arroz con leche tiene versiones en muchísimos países; canela, leche y arroz pueden terminar contando historias completamente distintas según dónde se prepare.",
+    "¿Sabías que? 🍨 El helado contiene diminutos cristales de hielo; controlar su tamaño es una de las claves para conseguir una textura más cremosa.",
+    "¿Sabías que? 🍫 El chocolate comienza con una fruta: las semillas de cacao crecen dentro de grandes mazorcas.",
+    "¿Sabías que? 🍓 El contraste entre algo cremoso y una fruta ligeramente ácida es una de las razones por las que combinaciones como yogurt y frutos rojos funcionan tan bien.",
+    "¿Sabías que? 🍰 En repostería, pesar los ingredientes suele dar resultados más consistentes que medirlos únicamente por volumen.",
+    "¿Sabías que? 🍮 El caramelo cambia de sabor a medida que el azúcar se calienta: pasa de dulce a notas más profundas y ligeramente amargas.",
+    "¿Sabías que? 🧁 La vainilla proviene de una orquídea; las vainas que usamos en postres son el fruto de esa planta.",
+    "¿Sabías que? 🍩 El aroma influye muchísimo en cómo percibimos el sabor; por eso un postre puede empezar a antojarnos incluso antes del primer bocado.",
+    "¿Sabías que? 🍧 La temperatura cambia nuestra percepción del dulzor, así que formular un helado requiere pensar en cómo sabrá cuando esté realmente frío."
   ],
   sunset: [
     "Las gerberas también vinieron a esperar contigo 🌸",
@@ -609,6 +629,40 @@ function scheduleWindGusts() {
   next();
 }
 
+
+function buildNightGerberas() {
+  const layer = document.querySelector("#nightGerberaLayer");
+  if (!layer) return;
+
+  layer.innerHTML = "";
+  const isMobile = matchMedia("(max-width: 520px)").matches;
+  const total = isMobile ? 7 : 13;
+
+  for (let i = 0; i < total; i++) {
+    const flower = document.createElement("span");
+    flower.className = "night-gerbera";
+
+    const size = isMobile ? 18 + Math.random() * 24 : 20 + Math.random() * 42;
+    const x = 4 + Math.random() * 92;
+    const y = 7 + Math.random() * 70;
+    const depth = Math.random();
+
+    flower.style.setProperty("--g-size", `${size}px`);
+    flower.style.setProperty("--g-x", `${x}vw`);
+    flower.style.setProperty("--g-y", `${y}vh`);
+    flower.style.setProperty("--g-opacity", `${0.10 + depth * 0.24}`);
+    flower.style.setProperty("--g-blur", `${depth > .72 ? 1.5 + Math.random() * 2.2 : Math.random() * .9}px`);
+    flower.style.setProperty("--g-duration", `${17 + Math.random() * 17}s`);
+    flower.style.setProperty("--g-delay", `${-Math.random() * 16}s`);
+    flower.style.setProperty("--g-drift", `${10 + Math.random() * 28}px`);
+    flower.style.setProperty("--g-rotate", `${-14 + Math.random() * 28}deg`);
+    flower.style.setProperty("--g-hue", `${Math.floor(Math.random() * 18 - 9)}deg`);
+
+    flower.innerHTML = `<span class="night-gerbera-petals"></span><span class="night-gerbera-center"></span>`;
+    layer.appendChild(flower);
+  }
+}
+
 function buildStars() {
   const stars = document.querySelector("#stars");
   for (let i = 0; i < 90; i++) {
@@ -767,6 +821,7 @@ function replayFinalExperience() {
   clearInterval(timer);
   cancelAnimationFrame(confettiRAF);
   ctx.clearRect(0, 0, innerWidth, innerHeight);
+  document.querySelectorAll(".celebration-falling-flower,.celebration-butterfly,.celebration-sparkle").forEach(el => el.remove());
 
   birthdayMusic.pause();
   birthdayMusic.currentTime = 0;
@@ -973,6 +1028,59 @@ document.addEventListener("click", handleFirstGesture, { capture: true });
 document.addEventListener("keydown", handleFirstGesture, { capture: true });
 
 
+
+function spawnCelebrationFlower(kind = "gerbera") {
+  const flower = document.createElement("span");
+  flower.className = `celebration-falling-flower celebration-${kind}`;
+  flower.style.setProperty("--cf-x", `${4 + Math.random() * 92}vw`);
+  flower.style.setProperty("--cf-size", `${kind === "tulip" ? 20 + Math.random() * 20 : 18 + Math.random() * 28}px`);
+  flower.style.setProperty("--cf-drift", `${-55 + Math.random() * 110}px`);
+  flower.style.setProperty("--cf-duration", `${5.8 + Math.random() * 4.8}s`);
+  flower.style.setProperty("--cf-delay", `${Math.random() * .7}s`);
+  flower.style.setProperty("--cf-rotate", `${-30 + Math.random() * 60}deg`);
+  flower.innerHTML = kind === "tulip"
+    ? '<span class="celebration-tulip-head"></span>'
+    : '<span class="celebration-gerbera-head"><i></i></span>';
+  document.body.appendChild(flower);
+  setTimeout(() => flower.remove(), 11500);
+}
+
+function spawnCelebrationButterfly(index = 0) {
+  const butterfly = document.createElement("span");
+  butterfly.className = "celebration-butterfly";
+  butterfly.style.setProperty("--bf-y", `${18 + Math.random() * 58}vh`);
+  butterfly.style.setProperty("--bf-size", `${20 + Math.random() * 16}px`);
+  butterfly.style.setProperty("--bf-duration", `${7 + Math.random() * 4}s`);
+  butterfly.style.setProperty("--bf-delay", `${index * .65}s`);
+  butterfly.style.setProperty("--bf-wave", `${28 + Math.random() * 55}px`);
+  butterfly.innerHTML = '<i class="wing left"></i><i class="wing right"></i><b></b>';
+  document.body.appendChild(butterfly);
+  setTimeout(() => butterfly.remove(), 13500);
+}
+
+function spawnCelebrationSparkle() {
+  const sparkle = document.createElement("span");
+  sparkle.className = "celebration-sparkle";
+  sparkle.style.left = `${8 + Math.random() * 84}vw`;
+  sparkle.style.top = `${12 + Math.random() * 72}vh`;
+  sparkle.style.animationDelay = `${Math.random() * .8}s`;
+  document.body.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 3200);
+}
+
+function launchGardenCelebrationDetails() {
+  // Las flores completas son menos frecuentes que los pétalos/confeti.
+  for (let i = 0; i < 13; i++) {
+    finaleLater(() => spawnCelebrationFlower(i % 3 === 0 ? "tulip" : "gerbera"), i * 230);
+  }
+  for (let i = 0; i < 3; i++) {
+    finaleLater(() => spawnCelebrationButterfly(i), 1600 + i * 620);
+  }
+  for (let i = 0; i < 22; i++) {
+    finaleLater(spawnCelebrationSparkle, i * 120);
+  }
+}
+
 async function beginBirthday() {
   if (birthdaySequenceActive || isBirthday) return;
 
@@ -1014,6 +1122,8 @@ async function beginBirthday() {
     setFinaleMessage("Feliz cumpleaños, Ale 🌸", "birthday-line");
     playBirthdaySongFromStart();
   }, 4100);
+
+  finaleLater(() => launchGardenCelebrationDetails(), 5900);
 
   finaleLater(() => launchConfetti(5200), 6800);
 
@@ -1133,6 +1243,7 @@ applyWaitingSky();
 startWhispers();
 setInterval(applyWaitingSky, 60000);
 buildStars();
+buildNightGerberas();
 buildSideTulips();
 buildTulips();
 buildFireflies();
@@ -1149,3 +1260,10 @@ revealGardenWhenReady();
 
 // Si la fecha real ya pasó, mostrar la celebración inmediatamente.
 if (!CONFIG.testMode && Date.now() >= new Date(CONFIG.birthdayISO).getTime()) beginBirthday();
+
+
+let nightGerberaResizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(nightGerberaResizeTimer);
+  nightGerberaResizeTimer = setTimeout(buildNightGerberas, 350);
+});

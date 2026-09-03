@@ -1142,3 +1142,178 @@ body.garden-ready #app{
 .garden-signature{margin:4px 0 0;font-family:Parisienne,cursive;font-size:1.35rem;color:rgba(116,51,78,.72)}
 @media(max-width:520px){.finale-message{padding-inline:18px}.birthday-extras{margin-top:14px}.replay-final-button{font-size:.84rem;padding:11px 15px}.garden-signature{font-size:1.22rem}}
 @media(prefers-reduced-motion:reduce){.final-countdown-number.tick,.finale-overlay.star-flight .finale-shooting-star,#app.birthday-bloom .gerbera,#app.birthday-bloom .tulip,.birthday-view.birthday-enter *{animation-duration:.01ms!important;animation-delay:0ms!important}}
+
+
+/* ==========================================================
+   v20.2 — Gerberas nocturnas flotantes (solo flor, sin tallos)
+   ========================================================== */
+.night-gerbera-layer{
+  position:fixed;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  overflow:hidden;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 1.4s ease,visibility 1.4s ease;
+}
+#app.waiting-night .night-gerbera-layer,
+#app.night .night-gerbera-layer{opacity:1;visibility:visible}
+.night-gerbera{
+  position:absolute;left:var(--g-x);top:var(--g-y);
+  width:var(--g-size);height:var(--g-size);
+  opacity:var(--g-opacity);
+  filter:blur(var(--g-blur)) hue-rotate(var(--g-hue));
+  transform:translate(-50%,-50%) rotate(var(--g-rotate));
+  animation:nightGerberaFloat var(--g-duration) ease-in-out var(--g-delay) infinite alternate;
+  will-change:transform,opacity;
+}
+.night-gerbera-petals,.night-gerbera-petals::before,.night-gerbera-petals::after{position:absolute;inset:0;border-radius:50%;content:""}
+.night-gerbera-petals{
+  background:
+    radial-gradient(ellipse at 50% 8%,rgba(255,164,203,.95) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 80% 17%,rgba(241,103,163,.92) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 93% 49%,rgba(255,153,194,.94) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 80% 80%,rgba(231,85,149,.90) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 50% 93%,rgba(255,159,198,.94) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 18% 80%,rgba(235,91,153,.91) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 7% 50%,rgba(255,151,193,.94) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 18% 18%,rgba(234,86,150,.91) 0 12%,transparent 14%),
+    radial-gradient(circle at 50% 50%,rgba(252,120,177,.96) 0 43%,transparent 44%);
+  filter:drop-shadow(0 0 5px rgba(255,111,175,.20));
+}
+.night-gerbera-petals::before{
+  transform:rotate(22.5deg) scale(.84);
+  background:
+    radial-gradient(ellipse at 50% 8%,rgba(255,190,216,.98) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 83% 18%,rgba(246,125,177,.96) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 92% 52%,rgba(255,181,210,.96) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 77% 82%,rgba(240,106,164,.94) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 48% 93%,rgba(255,181,210,.96) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 18% 79%,rgba(239,103,161,.94) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 7% 48%,rgba(255,176,206,.96) 0 12%,transparent 14%),
+    radial-gradient(ellipse at 18% 17%,rgba(241,109,164,.94) 0 12%,transparent 14%);
+}
+.night-gerbera-petals::after{
+  inset:17%;transform:rotate(5deg);
+  background:repeating-conic-gradient(from 0deg,rgba(255,157,196,.91) 0 12deg,rgba(213,73,137,.91) 12deg 24deg);
+  -webkit-mask:radial-gradient(circle,transparent 0 26%,#000 28% 100%);
+  mask:radial-gradient(circle,transparent 0 26%,#000 28% 100%);
+  opacity:.72;
+}
+.night-gerbera-center{
+  position:absolute;left:50%;top:50%;width:29%;height:29%;transform:translate(-50%,-50%);border-radius:50%;
+  background:
+    radial-gradient(circle at 42% 38%,#f4b781 0 7%,transparent 8%),
+    radial-gradient(circle at 60% 58%,#d48358 0 6%,transparent 7%),
+    radial-gradient(circle at 50% 50%,#6e3145 0 38%,#3d1e2b 65%,#26131d 100%);
+  box-shadow:0 0 0 2px rgba(75,26,49,.18),0 0 9px rgba(255,135,183,.14);
+}
+@keyframes nightGerberaFloat{
+  0%{transform:translate(-50%,-50%) translate3d(0,0,0) rotate(var(--g-rotate)) scale(.96);opacity:calc(var(--g-opacity) * .72)}
+  50%{transform:translate(-50%,-50%) translate3d(calc(var(--g-drift) * .45),-10px,0) rotate(calc(var(--g-rotate) + 4deg)) scale(1.02);opacity:var(--g-opacity)}
+  100%{transform:translate(-50%,-50%) translate3d(var(--g-drift),-24px,0) rotate(calc(var(--g-rotate) - 5deg)) scale(.98);opacity:calc(var(--g-opacity) * .82)}
+}
+.night-gerbera:nth-child(4n){opacity:.16}.night-gerbera:nth-child(5n){opacity:.11}
+@media(max-width:520px){.night-gerbera-layer{z-index:2}.night-gerbera:nth-child(n+8){display:none}}
+@media(prefers-reduced-motion:reduce){.night-gerbera{animation:none!important}}
+
+
+/* ==========================================================
+   v20.3 — detalles mágicos de la celebración
+   ========================================================== */
+.celebration-falling-flower{
+  position:fixed;
+  z-index:58;
+  left:var(--cf-x);
+  top:-70px;
+  width:var(--cf-size);
+  height:var(--cf-size);
+  pointer-events:none;
+  transform:rotate(var(--cf-rotate));
+  animation:celebrationFlowerFall var(--cf-duration) cubic-bezier(.2,.45,.35,1) var(--cf-delay) forwards;
+  filter:drop-shadow(0 4px 8px rgba(35,10,30,.16));
+}
+@keyframes celebrationFlowerFall{
+  0%{opacity:0;transform:translate3d(0,-35px,0) rotate(var(--cf-rotate)) scale(.8)}
+  10%{opacity:.92}
+  55%{transform:translate3d(var(--cf-drift),52vh,0) rotate(calc(var(--cf-rotate) + 190deg)) scale(1)}
+  100%{opacity:.12;transform:translate3d(calc(var(--cf-drift) * -.35),112vh,0) rotate(calc(var(--cf-rotate) + 420deg)) scale(.88)}
+}
+.celebration-gerbera-head{
+  position:absolute;inset:0;border-radius:50%;
+  background:
+    radial-gradient(ellipse at 50% 8%,#ffb0d0 0 11%,transparent 13%),
+    radial-gradient(ellipse at 83% 20%,#f47caf 0 11%,transparent 13%),
+    radial-gradient(ellipse at 93% 52%,#ff9ec6 0 11%,transparent 13%),
+    radial-gradient(ellipse at 76% 84%,#e95f9d 0 11%,transparent 13%),
+    radial-gradient(ellipse at 47% 94%,#ffacd0 0 11%,transparent 13%),
+    radial-gradient(ellipse at 17% 80%,#ef6ba5 0 11%,transparent 13%),
+    radial-gradient(ellipse at 7% 47%,#ff9ec6 0 11%,transparent 13%),
+    radial-gradient(ellipse at 19% 17%,#e95f9d 0 11%,transparent 13%),
+    radial-gradient(circle,#f47cac 0 42%,transparent 44%);
+}
+.celebration-gerbera-head:before{
+  content:"";position:absolute;inset:12%;border-radius:50%;
+  background:repeating-conic-gradient(#ffb0cd 0 12deg,#df5c97 12deg 24deg);
+  -webkit-mask:radial-gradient(circle,transparent 0 35%,#000 37%);
+          mask:radial-gradient(circle,transparent 0 35%,#000 37%);
+}
+.celebration-gerbera-head i{
+  position:absolute;left:50%;top:50%;width:28%;height:28%;
+  transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#e9aa72 0 7%,transparent 8%),radial-gradient(circle,#713447 0 45%,#321723 100%);
+}
+.celebration-tulip-head{
+  position:absolute;inset:6% 8% 4%;
+  border-radius:52% 52% 48% 48% / 34% 34% 66% 66%;
+  background:linear-gradient(105deg,#cf3e79,#ff8db7 48%,#dc4c82);
+  clip-path:polygon(4% 28%,24% 5%,44% 27%,62% 0,78% 28%,97% 10%,91% 67%,72% 94%,50% 100%,27% 92%,8% 65%);
+  box-shadow:inset 0 -6px 8px rgba(124,31,74,.18);
+}
+.celebration-butterfly{
+  position:fixed;
+  z-index:57;
+  left:-55px;
+  top:var(--bf-y);
+  width:var(--bf-size);
+  height:calc(var(--bf-size) * .75);
+  pointer-events:none;
+  filter:drop-shadow(0 0 8px rgba(255,119,190,.72));
+  animation:celebrationButterflyFlight var(--bf-duration) ease-in-out var(--bf-delay) forwards;
+}
+.celebration-butterfly .wing{
+  position:absolute;top:3%;width:52%;height:76%;
+  background:radial-gradient(circle at 55% 45%,rgba(255,255,255,.92),rgba(255,139,202,.78) 35%,rgba(236,81,158,.3) 70%,transparent 72%);
+  border:1px solid rgba(255,183,220,.48);
+}
+.celebration-butterfly .left{right:49%;border-radius:80% 30% 65% 35%;transform-origin:100% 65%;animation:celebrationWingLeft .42s ease-in-out infinite alternate}
+.celebration-butterfly .right{left:49%;border-radius:30% 80% 35% 65%;transform-origin:0 65%;animation:celebrationWingRight .42s ease-in-out infinite alternate}
+.celebration-butterfly b{position:absolute;left:47%;top:28%;width:7%;height:48%;border-radius:999px;background:#7b315a;box-shadow:0 0 5px rgba(255,170,215,.8)}
+@keyframes celebrationWingLeft{to{transform:perspective(30px) rotateY(58deg)}}
+@keyframes celebrationWingRight{to{transform:perspective(30px) rotateY(-58deg)}}
+@keyframes celebrationButterflyFlight{
+  0%{opacity:0;transform:translate3d(0,20px,0) rotate(-5deg)}
+  12%{opacity:.92}
+  30%{transform:translate3d(32vw,calc(var(--bf-wave) * -1),0) rotate(5deg)}
+  58%{transform:translate3d(62vw,var(--bf-wave),0) rotate(-4deg)}
+  82%{opacity:.9}
+  100%{opacity:0;transform:translate3d(112vw,calc(var(--bf-wave) * -.45),0) rotate(6deg)}
+}
+.celebration-sparkle{
+  position:fixed;z-index:56;width:5px;height:5px;border-radius:50%;
+  pointer-events:none;background:#fff5c7;
+  box-shadow:0 0 8px #fff,0 0 17px rgba(255,157,205,.9);
+  animation:celebrationSparkle 2.2s ease-in-out forwards;
+}
+.celebration-sparkle:before,.celebration-sparkle:after{content:"";position:absolute;left:50%;top:50%;background:rgba(255,239,184,.9);transform:translate(-50%,-50%)}
+.celebration-sparkle:before{width:1px;height:18px}.celebration-sparkle:after{width:18px;height:1px}
+@keyframes celebrationSparkle{0%,100%{opacity:0;transform:scale(.2) rotate(0)}42%{opacity:1;transform:scale(1) rotate(45deg)}70%{opacity:.6;transform:scale(.65) rotate(70deg)}}
+@media(max-width:520px){
+  .celebration-falling-flower:nth-of-type(2n){opacity:.82}
+  .celebration-butterfly{--bf-size:22px}
+}
+@media(prefers-reduced-motion:reduce){
+  .celebration-falling-flower,.celebration-butterfly,.celebration-sparkle{animation-duration:.01ms!important}
+  .celebration-butterfly .wing{animation:none!important}
+}
