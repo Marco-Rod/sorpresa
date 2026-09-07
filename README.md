@@ -118,3 +118,19 @@ Si un navegador excepcionalmente bloquea ese primer intento, el control mostrar�
 - Apariciones aleatorias en uso normal, con personalidades distintas.
 - Modo de prueba: agrega `?pets=1&sky=morning`, `?pets=1&sky=day`, `?pets=1&sky=sunset` o `?pets=1&sky=night` a la URL. En `pets=1` se retrasa el cumpleaños 10 minutos para poder observar las escenas.
 - Los SVG son prototipos visuales; Max está basado en la foto disponible y Lucas/Lupe se afinarán cuando haya fotos de referencia.
+
+
+## v20.5 — ajuste de posición de mascotas
+- Lucas, Lupe y Max ahora aparecen apoyados en la parte inferior del jardín durante la espera.
+- Se redujo drásticamente el `bottom` de las escenas de mañana, día, atardecer y noche.
+- Se añadió una sombra de contacto suave para evitar la sensación de que están flotando.
+- La escena especial de cumpleaños conserva su posición anterior.
+- También se ajustó la posición en móvil para probar el mismo efecto en pantallas pequeñas.
+
+
+## v20.6 — nube de cumpleaños
+- En la celebración, Lucas, Lupe y Max aparecen juntos sobre una nube rosa/blanca luminosa.
+- En escritorio la nube se coloca a un costado para no tapar la carta ni la música.
+- En móvil usa una composición compacta.
+- La nube y las mascotas flotan juntas con movimiento muy suave.
+- Prueba rápida: `?pets=birthday`.

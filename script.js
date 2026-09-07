@@ -19,6 +19,7 @@ const CONFIG = {
 };
 
 const URL_PARAMS = new URLSearchParams(location.search);
+const petsBirthdayTest = URL_PARAMS.get("pets") === "birthday";
 const PET_TEST = URL_PARAMS.get("pets") === "1";
 const SKY_OVERRIDE = URL_PARAMS.get("sky");
 
@@ -1344,3 +1345,5 @@ window.addEventListener("resize", () => {
   clearTimeout(nightGerberaResizeTimer);
   nightGerberaResizeTimer = setTimeout(buildNightGerberas, 350);
 });
+
+if (petsBirthdayTest) setTimeout(() => { try { clearPetScene("birthday"); } catch(e) { console.warn(e); } }, 1200);
