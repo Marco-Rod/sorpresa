@@ -417,6 +417,33 @@ h1,h2,h3{font-family:"Parisienne",cursive;font-weight:400}h1{font-size:clamp(3re
 
 
 /* ==========================================================
+   v20.11 — jardín móvil despejado para las mascotas
+   ========================================================== */
+
+@media(max-width:520px){
+  /* Las mascotas viven delante del macizo, como habitantes del jardín. */
+  .pet-character-layer{
+    z-index:19;
+  }
+
+  /* Un poco menos de altura visual deja respirar el borde inferior. */
+  .tulip-field{
+    height:82px !important;
+  }
+
+  .tulip-field .tulip .stem{
+    height:min(var(--h),58px) !important;
+  }
+
+  /* Max gana silueta sin parecer suspendido sobre las flores. */
+  .scene-max .pet-max{
+    width:108px !important;
+    height:100px !important;
+  }
+}
+
+
+/* ==========================================================
    v20.10 — apariciones aleatorias de Lucas, Lupe y Max
    ========================================================== */
 
@@ -1714,5 +1741,13 @@ body.garden-ready #app{
   }
   .dandelion{
     bottom:-7px;
+  }
+}
+
+/* Ajuste final de presencia de Max; debe prevalecer sobre prototipos anteriores. */
+@media(max-width:520px){
+  .scene-max .pet-max{
+    width:108px !important;
+    height:100px !important;
   }
 }

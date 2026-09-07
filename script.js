@@ -807,12 +807,13 @@ function buildSideTulips() {
 
 function buildTulips() {
   const field = document.querySelector("#tulipField");
-  const count = window.innerWidth < 520 ? 22 : 34;
+  const isMobile = window.innerWidth < 520;
+  const count = isMobile ? 14 : 34;
   for (let i = 0; i < count; i++) {
     const t = document.createElement("div");
     t.className = "tulip";
     const h = 52 + Math.random() * 95;
-    const size = .72 + Math.random() * .7;
+    const size = isMobile ? .68 + Math.random() * .42 : .72 + Math.random() * .7;
     t.style.left = (-2 + Math.random() * 104) + "%";
     t.style.setProperty("--h", h + "px");
     t.style.setProperty("--dur", (2.1 + Math.random() * 2.5) + "s");
