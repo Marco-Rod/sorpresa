@@ -4,7 +4,7 @@ const CONFIG = {
 
   // Para pruebas: true = la sorpresa ocurre 15 segundos después de abrir la página.
   testMode: false,
-  testSeconds: 15,
+  testSeconds: 90,
 
   // Cielo durante las pruebas:
   // "auto" = hora real de Colombia
@@ -456,7 +456,7 @@ let petSceneActive = false;
 let petsDiscovered = new Set();
 
 function petSVG(name) {
-  if (name === "lucas") return `<svg viewBox="0 0 150 130" aria-label="Lucas, pug cafecito"><g class="pet-breathe"><ellipse class="pet-shadow" cx="76" cy="116" rx="48" ry="8"/><ellipse class="lucas-body" cx="77" cy="83" rx="40" ry="34"/><circle class="lucas-head" cx="73" cy="48" r="36"/><path class="lucas-ear" d="M42 28 Q25 24 33 53 Q39 59 48 49Z"/><path class="lucas-ear" d="M102 27 Q119 25 111 53 Q104 58 96 48Z"/><ellipse class="lucas-muzzle" cx="73" cy="61" rx="23" ry="18"/><circle class="pet-eye" cx="59" cy="45" r="4"/><circle class="pet-eye" cx="87" cy="45" r="4"/><path class="pet-blink" d="M54 45 Q59 49 64 45 M82 45 Q87 49 92 45"/><ellipse class="pet-nose" cx="73" cy="57" rx="7" ry="5"/><path class="lucas-beard" d="M58 68 Q73 78 88 68 M62 72 L58 79 M69 74 L67 82 M77 74 L78 82 M84 72 L89 79"/><path class="pet-tail lucas-tail" d="M111 82 Q137 67 126 91 Q118 101 111 91"/><path class="pet-leg" d="M52 98 V117 M93 99 V117"/></g></svg>`;
+  if (name === "lucas") return `<svg viewBox="0 0 150 130" aria-label="Lucas, pug cafecito"><g class="pet-breathe"><ellipse class="pet-shadow" cx="76" cy="116" rx="48" ry="8"/><ellipse class="lucas-body" cx="77" cy="83" rx="40" ry="34"/><circle class="lucas-head" cx="73" cy="48" r="36"/><path class="lucas-ear" d="M42 28 Q25 24 33 53 Q39 59 48 49Z"/><path class="lucas-ear" d="M102 27 Q119 25 111 53 Q104 58 96 48Z"/><ellipse class="lucas-muzzle" cx="73" cy="61" rx="23" ry="18"/><circle class="pet-eye" cx="59" cy="45" r="4"/><circle class="pet-eye" cx="87" cy="45" r="4"/><path class="pet-blink" d="M54 45 Q59 49 64 45 M82 45 Q87 49 92 45"/><ellipse class="pet-nose" cx="73" cy="57" rx="7" ry="5"/><path class="lucas-beard-patch" d="M56 67 Q61 73 64 80 Q68 77 72 84 Q76 78 80 83 Q83 76 90 68 Q82 76 73 76 Q64 76 56 67Z"/><path class="lucas-beard" d="M57 68 Q73 78 89 68 M59 72 Q62 77 60 81 M64 74 Q66 80 65 84 M69 76 Q70 82 70 86 M74 76 Q74 82 75 87 M79 75 Q78 81 80 85 M84 73 Q82 78 85 82 M88 70 Q86 75 90 78"/><path class="pet-tail lucas-tail" d="M111 82 Q137 67 126 91 Q118 101 111 91"/><path class="pet-leg" d="M52 98 V117 M93 99 V117"/></g></svg>`;
   if (name === "lupe") return `<svg viewBox="0 0 180 120" aria-label="Lupe, perrita rojiza y blanca"><g class="pet-breathe"><ellipse class="pet-shadow" cx="92" cy="108" rx="62" ry="7"/><ellipse class="lupe-body" cx="101" cy="76" rx="57" ry="25"/><circle class="lupe-head" cx="48" cy="59" r="30"/><path class="lupe-ear lupe-ear-left" d="M31 35 Q7 36 13 75 Q25 83 38 63Z"/><path class="lupe-ear lupe-ear-right" d="M63 34 Q89 34 82 75 Q70 82 58 62Z"/><path class="lupe-white" d="M39 45 Q50 36 58 47 L61 73 Q48 83 36 71Z"/><circle class="pet-eye" cx="38" cy="56" r="3.8"/><circle class="pet-eye" cx="58" cy="56" r="3.8"/><ellipse class="pet-nose" cx="48" cy="68" rx="5.5" ry="4"/><path class="pet-tail lupe-tail" d="M153 70 Q174 48 174 67"/><path class="pet-leg" d="M70 91 V108 M130 91 V108"/></g></svg>`;
   return `<svg viewBox="0 0 150 135" aria-label="Max, gato atigrado con pecho blanco"><g class="pet-breathe"><ellipse class="pet-shadow" cx="76" cy="120" rx="45" ry="7"/><path class="max-tail pet-tail" d="M105 94 Q143 84 127 55 Q119 43 113 59"/><ellipse class="max-body" cx="77" cy="88" rx="36" ry="32"/><path class="max-chest" d="M60 70 Q76 64 91 72 L94 112 Q77 120 59 111Z"/><path class="max-head" d="M43 54 L47 20 L63 34 Q77 27 92 34 L108 20 L111 56 Q106 79 77 82 Q49 79 43 54Z"/><path class="max-stripe" d="M67 33 L72 48 L77 33 L82 48 L88 34"/><path class="max-face-white" d="M59 58 Q67 50 77 60 Q87 50 96 58 Q94 76 77 79 Q60 76 59 58Z"/><ellipse class="max-eye" cx="63" cy="53" rx="5" ry="6"/><ellipse class="max-eye" cx="91" cy="53" rx="5" ry="6"/><path class="pet-blink max-blink" d="M57 53 Q63 58 69 53 M85 53 Q91 58 97 53"/><ellipse class="pet-nose" cx="77" cy="64" rx="5" ry="4"/><path class="max-whiskers" d="M70 68 L42 64 M70 72 L40 75 M84 68 L112 64 M84 72 L114 75"/></g></svg>`;
 }
@@ -478,8 +478,19 @@ function makePet(name, extraClass="") {
 
 function clearPetScene() {
   if (!petLayer) return;
-  petLayer.classList.remove("show","scene-dogs","scene-max","scene-sunset","scene-birthday");
-  setTimeout(()=>{ if(!petLayer.classList.contains("show")) petLayer.innerHTML=""; },900);
+
+  // Primero hacemos únicamente el fade. Conservamos la clase de escena
+  // mientras la mascota sigue en el DOM para que no pierda sus coordenadas.
+  petLayer.classList.remove("show");
+
+  const sceneClasses = ["scene-dogs","scene-max","scene-sunset","scene-birthday"];
+  setTimeout(()=>{
+    if (!petLayer.classList.contains("show")) {
+      petLayer.innerHTML="";
+      petLayer.classList.remove(...sceneClasses);
+    }
+  },900);
+
   petSceneActive=false;
 }
 
@@ -491,10 +502,15 @@ function showPetScene(forceStage=null, birthday=false) {
     petLayer.classList.add("scene-birthday");
     petLayer.append(makePet("lucas","pet-left"),makePet("max","pet-center"),makePet("lupe","pet-right"));
   } else if (stage === "night") {
-    petLayer.classList.add("scene-max"); petLayer.append(makePet("max"));
+    const maxSide = Math.random() < .5 ? "pet-left" : "pet-right";
+    petLayer.classList.add("scene-max");
+    petLayer.append(makePet("max",maxSide));
   } else {
+    const swapDogs = Math.random() < .5;
+    const lucasSide = swapDogs ? "pet-right" : "pet-left";
+    const lupeSide = swapDogs ? "pet-left" : "pet-right";
     petLayer.classList.add(stage === "sunset" ? "scene-sunset" : "scene-dogs");
-    petLayer.append(makePet("lucas","pet-left"),makePet("lupe","pet-right"));
+    petLayer.append(makePet("lucas",lucasSide),makePet("lupe",lupeSide));
   }
   requestAnimationFrame(()=>petLayer.classList.add("show"));
   const stay = PET_TEST ? 10500 : (stage === "sunset" ? 12500 : 9500);
@@ -627,7 +643,9 @@ function buildDew() {
 function buildGerberas() {
   const field=document.querySelector("#gerberaField"); if(!field)return; field.innerHTML="";
   const n=innerWidth<520?5:8, palettes=[["#ed72ad","#ffd0e4"],["#d95196","#ffadd1"],["#f29abc","#ffe0ea"],["#f5c4c8","#fff0e9"]];
-  for(let i=0;i<n;i++){const f=document.createElement("div");f.className="gerbera";f.style.left=`calc(${((i+.55)/n)*100}% - 27px)`;f.style.bottom=(-7+Math.random()*16)+"px";f.style.setProperty("--bloomDelay",(.25+i*.16)+"s");const p=palettes[i%palettes.length];f.innerHTML=`<i class="gerbera-stem"></i><i class="gerbera-leaf"></i><i class="gerbera-leaf right"></i><div class="gerbera-head" style="--petal:${p[0]};--petalLight:${p[1]}">${Array.from({length:16},(_,k)=>`<i class="gerbera-petal" style="transform:rotate(${k*22.5}deg)"></i>`).join("")}<i class="gerbera-center"></i></div>`;field.appendChild(f);}
+  for(let i=0;i<n;i++){const f=document.createElement("div");f.className="gerbera";f.style.left=`calc(${((i+.55)/n)*100}% - 27px)`;
+    // La base siempre queda unos píxeles bajo el borde: ninguna flor parece flotar.
+    f.style.bottom=(-9-Math.random()*8)+"px";f.style.setProperty("--bloomDelay",(.25+i*.16)+"s");const p=palettes[i%palettes.length];f.innerHTML=`<i class="gerbera-stem"></i><i class="gerbera-leaf"></i><i class="gerbera-leaf right"></i><div class="gerbera-head" style="--petal:${p[0]};--petalLight:${p[1]}">${Array.from({length:16},(_,k)=>`<i class="gerbera-petal" style="transform:rotate(${k*22.5}deg)"></i>`).join("")}<i class="gerbera-center"></i></div>`;field.appendChild(f);}
 }
 
 function buildFireflies() {
@@ -1346,4 +1364,12 @@ window.addEventListener("resize", () => {
   nightGerberaResizeTimer = setTimeout(buildNightGerberas, 350);
 });
 
-if (petsBirthdayTest) setTimeout(() => { try { clearPetScene("birthday"); } catch(e) { console.warn(e); } }, 1200);
+if (petsBirthdayTest) setTimeout(() => {
+  try {
+    clearTimeout(petSceneTimer);
+    clearPetScene();
+    setTimeout(()=>showPetScene("birthday", true), 950);
+  } catch(e) {
+    console.warn(e);
+  }
+}, 1200);

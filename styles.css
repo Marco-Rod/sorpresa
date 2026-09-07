@@ -415,6 +415,121 @@ h1,h2,h3{font-family:"Parisienne",cursive;font-weight:400}h1{font-size:clamp(3re
   }
 }
 
+
+/* ==========================================================
+   v20.10 — apariciones aleatorias de Lucas, Lupe y Max
+   ========================================================== */
+
+/* Max conserva su carácter solitario, pero puede asomarse por ambos lados. */
+.scene-max .pet-max.pet-left{
+  left:clamp(10px,7vw,92px) !important;
+  right:auto !important;
+}
+.scene-max .pet-max.pet-right{
+  left:auto !important;
+  right:clamp(10px,7vw,92px) !important;
+}
+
+@media(max-width:520px){
+  .scene-max .pet-max.pet-left{
+    left:3px !important;
+    right:auto !important;
+  }
+  .scene-max .pet-max.pet-right{
+    left:auto !important;
+    right:3px !important;
+  }
+}
+
+@media(max-width:520px) and (min-height:780px){
+  .scene-max .pet-max.pet-left{left:7px !important}
+  .scene-max .pet-max.pet-right{right:7px !important}
+}
+
+
+/* ==========================================================
+   v20.9 — suelo orgánico del jardín
+   ========================================================== */
+
+.garden-ground{
+  position:absolute;
+  left:-5%;
+  right:-5%;
+  bottom:-34px;
+  height:132px;
+  z-index:1;
+  pointer-events:none;
+  border-radius:52% 48% 0 0 / 30px 34px 0 0;
+  background:
+    radial-gradient(ellipse at 9% 12%,rgba(109,166,86,.72) 0 3%,transparent 3.4%),
+    radial-gradient(ellipse at 25% 5%,rgba(128,181,96,.6) 0 2.5%,transparent 3%),
+    radial-gradient(ellipse at 48% 11%,rgba(89,151,76,.58) 0 3.5%,transparent 4%),
+    radial-gradient(ellipse at 72% 4%,rgba(135,185,99,.62) 0 3%,transparent 3.5%),
+    radial-gradient(ellipse at 91% 13%,rgba(93,153,77,.65) 0 3%,transparent 3.5%),
+    linear-gradient(180deg,#79ad68 0%,#568b53 42%,#386a46 100%);
+  box-shadow:
+    0 -8px 24px rgba(66,116,62,.18),
+    inset 0 12px 18px rgba(190,222,139,.16);
+  transition:background 3.5s ease,filter 3.5s ease,opacity 2s ease;
+}
+
+/* Una silueta irregular evita que el terreno parezca una franja recta. */
+.garden-ground::before{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:-13px;
+  height:28px;
+  background:
+    radial-gradient(ellipse at 6% 100%,#75aa65 0 33%,transparent 35%),
+    radial-gradient(ellipse at 17% 100%,#75aa65 0 42%,transparent 44%),
+    radial-gradient(ellipse at 31% 100%,#79ad68 0 30%,transparent 32%),
+    radial-gradient(ellipse at 46% 100%,#75aa65 0 45%,transparent 47%),
+    radial-gradient(ellipse at 62% 100%,#79ad68 0 34%,transparent 36%),
+    radial-gradient(ellipse at 77% 100%,#75aa65 0 43%,transparent 45%),
+    radial-gradient(ellipse at 93% 100%,#79ad68 0 35%,transparent 37%);
+  background-size:18% 100%;
+  filter:blur(.25px);
+  transition:filter 3.5s ease;
+}
+
+#app.waiting-morning .garden-ground{
+  background:linear-gradient(180deg,#8fbc72,#649657 48%,#467449);
+}
+#app.waiting-day .garden-ground,
+#app.day .garden-ground{
+  background:linear-gradient(180deg,#82b66d,#5e9555 46%,#3e7448);
+}
+#app.waiting-sunset .garden-ground{
+  background:linear-gradient(180deg,#789f61,#557f50 48%,#3d6345);
+  filter:saturate(.9) sepia(.08);
+}
+#app.waiting-night .garden-ground,
+#app.night .garden-ground{
+  background:linear-gradient(180deg,#315f4b,#244c42 48%,#173a37);
+  filter:saturate(.78) brightness(.8);
+  box-shadow:0 -7px 24px rgba(10,35,34,.22),inset 0 10px 18px rgba(99,148,99,.1);
+}
+#app.waiting-night .garden-ground::before,
+#app.night .garden-ground::before{
+  filter:blur(.25px) brightness(.48) saturate(.72);
+}
+
+@media(max-width:520px){
+  .garden-ground{
+    left:-9%;
+    right:-9%;
+    bottom:-29px;
+    height:100px;
+    border-radius:55% 45% 0 0 / 22px 27px 0 0;
+  }
+  .garden-ground::before{
+    top:-10px;
+    height:22px;
+  }
+}
+
 /* Estrella fugaz: aparece deliberadamente poco después de abrir */
 .shooting-star{
   position:absolute;
@@ -1331,7 +1446,7 @@ body.garden-ready #app{
 .pet-shadow{fill:rgba(18,7,14,.18)}.pet-eye{fill:#2a1716}.pet-nose{fill:#24191c}.pet-leg{fill:none;stroke:#9a694c;stroke-width:10;stroke-linecap:round}.pet-blink{fill:none;stroke:#2a1716;stroke-width:2.4;opacity:0;animation:petBlink 6.5s infinite}.pet-tail{fill:none;stroke-linecap:round;transform-origin:center;animation:petTail 1s ease-in-out infinite alternate}.pet-breathe{transform-origin:50% 100%;animation:petBreathe 3s ease-in-out infinite}
 @keyframes petBreathe{50%{transform:scaleY(.975) translateY(2px)}}@keyframes petBlink{0%,45%,49%,100%{opacity:0}46%,48%{opacity:1}}@keyframes petTail{to{transform:rotate(8deg)}}
 /* Lucas: pug cafecito uniforme + barbita */
-.lucas-body,.lucas-head{fill:#b6815d}.lucas-ear{fill:#76513f}.lucas-muzzle{fill:#c79a78}.lucas-beard{fill:none;stroke:#6f5145;stroke-width:2;stroke-linecap:round}.lucas-tail{stroke:#956548;stroke-width:10}.pet-lucas .pet-leg{stroke:#a87352}.pet-lucas{animation:lucasHappy 1.35s ease-in-out infinite alternate}@keyframes lucasHappy{to{margin-bottom:3px}}
+.lucas-body,.lucas-head{fill:#b6815d}.lucas-ear{fill:#76513f}.lucas-muzzle{fill:#c79a78}.lucas-beard-patch{fill:#765548;opacity:.42}.lucas-beard{fill:none;stroke:#68483f;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.lucas-tail{stroke:#956548;stroke-width:10}.pet-lucas .pet-leg{stroke:#a87352}.pet-lucas{animation:lucasHappy 1.35s ease-in-out infinite alternate}@keyframes lucasHappy{to{margin-bottom:3px}}
 /* Lupe: cuerpo alargado rojizo, blanco y orejas grandes */
 .lupe-body,.lupe-head{fill:#b95f3e}.lupe-ear{fill:#9d4935;transform-origin:50% 30%;animation:lupeEars 2.3s ease-in-out infinite alternate}.lupe-white{fill:#f4e9df}.lupe-tail{stroke:#a74f38;stroke-width:8;animation-duration:.38s}.pet-lupe .pet-leg{stroke:#a84f38}@keyframes lupeEars{to{transform:rotate(3deg)}}
 /* Max: atigrado oscuro, pecho/hocico blanco, nariz negra y ojos verde marino */
@@ -1474,4 +1589,130 @@ body.garden-ready #app{
   .scene-birthday .pet-left{left:calc(50% - 108px)!important}
   .scene-birthday .pet-center{left:calc(50% - 37px)!important;width:70px!important}
   .scene-birthday .pet-right{left:calc(50% + 35px)!important}
+}
+
+
+/* ==========================================================
+   v20.7 — Max móvil: apoyado entre las flores + salida estable
+   ========================================================== */
+
+/* Max ya no sube/baja durante la pausa: se asoma, mira y se esconde. */
+.scene-max.show .pet-max{
+  animation:maxPeekGrounded 10s ease-in-out both !important;
+  transform-origin:50% 100%;
+}
+@keyframes maxPeekGrounded{
+  0%   { transform:translateY(118%) rotate(0deg); opacity:0; }
+  10%  { opacity:1; }
+  16%  { transform:translateY(0) rotate(0deg); opacity:1; }
+  44%  { transform:translateY(0) rotate(-1.4deg); opacity:1; }
+  58%  { transform:translateY(0) rotate(1.2deg); opacity:1; }
+  78%  { transform:translateY(0) rotate(0deg); opacity:1; }
+  88%  { opacity:1; }
+  100% { transform:translateY(118%) rotate(0deg); opacity:0; }
+}
+
+/* Sombra de contacto más clara para que se lea como apoyado. */
+.scene-max .pet-max::after{
+  left:18%;
+  right:18%;
+  bottom:-1px;
+  height:10px;
+  background:radial-gradient(ellipse,rgba(8,6,12,.38) 0%,rgba(8,6,12,.16) 48%,transparent 74%);
+  filter:blur(2px);
+}
+
+/* En móvil Max gana presencia pero sigue saliendo desde la base del jardín. */
+@media(max-width:520px){
+  .pet-character-layer{
+    z-index:19;
+  }
+  .scene-max .pet-max{
+    width:104px !important;
+    height:96px !important;
+    right:3px !important;
+    bottom:2px !important;
+  }
+  .scene-max .pet-max::after{
+    height:11px;
+    bottom:0;
+  }
+}
+
+/* En pantallas móviles altas dejamos más aire entre Max y la tarjeta,
+   sin elevarlo del suelo. */
+@media(max-width:520px) and (min-height:780px){
+  .scene-max .pet-max{
+    right:7px !important;
+  }
+}
+
+
+/* ==========================================================
+   v20.8 — línea de suelo consistente para flores y mascotas
+   ========================================================== */
+
+/* La parte inferior del SVG queda apenas detrás del borde de la pantalla.
+   Así las patas y su sombra se leen apoyadas entre las flores. */
+.scene-dogs .pet-left,
+.scene-dogs .pet-right,
+.scene-sunset .pet-left,
+.scene-sunset .pet-right,
+.scene-max .pet-max{
+  bottom:-7px !important;
+}
+
+/* Durante la pausa, Lucas y Lupe se mueven lateralmente pero no despegan. */
+@keyframes dogPeekLeft{
+  0%,100%{transform:translateY(120%) rotate(-4deg)}
+  12%,82%{transform:translateY(0) rotate(0)}
+  42%{transform:translateY(0) translateX(8px) rotate(3deg)}
+}
+@keyframes dogPeekRight{
+  0%,100%{transform:translateY(120%) rotate(5deg)}
+  12%,82%{transform:translateY(0) rotate(0)}
+  48%{transform:translateY(0) translateX(-9px) rotate(-3deg)}
+}
+
+/* Los macizos nacen bajo el viewport; el movimiento solo afecta los tallos. */
+.tulip-field{
+  bottom:-4px !important;
+  padding-bottom:0;
+}
+.tulip-field .tulip{
+  bottom:-20px !important;
+}
+.gerbera-field{
+  bottom:-5px !important;
+}
+.dandelion{
+  bottom:-8px;
+}
+
+@media(max-width:520px){
+  .scene-dogs .pet-left,
+  .scene-dogs .pet-right,
+  .scene-sunset .pet-left,
+  .scene-sunset .pet-right,
+  .scene-max .pet-max{
+    bottom:-6px !important;
+  }
+
+  .scene-max .pet-max::after{
+    bottom:-1px;
+  }
+
+  .tulip-field{
+    bottom:-5px !important;
+    padding-bottom:0;
+  }
+  .tulip-field .tulip{
+    bottom:-19px !important;
+  }
+  .gerbera-field{
+    bottom:-6px !important;
+  }
+  .dandelion{
+    bottom:-7px;
+  }
 }

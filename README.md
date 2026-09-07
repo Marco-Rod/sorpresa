@@ -12,7 +12,7 @@ Para usar la fecha real, abre `script.js` y cambia:
     testMode: false
 
 La fecha ya está configurada para:
-**9 de septiembre de 2026, 00:00, hora de Colombia (UTC-5).**
+**10 de septiembre de 2026, 00:00, hora de Colombia (UTC-5).**
 
 ## Música
 Por derechos de autor, las canciones no están incluidas en este ZIP.
@@ -134,3 +134,13 @@ Si un navegador excepcionalmente bloquea ese primer intento, el control mostrar�
 - En móvil usa una composición compacta.
 - La nube y las mascotas flotan juntas con movimiento muy suave.
 - Prueba rápida: `?pets=birthday`.
+
+
+## v20.7 — corrección Max en móvil
+- Corregido el salto de Max hacia la parte superior de la pantalla al desaparecer.
+- La causa era que `clearPetScene()` eliminaba `scene-max` antes de terminar el fade, haciendo que Max perdiera `right` y `bottom`.
+- Ahora la clase de escena se conserva hasta que la mascota se elimina del DOM.
+- Max es un poco más grande en móvil y aparece pegado al borde inferior.
+- Se eliminó el pequeño desplazamiento vertical durante su pausa; ahora se asoma, observa y vuelve a esconderse.
+- Se reforzó la sombra de contacto para que no parezca suspendido.
+- Corregido también el atajo `?pets=birthday`.
