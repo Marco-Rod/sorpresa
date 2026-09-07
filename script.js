@@ -4,7 +4,7 @@ const CONFIG = {
 
   // Para pruebas: true = la sorpresa ocurre 15 segundos después de abrir la página.
   testMode: false,
-  testSeconds: 45,
+  testSeconds: 15,
 
   // Cielo durante las pruebas:
   // "auto" = hora real de Colombia
@@ -17,6 +17,10 @@ const CONFIG = {
   // Diagnóstico: también se activa con ?debug=1 en la URL.
   debugMode: false
 };
+
+const URL_PARAMS = new URLSearchParams(location.search);
+const PET_TEST = URL_PARAMS.get("pets") === "1";
+const SKY_OVERRIDE = URL_PARAMS.get("sky");
 
 const app = document.querySelector("#app");
 const countdownView = document.querySelector("#countdownView");
@@ -39,9 +43,7 @@ const replayFinalButton = document.querySelector("#replayFinalButton");
 const pawSecret = document.querySelector("#pawSecret");
 const pawSecretMessage = document.querySelector("#pawSecretMessage");
 
-let target = CONFIG.testMode
-  ? Date.now() + CONFIG.testSeconds * 1000
-  : new Date(CONFIG.birthdayISO).getTime();
+let target = PET_TEST ? Date.now() + 10 * 60 * 1000 : (CONFIG.testMode ? Date.now() + CONFIG.testSeconds * 1000 : new Date(CONFIG.birthdayISO).getTime());
 
 let timer;
 let audioUnlocked = false;
@@ -420,7 +422,9 @@ function stopWhispers() {
 function applyWaitingSky() {
   if (isBirthday) return;
   let skyState;
-  if (["morning", "day", "sunset", "night"].includes(CONFIG.skyMode)) {
+  if (["morning", "day", "sunset", "night"].includes(SKY_OVERRIDE)) {
+    skyState = SKY_OVERRIDE;
+  } else if (["morning", "day", "sunset", "night"].includes(CONFIG.skyMode)) {
     skyState = CONFIG.skyMode;
   } else {
     const parts = new Intl.DateTimeFormat("en-US", {timeZone:"America/Bogota",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());
@@ -439,6 +443,76 @@ function applyWaitingSky() {
   if (!isBirthday) app.classList.remove("day");
   const messages={morning:"Buenos días, Ale 🌸 El jardín también despertó.",day:"Hasta el cielo está esperando contigo 🌷",sunset:"Las gerberas también vinieron a esperar contigo 🌸",night:"La luna también está esperando ✨"};
   tinyMessage.textContent=messages[skyState];
+}
+
+
+// ==========================================================
+// v20.4 — Lucas, Lupe y Max: habitantes animados del jardín
+// ==========================================================
+const petLayer = document.querySelector("#petCharacterLayer");
+let petSceneTimer = null;
+let petSceneActive = false;
+let petsDiscovered = new Set();
+
+function petSVG(name) {
+  if (name === "lucas") return `<svg viewBox="0 0 150 130" aria-label="Lucas, pug cafecito"><g class="pet-breathe"><ellipse class="pet-shadow" cx="76" cy="116" rx="48" ry="8"/><ellipse class="lucas-body" cx="77" cy="83" rx="40" ry="34"/><circle class="lucas-head" cx="73" cy="48" r="36"/><path class="lucas-ear" d="M42 28 Q25 24 33 53 Q39 59 48 49Z"/><path class="lucas-ear" d="M102 27 Q119 25 111 53 Q104 58 96 48Z"/><ellipse class="lucas-muzzle" cx="73" cy="61" rx="23" ry="18"/><circle class="pet-eye" cx="59" cy="45" r="4"/><circle class="pet-eye" cx="87" cy="45" r="4"/><path class="pet-blink" d="M54 45 Q59 49 64 45 M82 45 Q87 49 92 45"/><ellipse class="pet-nose" cx="73" cy="57" rx="7" ry="5"/><path class="lucas-beard" d="M58 68 Q73 78 88 68 M62 72 L58 79 M69 74 L67 82 M77 74 L78 82 M84 72 L89 79"/><path class="pet-tail lucas-tail" d="M111 82 Q137 67 126 91 Q118 101 111 91"/><path class="pet-leg" d="M52 98 V117 M93 99 V117"/></g></svg>`;
+  if (name === "lupe") return `<svg viewBox="0 0 180 120" aria-label="Lupe, perrita rojiza y blanca"><g class="pet-breathe"><ellipse class="pet-shadow" cx="92" cy="108" rx="62" ry="7"/><ellipse class="lupe-body" cx="101" cy="76" rx="57" ry="25"/><circle class="lupe-head" cx="48" cy="59" r="30"/><path class="lupe-ear lupe-ear-left" d="M31 35 Q7 36 13 75 Q25 83 38 63Z"/><path class="lupe-ear lupe-ear-right" d="M63 34 Q89 34 82 75 Q70 82 58 62Z"/><path class="lupe-white" d="M39 45 Q50 36 58 47 L61 73 Q48 83 36 71Z"/><circle class="pet-eye" cx="38" cy="56" r="3.8"/><circle class="pet-eye" cx="58" cy="56" r="3.8"/><ellipse class="pet-nose" cx="48" cy="68" rx="5.5" ry="4"/><path class="pet-tail lupe-tail" d="M153 70 Q174 48 174 67"/><path class="pet-leg" d="M70 91 V108 M130 91 V108"/></g></svg>`;
+  return `<svg viewBox="0 0 150 135" aria-label="Max, gato atigrado con pecho blanco"><g class="pet-breathe"><ellipse class="pet-shadow" cx="76" cy="120" rx="45" ry="7"/><path class="max-tail pet-tail" d="M105 94 Q143 84 127 55 Q119 43 113 59"/><ellipse class="max-body" cx="77" cy="88" rx="36" ry="32"/><path class="max-chest" d="M60 70 Q76 64 91 72 L94 112 Q77 120 59 111Z"/><path class="max-head" d="M43 54 L47 20 L63 34 Q77 27 92 34 L108 20 L111 56 Q106 79 77 82 Q49 79 43 54Z"/><path class="max-stripe" d="M67 33 L72 48 L77 33 L82 48 L88 34"/><path class="max-face-white" d="M59 58 Q67 50 77 60 Q87 50 96 58 Q94 76 77 79 Q60 76 59 58Z"/><ellipse class="max-eye" cx="63" cy="53" rx="5" ry="6"/><ellipse class="max-eye" cx="91" cy="53" rx="5" ry="6"/><path class="pet-blink max-blink" d="M57 53 Q63 58 69 53 M85 53 Q91 58 97 53"/><ellipse class="pet-nose" cx="77" cy="64" rx="5" ry="4"/><path class="max-whiskers" d="M70 68 L42 64 M70 72 L40 75 M84 68 L112 64 M84 72 L114 75"/></g></svg>`;
+}
+
+function makePet(name, extraClass="") {
+  const el=document.createElement("button");
+  el.type="button";
+  el.className=`garden-pet pet-${name} ${extraClass}`;
+  el.setAttribute("aria-label", name === "max" ? "Max" : name[0].toUpperCase()+name.slice(1));
+  el.innerHTML=petSVG(name);
+  el.addEventListener("click",()=>{
+    petsDiscovered.add(name);
+    const lines={lucas:"Lucas también vino a esperar contigo 🐾",lupe:"Lupe encontró las gerberas 🌸",max:"Max está vigilando las mariposas 🦋"};
+    tinyMessage.textContent=lines[name];
+    el.classList.add("pet-tapped"); setTimeout(()=>el.classList.remove("pet-tapped"),650);
+  });
+  return el;
+}
+
+function clearPetScene() {
+  if (!petLayer) return;
+  petLayer.classList.remove("show","scene-dogs","scene-max","scene-sunset","scene-birthday");
+  setTimeout(()=>{ if(!petLayer.classList.contains("show")) petLayer.innerHTML=""; },900);
+  petSceneActive=false;
+}
+
+function showPetScene(forceStage=null, birthday=false) {
+  if (!petLayer || petSceneActive || (isBirthday && !birthday)) return;
+  petSceneActive=true; petLayer.innerHTML="";
+  const stage=forceStage || currentSkyState || "day";
+  if (birthday) {
+    petLayer.classList.add("scene-birthday");
+    petLayer.append(makePet("lucas","pet-left"),makePet("max","pet-center"),makePet("lupe","pet-right"));
+  } else if (stage === "night") {
+    petLayer.classList.add("scene-max"); petLayer.append(makePet("max"));
+  } else {
+    petLayer.classList.add(stage === "sunset" ? "scene-sunset" : "scene-dogs");
+    petLayer.append(makePet("lucas","pet-left"),makePet("lupe","pet-right"));
+  }
+  requestAnimationFrame(()=>petLayer.classList.add("show"));
+  const stay = PET_TEST ? 10500 : (stage === "sunset" ? 12500 : 9500);
+  setTimeout(clearPetScene, stay);
+}
+
+function schedulePetScene(first=false) {
+  clearTimeout(petSceneTimer);
+  if (isBirthday) return;
+  const delay = PET_TEST ? (first ? 1800 : 14500) : (first ? 8500 : 28000 + Math.random()*30000);
+  petSceneTimer=setTimeout(()=>{
+    showPetScene();
+    schedulePetScene(false);
+  },delay);
+}
+
+function showBirthdayPets(){
+  clearTimeout(petSceneTimer); clearPetScene();
+  setTimeout(()=>showPetScene("birthday",true),1000);
 }
 
 function spawnPetal() {
@@ -817,6 +891,7 @@ async function playBirthdaySongFromStart() {
 }
 
 function replayFinalExperience() {
+  clearTimeout(petSceneTimer); clearPetScene();
   closeModal();
   clearInterval(timer);
   cancelAnimationFrame(confettiRAF);
@@ -1140,6 +1215,7 @@ async function beginBirthday() {
     void birthdayView.offsetWidth;
     birthdayView.classList.add("birthday-enter");
     birthdaySequenceActive = false;
+    showBirthdayPets();
     diag("birthday-view-visible");
   }, 8000);
 }
@@ -1254,6 +1330,7 @@ startPetals();
 scheduleShootingStars();
 scheduleButterflies();
 scheduleWindGusts();
+schedulePetScene(true);
 updateCountdown();
 timer = setInterval(updateCountdown, 250);
 revealGardenWhenReady();

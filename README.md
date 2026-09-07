@@ -109,3 +109,12 @@ Si un navegador excepcionalmente bloquea ese primer intento, el control mostrar�
 - Los efectos aparecen escalonados para no competir con el mensaje principal.
 - Se agregan 20 frases “¿Sabías que...?” sobre gastronomía mexicana, colombiana, venezolana y postres.
 - Las nuevas frases entran en la rotación general y respetan el historial antirrepetición.
+
+## v20.4 — Lucas, Lupe y Max
+- Primer prototipo SVG/CSS de los tres bebés como habitantes animados del jardín.
+- Lucas y Lupe aparecen juntos durante mañana, tarde y atardecer; Max aparece solo y más tranquilo durante la noche.
+- En el cumpleaños aparecen los tres juntos.
+- Cada personaje se puede tocar para descubrir una frase breve.
+- Apariciones aleatorias en uso normal, con personalidades distintas.
+- Modo de prueba: agrega `?pets=1&sky=morning`, `?pets=1&sky=day`, `?pets=1&sky=sunset` o `?pets=1&sky=night` a la URL. En `pets=1` se retrasa el cumpleaños 10 minutos para poder observar las escenas.
+- Los SVG son prototipos visuales; Max está basado en la foto disponible y Lucas/Lupe se afinarán cuando haya fotos de referencia.

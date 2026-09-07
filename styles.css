@@ -1317,3 +1317,31 @@ body.garden-ready #app{
   .celebration-falling-flower,.celebration-butterfly,.celebration-sparkle{animation-duration:.01ms!important}
   .celebration-butterfly .wing{animation:none!important}
 }
+
+/* ==========================================================
+   v20.4 — Lucas, Lupe y Max · habitantes del jardín
+   ========================================================== */
+.pet-character-layer{position:fixed;inset:0;z-index:18;pointer-events:none;opacity:0;transition:opacity .8s ease;overflow:hidden}
+.pet-character-layer.show{opacity:1}
+.garden-pet{position:absolute;border:0;background:transparent;padding:0;margin:0;width:118px;height:108px;pointer-events:auto;cursor:pointer;filter:drop-shadow(0 7px 8px rgba(21,8,19,.28));transition:transform .45s ease,filter .45s ease;transform:translateY(120%)}
+.garden-pet svg{display:block;width:100%;height:100%;overflow:visible}
+.pet-character-layer.show .garden-pet{transform:translateY(0)}
+.garden-pet:focus-visible{outline:2px solid rgba(255,190,220,.9);outline-offset:4px;border-radius:50%}
+.garden-pet.pet-tapped{transform:translateY(-7px) scale(1.06)!important;filter:drop-shadow(0 8px 13px rgba(255,121,185,.42))}
+.pet-shadow{fill:rgba(18,7,14,.18)}.pet-eye{fill:#2a1716}.pet-nose{fill:#24191c}.pet-leg{fill:none;stroke:#9a694c;stroke-width:10;stroke-linecap:round}.pet-blink{fill:none;stroke:#2a1716;stroke-width:2.4;opacity:0;animation:petBlink 6.5s infinite}.pet-tail{fill:none;stroke-linecap:round;transform-origin:center;animation:petTail 1s ease-in-out infinite alternate}.pet-breathe{transform-origin:50% 100%;animation:petBreathe 3s ease-in-out infinite}
+@keyframes petBreathe{50%{transform:scaleY(.975) translateY(2px)}}@keyframes petBlink{0%,45%,49%,100%{opacity:0}46%,48%{opacity:1}}@keyframes petTail{to{transform:rotate(8deg)}}
+/* Lucas: pug cafecito uniforme + barbita */
+.lucas-body,.lucas-head{fill:#b6815d}.lucas-ear{fill:#76513f}.lucas-muzzle{fill:#c79a78}.lucas-beard{fill:none;stroke:#6f5145;stroke-width:2;stroke-linecap:round}.lucas-tail{stroke:#956548;stroke-width:10}.pet-lucas .pet-leg{stroke:#a87352}.pet-lucas{animation:lucasHappy 1.35s ease-in-out infinite alternate}@keyframes lucasHappy{to{margin-bottom:3px}}
+/* Lupe: cuerpo alargado rojizo, blanco y orejas grandes */
+.lupe-body,.lupe-head{fill:#b95f3e}.lupe-ear{fill:#9d4935;transform-origin:50% 30%;animation:lupeEars 2.3s ease-in-out infinite alternate}.lupe-white{fill:#f4e9df}.lupe-tail{stroke:#a74f38;stroke-width:8;animation-duration:.38s}.pet-lupe .pet-leg{stroke:#a84f38}@keyframes lupeEars{to{transform:rotate(3deg)}}
+/* Max: atigrado oscuro, pecho/hocico blanco, nariz negra y ojos verde marino */
+.max-body,.max-head{fill:#514d47}.max-chest,.max-face-white{fill:#f1eee7}.max-stripe{fill:none;stroke:#292c2a;stroke-width:5;stroke-linecap:round}.max-tail{stroke:#45443f;stroke-width:12;animation-duration:2.7s}.max-eye{fill:#397d70;stroke:#163f3a;stroke-width:1.5}.max-whiskers{fill:none;stroke:#e9e5df;stroke-width:1.4;stroke-linecap:round}.pet-max .pet-breathe{animation-duration:4.4s}
+/* Escenas */
+.scene-dogs .pet-left{left:6%;bottom:104px}.scene-dogs .pet-right{right:7%;bottom:98px}.scene-dogs.show .pet-left{animation:dogPeekLeft 9s ease-in-out both}.scene-dogs.show .pet-right{animation:dogPeekRight 9s .25s ease-in-out both}
+@keyframes dogPeekLeft{0%,100%{transform:translateY(120%) rotate(-4deg)}12%,82%{transform:translateY(0) rotate(0)}42%{transform:translateY(-4px) translateX(8px) rotate(3deg)}}
+@keyframes dogPeekRight{0%,100%{transform:translateY(120%) rotate(5deg)}12%,82%{transform:translateY(0) rotate(0)}48%{transform:translateY(-7px) translateX(-9px) rotate(-3deg)}}
+.scene-sunset .pet-left{left:18%;bottom:105px}.scene-sunset .pet-right{right:18%;bottom:103px}.scene-sunset .garden-pet{width:108px;filter:drop-shadow(0 7px 10px rgba(82,31,40,.28))}.scene-sunset.show .garden-pet{transform:translateY(0);animation:none}
+.scene-max .pet-max{right:8%;bottom:96px;width:112px}.scene-max.show .pet-max{animation:maxPeek 10s ease-in-out both}@keyframes maxPeek{0%,100%{transform:translateY(120%)}14%,78%{transform:translateY(0)}42%{transform:translateY(0) rotate(-2deg)}56%{transform:translateY(-2px) rotate(2deg)}}
+.scene-birthday{z-index:22}.scene-birthday .garden-pet{bottom:82px;width:108px}.scene-birthday .pet-left{left:calc(50% - 155px)}.scene-birthday .pet-center{left:calc(50% - 54px);width:102px}.scene-birthday .pet-right{left:calc(50% + 55px)}.scene-birthday.show .garden-pet{transform:translateY(0)}
+@media(max-width:520px){.pet-character-layer{z-index:15}.garden-pet{width:88px;height:82px}.scene-dogs .pet-left{left:-4px;bottom:86px}.scene-dogs .pet-right{right:-3px;bottom:82px}.scene-sunset .pet-left{left:5%;bottom:84px}.scene-sunset .pet-right{right:5%;bottom:82px}.scene-max .pet-max{right:2%;bottom:80px;width:86px}.scene-birthday .garden-pet{bottom:69px;width:78px}.scene-birthday .pet-left{left:calc(50% - 112px)}.scene-birthday .pet-center{left:calc(50% - 39px);width:74px}.scene-birthday .pet-right{left:calc(50% + 39px)}}
+@media(prefers-reduced-motion:reduce){.garden-pet,.garden-pet *{animation:none!important;transition:none!important}.pet-character-layer.show .garden-pet{transform:translateY(0)}}
