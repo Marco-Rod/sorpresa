@@ -143,6 +143,7 @@ function watchdogGarden() {
 setInterval(watchdogGarden, 3000);
 
 document.addEventListener("visibilitychange", () => {
+  document.body.classList.toggle("page-hidden", document.hidden);
   diag("visibility", { state: document.visibilityState });
   if (document.visibilityState === "visible") {
     updateCountdown();
@@ -536,7 +537,7 @@ function showBirthdayPets(){
 }
 
 function spawnPetal(force = false) {
-  if (isBirthday && !force) return;
+  if (document.hidden || (isBirthday && !force)) return;
   const layer = document.querySelector("#petalLayer");
   if (!layer) return;
 
@@ -565,7 +566,7 @@ function startPetals() {
 }
 
 function showShootingStar() {
-  if (isBirthday) return;
+  if (isBirthday || document.hidden) return;
   const star = document.querySelector("#shootingStar");
   const wish = document.querySelector("#wishMessage");
   if (!star) return;
@@ -672,7 +673,7 @@ function buildFireflies() {
 }
 
 function releaseButterfly() {
-  if (isBirthday || !app.classList.contains("waiting-day")) return;
+  if (isBirthday || document.hidden || !app.classList.contains("waiting-day")) return;
 
   const layer = document.querySelector("#butterflyLayer");
   if (!layer || layer.querySelector(".butterfly")) return;
@@ -698,7 +699,7 @@ function scheduleButterflies() {
 }
 
 function triggerWindGust() {
-  if (isBirthday) return;
+  if (isBirthday || document.hidden) return;
 
   app.classList.remove("wind-gust");
   void app.offsetWidth;

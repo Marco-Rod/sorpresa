@@ -1792,6 +1792,7 @@ main{
 }
 
 /* Perfil ligero: conserva la celebración y reduce trabajo gráfico en teléfonos. */
+.page-hidden *{animation-play-state:paused!important}
 .celebration-falling-flower,.celebration-butterfly,.celebration-sparkle{
   will-change:transform,opacity;
   contain:layout style;

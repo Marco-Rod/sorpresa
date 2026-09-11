@@ -1803,3 +1803,17 @@ main{
   #app,main{min-height:100dvh}
   .garden-ground{bottom:-34px}
 }
+
+.page-hidden *{animation-play-state:paused!important}
+.celebration-falling-flower,.celebration-butterfly,.celebration-sparkle{will-change:transform,opacity;contain:layout style}
+.birthday-cinematic .star,.birthday-cinematic .firefly,.birthday-cinematic .night-gerbera{animation-play-state:paused!important}
+#app.birthday-cinematic .tulip-field,
+#app.birthday-cinematic .side-tulips,
+#app.birthday-cinematic .gerbera-field{display:block!important;opacity:1!important;visibility:visible!important}
+@media(max-width:700px){
+  .glass{backdrop-filter:blur(10px)}
+  .finale-overlay.counting,.finale-overlay.celebrating{backdrop-filter:none}
+  #app.final-countdown .intro-card{filter:none}
+  .celebration-falling-flower,.celebration-butterfly{filter:none}
+  .birthday-cinematic .cloud{animation-play-state:paused!important}
+}

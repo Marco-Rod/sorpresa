@@ -24,6 +24,9 @@ const URL_PARAMS = new URLSearchParams(location.search);
 const petsBirthdayTest = URL_PARAMS.get("pets") === "birthday";
 const PET_TEST = URL_PARAMS.get("pets") === "1";
 const SKY_OVERRIDE = URL_PARAMS.get("sky");
+const COMPACT_EFFECTS = matchMedia("(max-width: 700px)").matches
+  || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4)
+  || (navigator.deviceMemory && navigator.deviceMemory <= 4);
 
 const app = document.querySelector("#app");
 const countdownView = document.querySelector("#countdownView");
@@ -45,6 +48,9 @@ const finaleMessage = document.querySelector("#finaleMessage");
 const replayFinalButton = document.querySelector("#replayFinalButton");
 const pawSecret = document.querySelector("#pawSecret");
 const pawSecretMessage = document.querySelector("#pawSecretMessage");
+const countdownParts = Object.fromEntries(
+  ["days", "hours", "minutes", "seconds"].map(id => [id, document.getElementById(id)])
+);
 
 let target = PET_TEST ? Date.now() + 10 * 60 * 1000 : (CONFIG.testMode ? Date.now() + CONFIG.testSeconds * 1000 : new Date(CONFIG.birthdayISO).getTime());
 
@@ -56,6 +62,9 @@ let finalCountdownActive = false;
 let birthdaySequenceActive = false;
 let finaleTimers = [];
 let waitingFadeStarted = false;
+let seasonalSceneInitialized = false;
+let seasonalSceneKey = "";
+let birthdayGardenPrepared = false;
 
 const DEBUG_ENABLED = CONFIG.debugMode || new URLSearchParams(location.search).get("debug") === "1";
 const DIAG_KEY = "garden_debug_v20";
@@ -142,6 +151,7 @@ function watchdogGarden() {
 setInterval(watchdogGarden, 3000);
 
 document.addEventListener("visibilitychange", () => {
+  document.body.classList.toggle("page-hidden", document.hidden);
   diag("visibility", { state: document.visibilityState });
   if (document.visibilityState === "visible") {
     updateCountdown();
@@ -445,6 +455,7 @@ function applyWaitingSky() {
   currentSkyState = skyState;
   const names = {spring: "Primavera", summer: "Verano", autumn: "Otoño", winter: "Invierno"};
   document.querySelector("#seasonLabel").textContent = `${names[season]} · ${skyState === "day" ? "Día" : "Noche"} en Colombia`;
+  if (seasonalSceneInitialized) syncSeasonalScene();
 }
 
 
@@ -535,8 +546,8 @@ function showBirthdayPets(){
   setTimeout(()=>showPetScene("birthday",true),1000);
 }
 
-function spawnPetal() {
-  if (isBirthday) return;
+function spawnPetal(force = false) {
+  if (document.hidden || (isBirthday && !force)) return;
   const layer = document.querySelector("#petalLayer");
   if (!layer) return;
 
@@ -565,7 +576,7 @@ function startPetals() {
 }
 
 function showShootingStar() {
-  if (isBirthday) return;
+  if (isBirthday || document.hidden || currentSkyState !== "night") return;
   const star = document.querySelector("#shootingStar");
   const wish = document.querySelector("#wishMessage");
   if (!star) return;
@@ -672,7 +683,7 @@ function buildFireflies() {
 }
 
 function releaseButterfly() {
-  if (isBirthday || !["spring", "summer"].includes(app.dataset.season) || !app.classList.contains("waiting-day")) return;
+  if (isBirthday || document.hidden || !["spring", "summer"].includes(app.dataset.season) || !app.classList.contains("waiting-day")) return;
 
   const layer = document.querySelector("#butterflyLayer");
   if (!layer || layer.querySelector(".butterfly")) return;
@@ -698,7 +709,7 @@ function scheduleButterflies() {
 }
 
 function triggerWindGust() {
-  if (isBirthday) return;
+  if (isBirthday || document.hidden) return;
 
   app.classList.remove("wind-gust");
   void app.offsetWidth;
@@ -762,7 +773,10 @@ function buildNightGerberas() {
 
 function buildStars() {
   const stars = document.querySelector("#stars");
-  for (let i = 0; i < 90; i++) {
+  if (!stars) return;
+  stars.innerHTML = "";
+  const total = COMPACT_EFFECTS ? 42 : 72;
+  for (let i = 0; i < total; i++) {
     const s = document.createElement("i");
     s.className = "star";
     s.style.left = Math.random() * 100 + "%";
@@ -812,7 +826,7 @@ function buildSideTulips() {
 function buildTulips() {
   const field = document.querySelector("#tulipField");
   const isMobile = window.innerWidth < 520;
-  const count = isMobile ? 14 : 34;
+  const count = isMobile ? 12 : (COMPACT_EFFECTS ? 20 : 28);
   for (let i = 0; i < count; i++) {
     const t = document.createElement("div");
     t.className = "tulip";
@@ -826,6 +840,44 @@ function buildTulips() {
     t.innerHTML = `<div class="stem"><i class="flower"></i><i class="leaf l"></i><i class="leaf r"></i></div>`;
     field.appendChild(t);
   }
+}
+
+function clearSeasonalScene() {
+  ["stars", "nightGerberaLayer", "leftTulips", "rightTulips", "tulipField", "fireflies", "dewLayer", "gerberaField", "dandelionLayer"]
+    .forEach(id => {
+      const layer = document.getElementById(id);
+      if (layer) layer.innerHTML = "";
+    });
+}
+
+function syncSeasonalScene(force = false) {
+  if (isBirthday) return;
+  const season = app.dataset.season;
+  const key = `${season}:${currentSkyState}:${COMPACT_EFFECTS ? "compact" : "full"}`;
+  if (!force && key === seasonalSceneKey) return;
+  seasonalSceneKey = key;
+  clearSeasonalScene();
+
+  if (currentSkyState === "night") buildStars();
+  if (season === "spring") {
+    buildSideTulips();
+    buildTulips();
+  } else if (season === "summer") {
+    buildGerberas();
+  }
+  if (["spring", "summer"].includes(season) && currentSkyState === "night") buildFireflies();
+}
+
+function prepareBirthdayGarden() {
+  if (birthdayGardenPrepared) return;
+  birthdayGardenPrepared = true;
+  const tulipField = document.getElementById("tulipField");
+  const gerberaField = document.getElementById("gerberaField");
+  if (tulipField && !tulipField.children.length) {
+    buildSideTulips();
+    buildTulips();
+  }
+  if (gerberaField && !gerberaField.children.length) buildGerberas();
 }
 
 
@@ -854,6 +906,7 @@ function enterFinalCountdown(diff) {
 
   if (!finalCountdownActive) {
     finalCountdownActive = true;
+    prepareBirthdayGarden();
     stopWhispers();
     app.classList.add("final-countdown");
     finaleOverlay.hidden = false;
@@ -945,16 +998,21 @@ function updateCountdown() {
 
   if (diff <= 0) {
     clearInterval(timer);
-    ["days","hours","minutes","seconds"].forEach(id => document.getElementById(id).textContent = "00");
+    Object.values(countdownParts).forEach(element => { if (element) element.textContent = "00"; });
     beginBirthday();
     return;
   }
 
   const sec = Math.floor(diff / 1000);
-  document.querySelector("#days").textContent = pad(Math.floor(sec / 86400));
-  document.querySelector("#hours").textContent = pad(Math.floor((sec % 86400) / 3600));
-  document.querySelector("#minutes").textContent = pad(Math.floor((sec % 3600) / 60));
-  document.querySelector("#seconds").textContent = pad(sec % 60);
+  const values = {
+    days: pad(Math.floor(sec / 86400)),
+    hours: pad(Math.floor((sec % 86400) / 3600)),
+    minutes: pad(Math.floor((sec % 3600) / 60)),
+    seconds: pad(sec % 60)
+  };
+  Object.entries(values).forEach(([id, value]) => {
+    if (countdownParts[id] && countdownParts[id].textContent !== value) countdownParts[id].textContent = value;
+  });
 
   if (diff <= 10000) {
     enterFinalCountdown(diff);
@@ -1169,13 +1227,16 @@ function spawnCelebrationSparkle() {
 
 function launchGardenCelebrationDetails() {
   // Las flores completas son menos frecuentes que los pétalos/confeti.
-  for (let i = 0; i < 13; i++) {
+  const flowerCount = COMPACT_EFFECTS ? 8 : 11;
+  const butterflyCount = COMPACT_EFFECTS ? 2 : 3;
+  const sparkleCount = COMPACT_EFFECTS ? 12 : 18;
+  for (let i = 0; i < flowerCount; i++) {
     finaleLater(() => spawnCelebrationFlower(i % 3 === 0 ? "tulip" : "gerbera"), i * 230);
   }
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < butterflyCount; i++) {
     finaleLater(() => spawnCelebrationButterfly(i), 1600 + i * 620);
   }
-  for (let i = 0; i < 22; i++) {
+  for (let i = 0; i < sparkleCount; i++) {
     finaleLater(spawnCelebrationSparkle, i * 120);
   }
 }
@@ -1198,6 +1259,7 @@ async function beginBirthday() {
 
   app.classList.remove("night", "waiting-morning", "waiting-day", "waiting-night", "waiting-sunset", "wind-gust", "final-countdown");
   app.classList.add("day", "birthday-cinematic");
+  document.querySelectorAll(".falling-petal").forEach(element => element.remove());
 
   countdownView.hidden = true;
   countdownView.classList.remove("final-countdown-source");
@@ -1214,7 +1276,8 @@ async function beginBirthday() {
     finaleMessage.classList.remove("show");
     finaleOverlay.classList.add("star-flight");
     app.classList.add("birthday-bloom");
-    for (let i = 0; i < 14; i++) finaleLater(spawnPetal, i * 95);
+    const petalCount = COMPACT_EFFECTS ? 8 : 11;
+    for (let i = 0; i < petalCount; i++) finaleLater(() => spawnPetal(true), i * 115);
   }, 3000);
 
   finaleLater(() => {
@@ -1309,12 +1372,18 @@ function revealGardenWhenReady() {
 const canvas = document.querySelector("#confetti");
 const ctx = canvas.getContext("2d");
 let pieces = [], confettiRAF;
-function resizeCanvas(){canvas.width=innerWidth*devicePixelRatio;canvas.height=innerHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+function resizeCanvas(){
+  const pixelRatio = Math.min(devicePixelRatio || 1, COMPACT_EFFECTS ? 1.35 : 2);
+  canvas.width = Math.round(innerWidth * pixelRatio);
+  canvas.height = Math.round(innerHeight * pixelRatio);
+  ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+}
 addEventListener("resize",resizeCanvas); resizeCanvas();
 
 function launchConfetti(ms=4500){
   cancelAnimationFrame(confettiRAF);
-  pieces = Array.from({length: innerWidth < 600 ? 110 : 180}, () => ({
+  const pieceCount = COMPACT_EFFECTS ? 64 : 120;
+  pieces = Array.from({length: pieceCount}, () => ({
     x: Math.random()*innerWidth,
     y: -20-Math.random()*innerHeight*.4,
     w: 5+Math.random()*7,
@@ -1342,21 +1411,15 @@ function launchConfetti(ms=4500){
 applyWaitingSky();
 startWhispers();
 setInterval(applyWaitingSky, 60000);
-buildStars();
-buildNightGerberas();
-buildSideTulips();
-buildTulips();
-buildFireflies();
-buildDew();
-buildGerberas();
-buildDandelions();
+seasonalSceneInitialized = true;
+syncSeasonalScene(true);
 startPetals();
 scheduleShootingStars();
 scheduleButterflies();
 scheduleWindGusts();
 schedulePetScene(true);
 updateCountdown();
-timer = setInterval(updateCountdown, 250);
+timer = setInterval(updateCountdown, 1000);
 revealGardenWhenReady();
 
 // Si la fecha real ya pasó, mostrar la celebración inmediatamente.
@@ -1366,7 +1429,7 @@ if (!CONFIG.testMode && Date.now() >= new Date(CONFIG.birthdayISO).getTime()) be
 let nightGerberaResizeTimer;
 window.addEventListener("resize", () => {
   clearTimeout(nightGerberaResizeTimer);
-  nightGerberaResizeTimer = setTimeout(buildNightGerberas, 350);
+  nightGerberaResizeTimer = setTimeout(() => syncSeasonalScene(true), 350);
 });
 
 if (petsBirthdayTest) setTimeout(() => {
