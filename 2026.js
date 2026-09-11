@@ -2,9 +2,9 @@ const CONFIG = {
   // Fecha real: 10 de septiembre de 2026 a las 00:00 en Colombia (UTC-5)
   birthdayISO: "2026-09-10T00:00:00-05:00",
 
-  // Para pruebas: true = la sorpresa ocurre 15 segundos después de abrir la página.
+  // El recuerdo muestra 3 segundos de introducción y luego la cuenta final de 10.
   testMode: true,
-  testSeconds: 10,
+  testSeconds: 13,
 
   // Cielo durante las pruebas:
   // "auto" = hora real de Colombia
@@ -22,9 +22,12 @@ const URL_PARAMS = new URLSearchParams(location.search);
 const petsBirthdayTest = URL_PARAMS.get("pets") === "birthday";
 const PET_TEST = URL_PARAMS.get("pets") === "1";
 const SKY_OVERRIDE = URL_PARAMS.get("sky");
-const COMPACT_EFFECTS = matchMedia("(max-width: 700px)").matches
+const EFFECTS_MODE = URL_PARAMS.get("effects");
+const COMPACT_EFFECTS = EFFECTS_MODE === "compact" || (EFFECTS_MODE !== "full" && (
+  matchMedia("(max-width: 700px)").matches
   || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4)
-  || (navigator.deviceMemory && navigator.deviceMemory <= 4);
+  || (navigator.deviceMemory && navigator.deviceMemory <= 4)
+));
 
 const app = document.querySelector("#app");
 const countdownView = document.querySelector("#countdownView");
@@ -57,6 +60,10 @@ let finalCountdownActive = false;
 let birthdaySequenceActive = false;
 let finaleTimers = [];
 let waitingFadeStarted = false;
+let birthdayTimelineStart = 0;
+let birthdayTimelinePausedAt = 0;
+let birthdayTimelinePausedMs = 0;
+let frameMonitorRAF = 0;
 
 const DEBUG_ENABLED = CONFIG.debugMode || new URLSearchParams(location.search).get("debug") === "1";
 const DIAG_KEY = "garden_debug_v20";
@@ -117,7 +124,7 @@ function renderDebugPanel() {
   const w = document.querySelector("#dbgWhisper");
   const a = document.querySelector("#dbgAudio");
   const s = document.querySelector("#dbgState");
-  if (s) s.textContent = `sky=${currentSkyState} · ${document.visibilityState}`;
+  if (s) s.textContent = `sky=${currentSkyState} · effects=${COMPACT_EFFECTS ? "compact" : "full"} · ${document.visibilityState}`;
   if (c) c.textContent = `countdown: ${Math.round((Date.now()-lastCountdownTick)/1000)}s ago`;
   if (w) w.textContent = `frase: ${Math.round((Date.now()-lastWhisperTick)/1000)}s ago`;
   if (a) a.textContent = `audio: ${audioUnlocked ? (active?.paused ? "paused" : "playing") : "locked"}`;
@@ -144,6 +151,8 @@ setInterval(watchdogGarden, 3000);
 
 document.addEventListener("visibilitychange", () => {
   document.body.classList.toggle("page-hidden", document.hidden);
+  if (document.hidden) pauseBirthdayTimeline();
+  else resumeBirthdayTimeline();
   diag("visibility", { state: document.visibilityState });
   if (document.visibilityState === "visible") {
     updateCountdown();
@@ -834,12 +843,69 @@ function buildTulips() {
 function clearFinaleTimers() {
   finaleTimers.forEach(id => clearTimeout(id));
   finaleTimers = [];
+  cancelAnimationFrame(frameMonitorRAF);
+  frameMonitorRAF = 0;
+  birthdayTimelineStart = 0;
+  birthdayTimelinePausedAt = 0;
+  birthdayTimelinePausedMs = 0;
 }
 
-function finaleLater(fn, delay) {
-  const id = setTimeout(fn, delay);
+function startBirthdayTimeline() {
+  birthdayTimelineStart = performance.now();
+  birthdayTimelinePausedAt = document.hidden ? performance.now() : 0;
+  birthdayTimelinePausedMs = 0;
+  diag("birthday-timeline-start", {effects: COMPACT_EFFECTS ? "compact" : "full"});
+  startFrameMonitor();
+}
+
+function pauseBirthdayTimeline() {
+  if (birthdayTimelineStart && !birthdayTimelinePausedAt) birthdayTimelinePausedAt = performance.now();
+}
+
+function resumeBirthdayTimeline() {
+  if (!birthdayTimelineStart || !birthdayTimelinePausedAt) return;
+  birthdayTimelinePausedMs += performance.now() - birthdayTimelinePausedAt;
+  birthdayTimelinePausedAt = 0;
+}
+
+function birthdayTimelineElapsed() {
+  if (!birthdayTimelineStart) return 0;
+  const now = birthdayTimelinePausedAt || performance.now();
+  return now - birthdayTimelineStart - birthdayTimelinePausedMs;
+}
+
+function finaleLater(fn, delay, label = "") {
+  const deadline = birthdayTimelineElapsed() + delay;
+  const check = () => {
+    const remaining = deadline - birthdayTimelineElapsed();
+    if (remaining > 4) {
+      const id = setTimeout(check, remaining);
+      finaleTimers.push(id);
+      return;
+    }
+    const actual = birthdayTimelineElapsed();
+    if (label) diag("birthday-stage", {stage: label, plannedMs: Math.round(deadline), actualMs: Math.round(actual), driftMs: Math.round(actual - deadline)});
+    fn();
+  };
+  const id = setTimeout(check, Math.max(0, delay));
   finaleTimers.push(id);
   return id;
+}
+
+function startFrameMonitor() {
+  if (!DEBUG_ENABLED) return;
+  let previous = performance.now();
+  let lastLog = 0;
+  const measure = now => {
+    const frameMs = now - previous;
+    previous = now;
+    if (frameMs > 50 && now - lastLog > 500) {
+      lastLog = now;
+      diag("slow-frame", {frameMs: Math.round(frameMs), timelineMs: Math.round(birthdayTimelineElapsed())});
+    }
+    if (birthdaySequenceActive) frameMonitorRAF = requestAnimationFrame(measure);
+  };
+  frameMonitorRAF = requestAnimationFrame(measure);
 }
 
 function setFinaleMessage(text, mode = "") {
@@ -934,10 +1000,9 @@ function replayFinalExperience() {
   app.classList.remove("waiting-morning", "waiting-day", "waiting-night", "waiting-sunset", "wind-gust");
   app.classList.add("day");
 
-  target = Date.now() + 10000;
-  enterFinalCountdown(10000);
+  target = Date.now() + 13000;
   updateCountdown();
-  timer = setInterval(updateCountdown, 100);
+  timer = setInterval(updateCountdown, 250);
   diag("finale-replay");
 }
 
@@ -952,7 +1017,7 @@ function updateCountdown() {
     return;
   }
 
-  const sec = Math.floor(diff / 1000);
+  const sec = Math.ceil(diff / 1000);
   document.querySelector("#days").textContent = pad(Math.floor(sec / 86400));
   document.querySelector("#hours").textContent = pad(Math.floor((sec % 86400) / 3600));
   document.querySelector("#minutes").textContent = pad(Math.floor((sec % 3600) / 60));
@@ -1190,9 +1255,11 @@ async function beginBirthday() {
 
   stopWhispers();
   clearInterval(timer);
+  clearFinaleTimers();
   birthdaySequenceActive = true;
   finalCountdownActive = false;
   isBirthday = true;
+  startBirthdayTimeline();
 
   waitMusic.pause();
   waitMusic.currentTime = 0;
@@ -1214,7 +1281,7 @@ async function beginBirthday() {
   if (finalCountdownNumber) finalCountdownNumber.textContent = "";
   setFinaleMessage("");
 
-  finaleLater(() => setFinaleMessage("Llegó el momento…", "moment"), 1100);
+  finaleLater(() => setFinaleMessage("Llegó el momento…", "moment"), 900, "moment-message");
 
   finaleLater(() => {
     finaleMessage.classList.remove("show");
@@ -1222,21 +1289,21 @@ async function beginBirthday() {
     app.classList.add("birthday-bloom");
     const petalCount = COMPACT_EFFECTS ? 8 : 11;
     for (let i = 0; i < petalCount; i++) finaleLater(() => spawnPetal(true), i * 115);
-  }, 3000);
+  }, 2800, "star-and-bloom");
 
   finaleLater(() => {
     setFinaleMessage("Feliz cumpleaños, Ale 🌸", "birthday-line");
     playBirthdaySongFromStart();
-  }, 4100);
+  }, 4700, "birthday-message");
 
-  finaleLater(() => launchGardenCelebrationDetails(), 5900);
+  finaleLater(() => launchGardenCelebrationDetails(), 6100, "garden-details");
 
-  finaleLater(() => launchConfetti(5200), 6800);
+  finaleLater(() => launchConfetti(5200), 6800, "confetti");
 
   finaleLater(() => {
     finaleMessage.classList.remove("show");
     finaleOverlay.classList.add("leaving");
-  }, 7200);
+  }, 9500, "overlay-leaving");
 
   finaleLater(() => {
     finaleOverlay.hidden = true;
@@ -1248,7 +1315,7 @@ async function beginBirthday() {
     birthdaySequenceActive = false;
     showBirthdayPets();
     diag("birthday-view-visible");
-  }, 8000);
+  }, 10400, "birthday-view");
 }
 
 letterButton.addEventListener("click", () => {

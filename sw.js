@@ -1,4 +1,4 @@
-const CACHE_NAME = "jardin-ale-2027-v5";
+const CACHE_NAME = "jardin-ale-2027-v6";
 const APP_SHELL = ["./", "./index.html", "./styles.css", "./script.js", "./pwa.js", "./manifest.webmanifest", "./2026.html", "./2026.css", "./2026.js", "./assets/ale-800.jpg", "./assets/icons/tulip-180.png", "./assets/icons/tulip-192.png", "./assets/icons/tulip-512.png"];
 
 self.addEventListener("install", event => {
@@ -9,6 +9,10 @@ self.addEventListener("install", event => {
 self.addEventListener("activate", event => {
   event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)))));
   self.clients.claim();
+});
+
+self.addEventListener("message", event => {
+  if (event.data?.type === "GET_VERSION") event.source?.postMessage({type: "CACHE_VERSION", value: CACHE_NAME});
 });
 
 self.addEventListener("fetch", event => {

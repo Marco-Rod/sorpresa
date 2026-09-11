@@ -24,9 +24,12 @@ const URL_PARAMS = new URLSearchParams(location.search);
 const petsBirthdayTest = URL_PARAMS.get("pets") === "birthday";
 const PET_TEST = URL_PARAMS.get("pets") === "1";
 const SKY_OVERRIDE = URL_PARAMS.get("sky");
-const COMPACT_EFFECTS = matchMedia("(max-width: 700px)").matches
+const EFFECTS_MODE = URL_PARAMS.get("effects");
+const COMPACT_EFFECTS = EFFECTS_MODE === "compact" || (EFFECTS_MODE !== "full" && (
+  matchMedia("(max-width: 700px)").matches
   || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4)
-  || (navigator.deviceMemory && navigator.deviceMemory <= 4);
+  || (navigator.deviceMemory && navigator.deviceMemory <= 4)
+));
 
 const app = document.querySelector("#app");
 const countdownView = document.querySelector("#countdownView");
@@ -125,7 +128,7 @@ function renderDebugPanel() {
   const w = document.querySelector("#dbgWhisper");
   const a = document.querySelector("#dbgAudio");
   const s = document.querySelector("#dbgState");
-  if (s) s.textContent = `sky=${currentSkyState} · ${document.visibilityState}`;
+  if (s) s.textContent = `sky=${currentSkyState} · effects=${COMPACT_EFFECTS ? "compact" : "full"} · ${document.visibilityState}`;
   if (c) c.textContent = `countdown: ${Math.round((Date.now()-lastCountdownTick)/1000)}s ago`;
   if (w) w.textContent = `frase: ${Math.round((Date.now()-lastWhisperTick)/1000)}s ago`;
   if (a) a.textContent = `audio: ${audioUnlocked ? (active?.paused ? "paused" : "playing") : "locked"}`;
@@ -1003,7 +1006,7 @@ function updateCountdown() {
     return;
   }
 
-  const sec = Math.floor(diff / 1000);
+  const sec = Math.ceil(diff / 1000);
   const values = {
     days: pad(Math.floor(sec / 86400)),
     hours: pad(Math.floor((sec % 86400) / 3600)),
