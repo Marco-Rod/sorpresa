@@ -1,10 +1,10 @@
 const CONFIG = {
-  // Fecha real: 10 de septiembre de 2027 a las 00:00 en Colombia (UTC-5)
-  birthdayISO: "2027-09-10T00:00:00-05:00",
+  // Fecha real: 10 de septiembre de 2026 a las 00:00 en Colombia (UTC-5)
+  birthdayISO: "2026-09-10T00:00:00-05:00",
 
   // Para pruebas: true = la sorpresa ocurre 15 segundos después de abrir la página.
-  testMode: false,
-  testSeconds: 90,
+  testMode: true,
+  testSeconds: 10,
 
   // Cielo durante las pruebas:
   // "auto" = hora real de Colombia
@@ -15,8 +15,6 @@ const CONFIG = {
   skyMode: "auto",
 
   // Diagnóstico: también se activa con ?debug=1 en la URL.
-  petsPaused: true,
-  phrasesPaused: true,
   debugMode: false
 };
 
@@ -131,7 +129,7 @@ function watchdogGarden() {
     updateCountdown();
   }
 
-  if (!CONFIG.phrasesPaused && (!whisperTimer || now - lastWhisperTick > 18000)) {
+  if (!whisperTimer || now - lastWhisperTick > 18000) {
     diag("watchdog-whisper-recover", { gapMs: now-lastWhisperTick });
     startWhispers();
     lastWhisperTick = now;
@@ -343,7 +341,7 @@ let whisperHistory = [];
 function whisperPoolForSky() {
   let pool = [
     ...WHISPER_LIBRARY.general,
-    ...(["spring", "summer"].includes(app.dataset.season) ? WHISPER_LIBRARY.flowers : []),
+    ...WHISPER_LIBRARY.flowers,
     ...WHISPER_LIBRARY.cosmetology
   ];
 
@@ -367,8 +365,9 @@ function chooseWhisper() {
       ...WHISPER_LIBRARY.general,
       ...WHISPER_LIBRARY.personal,
       ...WHISPER_LIBRARY.luck,
-      ...(["spring", "summer"].includes(app.dataset.season) ? WHISPER_LIBRARY.flowers : []),
+      ...WHISPER_LIBRARY.flowers,
       ...WHISPER_LIBRARY.cosmetology,
+      ...WHISPER_LIBRARY.pets,
       ...WHISPER_LIBRARY.mysteries,
       ...WHISPER_LIBRARY.curiosities,
       ...(currentSkyState === "sunset" ? WHISPER_LIBRARY.sunset : []),
@@ -386,7 +385,7 @@ function chooseWhisper() {
 }
 
 function showNextWhisper() {
-  if (CONFIG.phrasesPaused || isBirthday || !tinyMessage) return;
+  if (isBirthday || !tinyMessage) return;
   lastWhisperTick = Date.now();
 
   let next;
@@ -413,8 +412,6 @@ function showNextWhisper() {
 
 function startWhispers() {
   clearTimeout(whisperTimer);
-  whisperTimer = null;
-  if (CONFIG.phrasesPaused) return;
   whisperTimer = setTimeout(showNextWhisper, 6500);
 }
 
@@ -423,28 +420,30 @@ function stopWhispers() {
   whisperTimer = null;
 }
 
-// Estaciones meteorológicas del hemisferio norte como calendario visual.
-// Toda la fecha se interpreta en Bogotá, independientemente del dispositivo.
-function gardenCalendar(date = new Date()) {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Bogota", month: "numeric", hour: "numeric", hourCycle: "h23"
-  }).formatToParts(date);
-  const month = Number(parts.find(p => p.type === "month").value);
-  const hour = Number(parts.find(p => p.type === "hour").value);
-  return { season: month >= 3 && month <= 5 ? "spring" : month >= 6 && month <= 8 ? "summer" : month >= 9 && month <= 11 ? "autumn" : "winter", sky: hour >= 6 && hour < 18 ? "day" : "night" };
-}
-
 function applyWaitingSky() {
   if (isBirthday) return;
-  const { season, sky } = gardenCalendar();
-  const skyState = ["day", "night"].includes(SKY_OVERRIDE) ? SKY_OVERRIDE : sky;
-  app.dataset.season = season;
-  app.classList.remove("waiting-morning", "waiting-day", "waiting-sunset", "waiting-night", "night", "day");
+  let skyState;
+  if (["morning", "day", "sunset", "night"].includes(SKY_OVERRIDE)) {
+    skyState = SKY_OVERRIDE;
+  } else if (["morning", "day", "sunset", "night"].includes(CONFIG.skyMode)) {
+    skyState = CONFIG.skyMode;
+  } else {
+    const parts = new Intl.DateTimeFormat("en-US", {timeZone:"America/Bogota",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());
+    const hour = Number(parts.find(p=>p.type==="hour")?.value ?? 12);
+    const minute = Number(parts.find(p=>p.type==="minute")?.value ?? 0);
+    const mins = hour*60+minute;
+    if (mins >= 360 && mins < 720) skyState = "morning";
+    else if (mins >= 720 && mins < 1020) skyState = "day";
+    else if (mins >= 1020 && mins < 1110) skyState = "sunset";
+    else skyState = "night";
+  }
+  app.classList.remove("waiting-morning","waiting-day","waiting-sunset","waiting-night","night");
   app.classList.add(`waiting-${skyState}`);
-  if (skyState === "night") app.classList.add("night");
   currentSkyState = skyState;
-  const names = {spring: "Primavera", summer: "Verano", autumn: "Otoño", winter: "Invierno"};
-  document.querySelector("#seasonLabel").textContent = `${names[season]} · ${skyState === "day" ? "Día" : "Noche"} en Colombia`;
+  if (skyState === "night") app.classList.add("night");
+  if (!isBirthday) app.classList.remove("day");
+  const messages={morning:"Buenos días, Ale 🌸 El jardín también despertó.",day:"Hasta el cielo está esperando contigo 🌷",sunset:"Las gerberas también vinieron a esperar contigo 🌸",night:"La luna también está esperando ✨"};
+  tinyMessage.textContent=messages[skyState];
 }
 
 
@@ -496,7 +495,6 @@ function clearPetScene() {
 }
 
 function showPetScene(forceStage=null, birthday=false) {
-  if (CONFIG.petsPaused) return;
   if (!petLayer || petSceneActive || (isBirthday && !birthday)) return;
   petSceneActive=true; petLayer.innerHTML="";
   const stage=forceStage || currentSkyState || "day";
@@ -520,7 +518,6 @@ function showPetScene(forceStage=null, birthday=false) {
 }
 
 function schedulePetScene(first=false) {
-  if (CONFIG.petsPaused) return;
   clearTimeout(petSceneTimer);
   if (isBirthday) return;
   const delay = PET_TEST ? (first ? 1800 : 14500) : (first ? 8500 : 28000 + Math.random()*30000);
@@ -536,7 +533,6 @@ function showBirthdayPets(){
 }
 
 function spawnPetal() {
-  if (isBirthday) return;
   const layer = document.querySelector("#petalLayer");
   if (!layer) return;
 
@@ -672,7 +668,7 @@ function buildFireflies() {
 }
 
 function releaseButterfly() {
-  if (isBirthday || !["spring", "summer"].includes(app.dataset.season) || !app.classList.contains("waiting-day")) return;
+  if (isBirthday || !app.classList.contains("waiting-day")) return;
 
   const layer = document.querySelector("#butterflyLayer");
   if (!layer || layer.querySelector(".butterfly")) return;
@@ -977,7 +973,7 @@ async function fadeAudio(audio, target, duration = 1200) {
 }
 
 function desiredWaitingMusic() {
-  return waitMusic;
+  return currentSkyState === "sunset" ? sunsetMusic : waitMusic;
 }
 
 function updateSoundLabel() {
@@ -1008,7 +1004,7 @@ async function switchWaitingMusicForSky(previousSky) {
     // Crossfade breve: el cielo cambia lentamente y la música lo acompaña.
     await Promise.all([
       fadeAudio(previousMusic, 0, 1400),
-      fadeAudio(nextMusic, .5, 1400)
+      fadeAudio(nextMusic, currentSkyState === "sunset" ? .46 : .42, 1400)
     ]);
 
     previousMusic.pause();
@@ -1031,7 +1027,7 @@ async function playCurrentMusicFromGesture() {
       const other = music === waitMusic ? sunsetMusic : waitMusic;
       other.pause();
 
-      music.volume = .5;
+      music.volume = currentSkyState === "sunset" ? .46 : .42;
       await music.play();
 
       audioUnlocked = true;
@@ -1191,7 +1187,7 @@ async function beginBirthday() {
 
   waitMusic.pause();
   waitMusic.currentTime = 0;
-  waitMusic.volume = .5;
+  waitMusic.volume = 1;
   sunsetMusic.pause();
   sunsetMusic.currentTime = 0;
   sunsetMusic.volume = 1;

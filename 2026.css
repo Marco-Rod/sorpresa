@@ -1751,32 +1751,6 @@ body.garden-ready #app{
     height:100px !important;
   }
 }
-/* Jardín 2027: la estación define el paisaje; la hora solo su iluminación. */
-.season-label{font-size:.82rem;letter-spacing:.08em;opacity:.85;margin:18px 0 0}
-.memory-link{display:block;width:fit-content;margin:18px auto 0;padding:9px 24px;border:1px solid currentColor;border-radius:24px;color:inherit;text-decoration:none;font-weight:600;transition:background .2s,transform .2s}
-.memory-link:hover{background:#ffffff26;transform:translateY(-2px)}
-.memory-link:focus-visible{outline:3px solid #f687be;outline-offset:5px}
-#app[data-season="spring"]{--season-day:linear-gradient(180deg,#a7dccc,#e8d4ec 64%,#f7d7e6);--season-night:linear-gradient(180deg,#172c44,#393358 60%,#624861);--soil:#568c63}
-#app[data-season="summer"]{--season-day:linear-gradient(180deg,#64c7ee,#bde9e4 55%,#ffe3a0);--season-night:linear-gradient(180deg,#101e3e,#243d62 60%,#4c6464);--soil:#56844a}
-#app[data-season="autumn"]{--season-day:linear-gradient(180deg,#c5b8b1,#e7b18c 55%,#e7bf80);--season-night:linear-gradient(180deg,#211d35,#453044 60%,#6d4942);--soil:#946344}
-#app[data-season="winter"]{--season-day:linear-gradient(180deg,#a7c4d8,#dae6eb 55%,#f0f3f7);--season-night:linear-gradient(180deg,#101d35,#293d57 60%,#667b8d);--soil:#ffffff}
-#app[data-season].waiting-day{background:var(--season-day)!important}
-#app[data-season].waiting-night{background:var(--season-night)!important}
-#app[data-season] .garden-ground{background:var(--soil)!important;box-shadow:0 -8px 24px #00000012,inset 0 -22px 28px #00000018}
-#app[data-season].waiting-night .garden-ground{filter:brightness(.55)}
-#app[data-season] .pet-character-layer,#app[data-season] .paw-secret,#app[data-season] .paw-secret-message{display:none!important}
-#app[data-season] .dew-layer,#app[data-season] .dandelion-layer,#app[data-season] .night-gerbera-layer{display:none!important}
-#app[data-season="spring"] .gerbera-field,#app[data-season="summer"] .tulip-field,#app[data-season="summer"] .side-tulips{display:none!important}
-#app[data-season="spring"] .tulip-field,#app[data-season="spring"] .side-tulips,#app[data-season="summer"] .gerbera-field{opacity:1!important;visibility:visible!important}
-#app[data-season="autumn"] .tulip-field,#app[data-season="autumn"] .side-tulips,#app[data-season="autumn"] .gerbera-field,#app[data-season="winter"] .tulip-field,#app[data-season="winter"] .side-tulips,#app[data-season="winter"] .gerbera-field{display:none!important}
-#app[data-season="autumn"] .fireflies,#app[data-season="winter"] .fireflies{display:none!important}
-#app[data-season="autumn"] .falling-petal{background:linear-gradient(135deg,#e6b45b,#b35c35);border-radius:0 80% 0 80%}
-#app[data-season="winter"] .falling-petal{width:5px;height:5px;background:#fff;border-radius:50%;box-shadow:0 0 5px #fff8}
-@media(prefers-reduced-motion:reduce){#app[data-season] .falling-petal{display:none}.memory-link{transition:none}}
-
-/* El borde del terreno comparte el color de cada estación. */
-#app[data-season] .garden-ground::before{background:radial-gradient(ellipse at 50% 100%,var(--soil) 0 48%,transparent 50%);background-size:18% 100%;filter:blur(.25px)}
-#app[data-season="winter"].waiting-night .garden-ground{filter:brightness(.85)}
 
 .install-app-button{display:block;margin:10px auto 0;padding:10px 20px;border:1px solid currentColor;border-radius:24px;background:#ffffff18;color:inherit;font:600 .9rem "DM Sans",sans-serif;cursor:pointer;backdrop-filter:blur(8px)}
 .install-app-button:hover{background:#ffffff2b;transform:translateY(-1px)}

@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Parisienne&display=swap" rel="stylesheet">
   <link rel="preload" href="script.js" as="script">
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="2026.css" />
 
   <style id="critical-loader-style">
     html,body{background:#090d2d}
@@ -118,11 +118,12 @@
     <div class="pet-character-layer" id="petCharacterLayer" aria-hidden="true"></div>
 
     <main>
+      <a href="index.html" style="position:fixed;top:16px;left:16px;z-index:100;color:#fff;background:#542a54;padding:12px 18px;border-radius:24px;text-decoration:none">← Volver a 2027</a>
       <section id="countdownView" class="view countdown-view">
         <div class="intro-card glass">
           <p class="eyebrow">Para Ale 🌷</p>
           <h1>Hay algo bonito<br>esperando por ti…</h1>
-          <p class="subtitle">Cada segundo nos acerca al 10 de septiembre de 2027.</p>
+          <p class="subtitle">Cada segundo nos acerca un poquito más.</p>
 
           <div id="countdown" class="countdown" aria-live="polite">
             <div><strong id="days">00</strong><span>Días</span></div>
@@ -134,14 +135,12 @@
             <div><strong id="seconds">00</strong><span>Seg</span></div>
           </div>
 
-          <p id="seasonLabel" class="season-label"></p>
-          <p id="tinyMessage" class="tiny-message">Este jardín te espera para celebrar tu próximo cumpleaños, el 10 de septiembre de 2027. 💗</p>
+          <p id="tinyMessage" class="tiny-message">La luna también está esperando ✨</p>
 
           <button id="soundButton" class="sound-button" type="button">
             <span>♫</span>
             <span id="soundText">Toca para comenzar la música 🎵</span>
           </button>
-          <a class="memory-link" href="2026.html" aria-label="Volver a vivir el cumpleaños de 2026">2026</a>
         </div>
       </section>
 
@@ -154,7 +153,7 @@
 
       <section id="birthdayView" class="view birthday-view" hidden>
         <div class="birthday-copy">
-          <p class="eyebrow">10 de septiembre de 2027</p>
+          <p class="eyebrow">10 de septiembre de 2026</p>
           <h2>¡Feliz cumpleaños,<br><span>Ale!</span></h2>
           <p>Hoy el mundo tiene una razón más para celebrar. 💗</p>
         </div>
@@ -195,7 +194,7 @@
           <span class="disc">♪</span>
           <div>
             <small>Ahora suena</small>
-            <strong>Tu canción favorita de cumpleaños</strong>
+            <strong>Mi suerte · Morat</strong>
           </div>
           <button id="musicToggle" type="button" aria-label="Pausar o reproducir música">Ⅱ</button>
         </div>
@@ -232,7 +231,7 @@
     </div>
 
     <audio id="waitMusic" preload="metadata" loop src="assets/audio/mi-suerte-morat.mp3"></audio>
-    <audio id="birthdayMusic" preload="none" src="assets/audio/tu-cumpleanos.mp3"></audio>
+    <audio id="birthdayMusic" preload="none" src="assets/audio/mi-suerte-morat.mp3"></audio>
   <audio id="sunsetMusic" preload="none" src="assets/audio/yellow-coldplay.mp3"></audio>
   </div>
 
@@ -250,7 +249,7 @@
     }
   </script>
 
-  <script src="script.js" onerror="gardenScriptError()"></script>
+  <script src="2026.js" onerror="gardenScriptError()"></script>
   <script src="pwa.js"></script>
 </body>
 </html>
