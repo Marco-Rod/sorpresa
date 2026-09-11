@@ -1,4 +1,4 @@
-const CACHE_NAME = "jardin-ale-2027-v7";
+const CACHE_NAME = "jardin-ale-2027-v8";
 const APP_SHELL = ["./", "./index.html", "./styles.css", "./script.js", "./pwa.js", "./manifest.webmanifest", "./2026.html", "./2026.css", "./2026.js", "./assets/ale-800.jpg", "./assets/icons/tulip-180.png", "./assets/icons/tulip-192.png", "./assets/icons/tulip-512.png"];
 
 self.addEventListener("install", event => {
