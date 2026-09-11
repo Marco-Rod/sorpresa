@@ -975,12 +975,14 @@ function replayFinalExperience() {
   closeModal();
   clearInterval(timer);
   cancelAnimationFrame(confettiRAF);
-  ctx.clearRect(0, 0, innerWidth, innerHeight);
+  clearConfettiCanvas();
+  canvas.style.visibility = "hidden";
   document.querySelectorAll(".celebration-falling-flower,.celebration-butterfly,.celebration-sparkle").forEach(el => el.remove());
 
   birthdayMusic.pause();
   birthdayMusic.currentTime = 0;
   birthdayView.hidden = true;
+  countdownView.hidden = false;
 
   isBirthday = false;
   resetFinaleVisuals();
@@ -1375,20 +1377,34 @@ function revealGardenWhenReady() {
 const canvas = document.querySelector("#confetti");
 const ctx = canvas.getContext("2d");
 let pieces = [], confettiRAF;
+let confettiWidth = 1, confettiHeight = 1;
+function clearConfettiCanvas(){
+  ctx.save();
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.restore();
+}
 function resizeCanvas(){
+  const bounds = canvas.getBoundingClientRect();
+  confettiWidth = Math.max(1, Math.round(bounds.width || innerWidth));
+  confettiHeight = Math.max(1, Math.round(bounds.height || innerHeight));
   const pixelRatio = Math.min(devicePixelRatio || 1, COMPACT_EFFECTS ? 1.35 : 2);
-  canvas.width = Math.round(innerWidth * pixelRatio);
-  canvas.height = Math.round(innerHeight * pixelRatio);
+  canvas.width = Math.round(confettiWidth * pixelRatio);
+  canvas.height = Math.round(confettiHeight * pixelRatio);
   ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+  clearConfettiCanvas();
 }
 addEventListener("resize",resizeCanvas); resizeCanvas();
 
 function launchConfetti(ms=4500){
   cancelAnimationFrame(confettiRAF);
+  resizeCanvas();
+  clearConfettiCanvas();
+  canvas.style.visibility = "visible";
   const pieceCount = COMPACT_EFFECTS ? 64 : 120;
   pieces = Array.from({length: pieceCount}, () => ({
-    x: Math.random()*innerWidth,
-    y: -20-Math.random()*innerHeight*.4,
+    x: Math.random()*confettiWidth,
+    y: -20-Math.random()*confettiHeight*.4,
     w: 5+Math.random()*7,
     h: 8+Math.random()*12,
     vy: 2.3+Math.random()*4.1,
@@ -1399,14 +1415,18 @@ function launchConfetti(ms=4500){
   }));
   const start=performance.now();
   function draw(now){
-    ctx.clearRect(0,0,innerWidth,innerHeight);
+    clearConfettiCanvas();
     pieces.forEach(p=>{
       p.x += p.vx + Math.sin(p.y*.015)*.45; p.y += p.vy; p.rot += p.vr;
-      if(p.y>innerHeight+30){p.y=-30;p.x=Math.random()*innerWidth}
+      if(p.y>confettiHeight+30){p.y=-30;p.x=Math.random()*confettiWidth}
       ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.c;
       ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
     });
-    if(now-start<ms) confettiRAF=requestAnimationFrame(draw); else ctx.clearRect(0,0,innerWidth,innerHeight);
+    if(now-start<ms) confettiRAF=requestAnimationFrame(draw); else {
+      clearConfettiCanvas();
+      canvas.style.visibility = "hidden";
+      pieces = [];
+    }
   }
   confettiRAF=requestAnimationFrame(draw);
 }

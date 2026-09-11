@@ -71,6 +71,7 @@ let debugPanel = null;
 let lastCountdownTick = Date.now();
 let lastWhisperTick = Date.now();
 let musicPausedByUser = false;
+let lastBirthdayStage = "waiting";
 
 function diag(event, details = {}) {
   const entry = {
@@ -105,12 +106,22 @@ function ensureDebugPanel() {
   debugPanel = document.createElement("aside");
   debugPanel.id = "gardenDebug";
   debugPanel.innerHTML = `
-    <strong>Garden debug · v20</strong>
-    <span id="dbgState"></span>
-    <span id="dbgCountdown"></span>
-    <span id="dbgWhisper"></span>
-    <span id="dbgAudio"></span>
+    <button id="dbgToggle" type="button" aria-expanded="false">Debug</button>
+    <div class="garden-debug-details">
+      <strong>Garden debug · v21</strong>
+      <span id="dbgState"></span>
+      <span id="dbgCountdown"></span>
+      <span id="dbgStage"></span>
+      <span id="dbgWhisper"></span>
+      <span id="dbgAudio"></span>
+    </div>
   `;
+  if (!matchMedia("(max-width:520px)").matches) debugPanel.classList.add("expanded");
+  const toggle = debugPanel.querySelector("#dbgToggle");
+  toggle.addEventListener("click", () => {
+    const expanded = debugPanel.classList.toggle("expanded");
+    toggle.setAttribute("aria-expanded", String(expanded));
+  });
   document.body.appendChild(debugPanel);
 }
 
@@ -122,15 +133,20 @@ function renderDebugPanel() {
   const active = isBirthday ? birthdayMusic : desiredWaitingMusic();
   const c = document.querySelector("#dbgCountdown");
   const w = document.querySelector("#dbgWhisper");
+  const stage = document.querySelector("#dbgStage");
   const a = document.querySelector("#dbgAudio");
   const s = document.querySelector("#dbgState");
   if (s) s.textContent = `sky=${currentSkyState} · effects=${COMPACT_EFFECTS ? "compact" : "full"} · ${document.visibilityState}`;
-  if (c) c.textContent = `countdown: ${Math.round((Date.now()-lastCountdownTick)/1000)}s ago`;
+  if (c) c.textContent = birthdaySequenceActive
+    ? `timeline: ${Math.round(birthdayTimelineElapsed())}ms`
+    : (isBirthday ? "state: birthday view" : `countdown: ${Math.round((Date.now()-lastCountdownTick)/1000)}s ago`);
+  if (stage) stage.textContent = `stage: ${lastBirthdayStage}`;
   if (w) w.textContent = `frase: ${Math.round((Date.now()-lastWhisperTick)/1000)}s ago`;
   if (a) a.textContent = `audio: ${audioUnlocked ? (active?.paused ? "paused" : "playing") : "locked"}`;
 }
 
 function watchdogGarden() {
+  renderDebugPanel();
   if (isBirthday || finalCountdownActive || birthdaySequenceActive) return;
   const now = Date.now();
 
@@ -145,7 +161,6 @@ function watchdogGarden() {
     lastWhisperTick = now;
   }
 
-  renderDebugPanel();
 }
 setInterval(watchdogGarden, 3000);
 
@@ -164,6 +179,12 @@ document.addEventListener("visibilitychange", () => {
 
 window.addEventListener("pageshow", (event) => {
   diag("pageshow", { persisted: event.persisted });
+  document.body.classList.remove("page-hidden");
+  resumeBirthdayTimeline();
+  if (event.persisted) {
+    requestAnimationFrame(replayFinalExperience);
+    return;
+  }
   updateCountdown();
   applyWaitingSky();
   if (!whisperTimer) startWhispers();
@@ -884,7 +905,11 @@ function finaleLater(fn, delay, label = "") {
       return;
     }
     const actual = birthdayTimelineElapsed();
-    if (label) diag("birthday-stage", {stage: label, plannedMs: Math.round(deadline), actualMs: Math.round(actual), driftMs: Math.round(actual - deadline)});
+    if (label) {
+      lastBirthdayStage = `${label} (${Math.round(actual - deadline)}ms)`;
+      diag("birthday-stage", {stage: label, plannedMs: Math.round(deadline), actualMs: Math.round(actual), driftMs: Math.round(actual - deadline)});
+      renderDebugPanel();
+    }
     fn();
   };
   const id = setTimeout(check, Math.max(0, delay));
@@ -987,14 +1012,17 @@ function replayFinalExperience() {
   closeModal();
   clearInterval(timer);
   cancelAnimationFrame(confettiRAF);
-  ctx.clearRect(0, 0, innerWidth, innerHeight);
+  clearConfettiCanvas();
+  canvas.style.visibility = "hidden";
   document.querySelectorAll(".celebration-falling-flower,.celebration-butterfly,.celebration-sparkle").forEach(el => el.remove());
 
   birthdayMusic.pause();
   birthdayMusic.currentTime = 0;
   birthdayView.hidden = true;
+  countdownView.hidden = false;
 
   isBirthday = false;
+  lastBirthdayStage = "replay";
   resetFinaleVisuals();
 
   app.classList.remove("waiting-morning", "waiting-day", "waiting-night", "waiting-sunset", "wind-gust");
@@ -1383,20 +1411,34 @@ function revealGardenWhenReady() {
 const canvas = document.querySelector("#confetti");
 const ctx = canvas.getContext("2d");
 let pieces = [], confettiRAF;
+let confettiWidth = 1, confettiHeight = 1;
+function clearConfettiCanvas(){
+  ctx.save();
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.restore();
+}
 function resizeCanvas(){
+  const bounds = canvas.getBoundingClientRect();
+  confettiWidth = Math.max(1, Math.round(bounds.width || innerWidth));
+  confettiHeight = Math.max(1, Math.round(bounds.height || innerHeight));
   const pixelRatio = Math.min(devicePixelRatio || 1, COMPACT_EFFECTS ? 1.35 : 2);
-  canvas.width = Math.round(innerWidth * pixelRatio);
-  canvas.height = Math.round(innerHeight * pixelRatio);
+  canvas.width = Math.round(confettiWidth * pixelRatio);
+  canvas.height = Math.round(confettiHeight * pixelRatio);
   ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+  clearConfettiCanvas();
 }
 addEventListener("resize",resizeCanvas); resizeCanvas();
 
 function launchConfetti(ms=4500){
   cancelAnimationFrame(confettiRAF);
+  resizeCanvas();
+  clearConfettiCanvas();
+  canvas.style.visibility = "visible";
   const pieceCount = COMPACT_EFFECTS ? 64 : 120;
   pieces = Array.from({length: pieceCount}, () => ({
-    x: Math.random()*innerWidth,
-    y: -20-Math.random()*innerHeight*.4,
+    x: Math.random()*confettiWidth,
+    y: -20-Math.random()*confettiHeight*.4,
     w: 5+Math.random()*7,
     h: 8+Math.random()*12,
     vy: 2.3+Math.random()*4.1,
@@ -1407,14 +1449,18 @@ function launchConfetti(ms=4500){
   }));
   const start=performance.now();
   function draw(now){
-    ctx.clearRect(0,0,innerWidth,innerHeight);
+    clearConfettiCanvas();
     pieces.forEach(p=>{
       p.x += p.vx + Math.sin(p.y*.015)*.45; p.y += p.vy; p.rot += p.vr;
-      if(p.y>innerHeight+30){p.y=-30;p.x=Math.random()*innerWidth}
+      if(p.y>confettiHeight+30){p.y=-30;p.x=Math.random()*confettiWidth}
       ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.c;
       ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
     });
-    if(now-start<ms) confettiRAF=requestAnimationFrame(draw); else ctx.clearRect(0,0,innerWidth,innerHeight);
+    if(now-start<ms) confettiRAF=requestAnimationFrame(draw); else {
+      clearConfettiCanvas();
+      canvas.style.visibility = "hidden";
+      pieces = [];
+    }
   }
   confettiRAF=requestAnimationFrame(draw);
 }
