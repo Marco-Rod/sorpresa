@@ -22,6 +22,9 @@ const URL_PARAMS = new URLSearchParams(location.search);
 const petsBirthdayTest = URL_PARAMS.get("pets") === "birthday";
 const PET_TEST = URL_PARAMS.get("pets") === "1";
 const SKY_OVERRIDE = URL_PARAMS.get("sky");
+const COMPACT_EFFECTS = matchMedia("(max-width: 700px)").matches
+  || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4)
+  || (navigator.deviceMemory && navigator.deviceMemory <= 4);
 
 const app = document.querySelector("#app");
 const countdownView = document.querySelector("#countdownView");
@@ -532,7 +535,8 @@ function showBirthdayPets(){
   setTimeout(()=>showPetScene("birthday",true),1000);
 }
 
-function spawnPetal() {
+function spawnPetal(force = false) {
+  if (isBirthday && !force) return;
   const layer = document.querySelector("#petalLayer");
   if (!layer) return;
 
@@ -758,7 +762,8 @@ function buildNightGerberas() {
 
 function buildStars() {
   const stars = document.querySelector("#stars");
-  for (let i = 0; i < 90; i++) {
+  const total = COMPACT_EFFECTS ? 42 : 72;
+  for (let i = 0; i < total; i++) {
     const s = document.createElement("i");
     s.className = "star";
     s.style.left = Math.random() * 100 + "%";
@@ -808,7 +813,7 @@ function buildSideTulips() {
 function buildTulips() {
   const field = document.querySelector("#tulipField");
   const isMobile = window.innerWidth < 520;
-  const count = isMobile ? 14 : 34;
+  const count = isMobile ? 12 : (COMPACT_EFFECTS ? 20 : 28);
   for (let i = 0; i < count; i++) {
     const t = document.createElement("div");
     t.className = "tulip";
@@ -1165,13 +1170,16 @@ function spawnCelebrationSparkle() {
 
 function launchGardenCelebrationDetails() {
   // Las flores completas son menos frecuentes que los pétalos/confeti.
-  for (let i = 0; i < 13; i++) {
+  const flowerCount = COMPACT_EFFECTS ? 8 : 11;
+  const butterflyCount = COMPACT_EFFECTS ? 2 : 3;
+  const sparkleCount = COMPACT_EFFECTS ? 12 : 18;
+  for (let i = 0; i < flowerCount; i++) {
     finaleLater(() => spawnCelebrationFlower(i % 3 === 0 ? "tulip" : "gerbera"), i * 230);
   }
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < butterflyCount; i++) {
     finaleLater(() => spawnCelebrationButterfly(i), 1600 + i * 620);
   }
-  for (let i = 0; i < 22; i++) {
+  for (let i = 0; i < sparkleCount; i++) {
     finaleLater(spawnCelebrationSparkle, i * 120);
   }
 }
@@ -1194,6 +1202,7 @@ async function beginBirthday() {
 
   app.classList.remove("night", "waiting-morning", "waiting-day", "waiting-night", "waiting-sunset", "wind-gust", "final-countdown");
   app.classList.add("day", "birthday-cinematic");
+  document.querySelectorAll(".falling-petal").forEach(element => element.remove());
 
   countdownView.hidden = true;
   countdownView.classList.remove("final-countdown-source");
@@ -1210,7 +1219,8 @@ async function beginBirthday() {
     finaleMessage.classList.remove("show");
     finaleOverlay.classList.add("star-flight");
     app.classList.add("birthday-bloom");
-    for (let i = 0; i < 14; i++) finaleLater(spawnPetal, i * 95);
+    const petalCount = COMPACT_EFFECTS ? 8 : 11;
+    for (let i = 0; i < petalCount; i++) finaleLater(() => spawnPetal(true), i * 115);
   }, 3000);
 
   finaleLater(() => {
@@ -1305,12 +1315,18 @@ function revealGardenWhenReady() {
 const canvas = document.querySelector("#confetti");
 const ctx = canvas.getContext("2d");
 let pieces = [], confettiRAF;
-function resizeCanvas(){canvas.width=innerWidth*devicePixelRatio;canvas.height=innerHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+function resizeCanvas(){
+  const pixelRatio = Math.min(devicePixelRatio || 1, COMPACT_EFFECTS ? 1.35 : 2);
+  canvas.width = Math.round(innerWidth * pixelRatio);
+  canvas.height = Math.round(innerHeight * pixelRatio);
+  ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+}
 addEventListener("resize",resizeCanvas); resizeCanvas();
 
 function launchConfetti(ms=4500){
   cancelAnimationFrame(confettiRAF);
-  pieces = Array.from({length: innerWidth < 600 ? 110 : 180}, () => ({
+  const pieceCount = COMPACT_EFFECTS ? 64 : 120;
+  pieces = Array.from({length: pieceCount}, () => ({
     x: Math.random()*innerWidth,
     y: -20-Math.random()*innerHeight*.4,
     w: 5+Math.random()*7,

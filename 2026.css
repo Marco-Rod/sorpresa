@@ -1755,3 +1755,55 @@ body.garden-ready #app{
 .install-app-button{display:block;margin:10px auto 0;padding:10px 20px;border:1px solid currentColor;border-radius:24px;background:#ffffff18;color:inherit;font:600 .9rem "DM Sans",sans-serif;cursor:pointer;backdrop-filter:blur(8px)}
 .install-app-button:hover{background:#ffffff2b;transform:translateY(-1px)}
 .install-app-button:focus-visible{outline:3px solid #f687be;outline-offset:4px}
+
+/* Viewport y áreas seguras para la app instalada en iOS y Android. */
+html,body{min-height:100dvh}
+#app{min-height:100dvh}
+.sky{position:fixed}
+main{
+  min-height:100dvh;
+  padding-top:calc(74px + env(safe-area-inset-top,0px))!important;
+  padding-right:calc(18px + env(safe-area-inset-right,0px));
+  padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important;
+  padding-left:calc(18px + env(safe-area-inset-left,0px));
+}
+.pwa-back-link{
+  position:fixed;
+  top:calc(12px + env(safe-area-inset-top,0px));
+  left:calc(12px + env(safe-area-inset-left,0px));
+  z-index:100;
+  padding:11px 17px;
+  border-radius:24px;
+  color:#fff;
+  background:#542a54;
+  box-shadow:0 6px 22px rgba(0,0,0,.24);
+  text-decoration:none;
+}
+.pwa-back-link:focus-visible{outline:3px solid #ffb4d7;outline-offset:4px}
+@media(max-width:520px){
+  main{
+    padding-top:calc(78px + env(safe-area-inset-top,0px))!important;
+    padding-bottom:calc(160px + env(safe-area-inset-bottom,0px))!important;
+  }
+}
+@media(display-mode:standalone){
+  #app,main{min-height:100dvh}
+  .garden-ground{bottom:-34px}
+}
+
+/* Perfil ligero: conserva la celebración y reduce trabajo gráfico en teléfonos. */
+.celebration-falling-flower,.celebration-butterfly,.celebration-sparkle{
+  will-change:transform,opacity;
+  contain:layout style;
+}
+.birthday-cinematic .star,
+.birthday-cinematic .firefly,
+.birthday-cinematic .night-gerbera{
+  animation-play-state:paused!important;
+}
+@media(max-width:700px){
+  .finale-overlay.counting,.finale-overlay.celebrating{backdrop-filter:none}
+  #app.final-countdown .intro-card{filter:none}
+  .celebration-falling-flower,.celebration-butterfly{filter:none}
+  .birthday-cinematic .cloud{animation-play-state:paused!important}
+}
