@@ -1614,3 +1614,35 @@ a {
 .garden-depth {
   animation: none;
 }
+
+/* ─── Music Control ──────────────────────────────────────────────────────────── */
+
+.music-control {
+  position: fixed;
+
+  top: max(18px, env(safe-area-inset-top));
+  right: max(18px, env(safe-area-inset-right));
+
+  z-index: 9000;
+
+  display: grid;
+  place-items: center;
+
+  width: 44px;
+  height: 44px;
+
+  padding: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.74);
+
+  color: #63495a;
+
+  font-size: 20px;
+
+  box-shadow: 0 8px 24px rgba(54, 34, 47, 0.12);
+
+  touch-action: manipulation;
+}
