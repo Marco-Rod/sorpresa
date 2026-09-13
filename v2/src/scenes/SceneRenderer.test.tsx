@@ -6,6 +6,8 @@ import { AppStateProvider, useAppState } from "../context/AppStateContext";
 import { BirthdayProvider, useBirthday, useBirthdayPhase } from "../context/BirthdayContext";
 import { SceneRenderer } from "./SceneRenderer";
 
+// Canvas lifecycle is tested independently; these tests focus on scene selection.
+vi.mock("../effects/StarField", () => ({ StarField: () => <canvas aria-hidden="true" /> }));
 
 function Providers({ children }: { children: ReactNode }) {
   return <StrictMode><AppStateProvider><BirthdayProvider>{children}</BirthdayProvider></AppStateProvider></StrictMode>;
