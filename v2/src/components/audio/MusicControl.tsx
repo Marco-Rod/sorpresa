@@ -1,6 +1,6 @@
 import { useAudio } from "../../context/AudioContext";
 
-export function MusicControl() {
+export function MusicControl({ inline = false }: { inline?: boolean }) {
   const { unlocked, muted, unlock, toggleMuted } = useAudio();
 
   const handleClick = async () => {
@@ -17,11 +17,12 @@ export function MusicControl() {
   return (
     <button
       type="button"
-      className="music-control"
+      className={inline ? "home-page__sound" : "music-control"}
       onClick={handleClick}
-      aria-label={muted ? "Activar música" : "Silenciar música"}
+      aria-label={!unlocked ? "Toca para comenzar la música" : muted ? "Activar música" : "Silenciar música"}
     >
       {muted ? "♫̸" : "♫"}
+      {inline && <span>{!unlocked ? "Toca para comenzar la música 🎵" : muted ? "Activar música 🎵" : "Pausar la música"}</span>}
     </button>
   );
 }

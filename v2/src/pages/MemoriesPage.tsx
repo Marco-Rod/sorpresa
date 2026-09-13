@@ -15,8 +15,8 @@ export function MemoriesPage() {
           <strong>Un jardín en septiembre</strong>
 
           <small>
-            El primer cumpleaños. Flores, noche, Virgo y una sorpresa que comenzó
-            aquí.
+            El primer cumpleaños: la carta, su jardín y los últimos diez segundos
+            de una sorpresa que puedes volver a vivir.
           </small>
         </Link>
       </div>

@@ -6,7 +6,7 @@ export function BirthdayPhoto() {
       <div className="birthday-photo__halo" aria-hidden="true" />
 
       <HeartFrame
-        src="/images/birthday-photo.webp"
+        src="/images/birthday-photo.jpg"
         alt="Ale"
       />
     </div>

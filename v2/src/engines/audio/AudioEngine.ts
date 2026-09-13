@@ -1,6 +1,7 @@
 import {
   AUDIO_TRACKS,
   type AudioTrackId,
+  type AudioTrackConfig,
 } from "../../config/audio";
 
 interface FadeOptions {
@@ -24,7 +25,10 @@ export class AudioEngine {
 
   private transitionId = 0;
 
-  constructor(initialMuted = false) {
+  private tracks: Record<AudioTrackId, AudioTrackConfig>;
+
+  constructor(initialMuted = false, tracks: Record<AudioTrackId, AudioTrackConfig> = AUDIO_TRACKS) {
+    this.tracks = tracks;
     this.audio = new Audio();
     this.audio.preload = "metadata";
     // playsInline is not in the TS lib types but is required on iOS Safari
@@ -58,7 +62,7 @@ export class AudioEngine {
       return true;
     }
 
-    const track = AUDIO_TRACKS[trackId];
+    const track = this.tracks[trackId];
 
     this.audio.src = track.src;
     this.audio.loop = track.loop;
@@ -99,7 +103,7 @@ export class AudioEngine {
     // Guard against race conditions: stamp this transition.
     const transitionId = ++this.transitionId;
 
-    const track = AUDIO_TRACKS[trackId];
+    const track = this.tracks[trackId];
 
     // Fade out current track before switching.
     if (fade && this.currentTrack && !this.audio.paused) {
@@ -138,6 +142,8 @@ export class AudioEngine {
   }
 
   pause(): void {
+    ++this.transitionId;
+    this.cancelFade();
     this.audio.pause();
   }
 
@@ -164,6 +170,8 @@ export class AudioEngine {
   }
 
   destroy(): void {
+    ++this.transitionId;
+    this.unlocked = false;
     this.cancelFade();
     this.audio.pause();
     this.audio.removeAttribute("src");
@@ -185,7 +193,7 @@ export class AudioEngine {
     }
   }
 
-  private fadeTo(
+  fadeTo(
     volume: number,
     { duration = 900 }: FadeOptions = {},
   ): Promise<void> {

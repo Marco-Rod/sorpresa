@@ -7,6 +7,9 @@
     "node": ">=22 <23"
   },
   "scripts": {
+    "assets:2026": "node scripts/recover-2026.cjs",
+    "predev": "npm run assets:2026",
+    "prebuild": "npm run assets:2026",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",

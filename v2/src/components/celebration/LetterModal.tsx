@@ -7,9 +7,10 @@ import { useFocusTrap } from "../../hooks/useFocusTrap";
 interface LetterModalProps {
   open: boolean;
   onClose: () => void;
+  paragraphs?: readonly string[];
 }
 
-export function LetterModal({ open, onClose }: LetterModalProps) {
+export function LetterModal({ open, onClose, paragraphs = BIRTHDAY_LETTER }: LetterModalProps) {
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
@@ -92,7 +93,7 @@ export function LetterModal({ open, onClose }: LetterModalProps) {
         <h2 id="birthday-letter-title">Para Ale</h2>
 
         <div className="letter-modal__content">
-          {BIRTHDAY_LETTER.map((paragraph, index) => (
+          {paragraphs.map((paragraph, index) => (
             <p key={index}>{paragraph}</p>
           ))}
         </div>

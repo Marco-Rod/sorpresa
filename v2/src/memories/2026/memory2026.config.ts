@@ -18,7 +18,7 @@ export const MEMORY_2026 = {
 
   closing: "Gracias por haber estado aquí.",
 
-  photo: "/memories/2026/images/birthday-photo.webp",
+  photo: "/memories/2026/images/birthday-photo.jpg",
 
   phrases: [
     {

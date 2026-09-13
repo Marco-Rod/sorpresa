@@ -1,0 +1,157 @@
+// Verbatim historical phrases recovered from 2026.js.
+export const LEGACY_PHRASES = {
+  general: [
+    "Algo bonito está cada vez más cerca 🌸",
+    "Paciencia, Ale… las cosas bonitas saben esperar 💗",
+    "Este jardín está esperando a alguien especial 🌷",
+    "Los tulipanes madrugaron para esperarte 🌷",
+    "Hasta el cielo se puso bonito mientras esperábamos ✨",
+    "Un poquito menos… pero todavía no puedes hacer trampa 🤭",
+    "Las flores saben cuál es la sorpresa, pero prometieron no decir nada 🤫🌷",
+    "Este jardín tiene suerte. Sabe para quién está floreciendo. 🌷",
+    "Hay coincidencias demasiado bonitas para llamarlas simplemente casualidad. ✨",
+    "Septiembre tenía que guardar algo bonito. 🌸",
+    "El contador sabe algo que tú todavía no sabes. 👀",
+    "No sé si el tiempo va lento… o si simplemente estamos demasiado emocionados. 🤭",
+    "Algunas esperas valen muchísimo la pena. 💗"
+  ],
+  personal: [
+    "Tú eres la reina 👑",
+    "Nunca me cansaré de repetir que te pienso todo el tiempo.",
+    "Quería darte un regalo realmente especial.",
+    "Sí, yo también estoy emocionado de que llegue el momento. 💗",
+    "Sueño contigo.",
+    "A veces una página puede guardar mucho más de lo que parece. 🌸",
+    "Por si hoy nadie te lo ha recordado: eres muy especial. 💗",
+    "Esta sorpresa empezó con una idea pequeña… y luego se salió un poquito de control. 🤭🌷"
+  ],
+  personalRare: [
+    "Gasté toda mi suerte en encontrarte a ti. 🌸",
+    "Te he estado buscando por más de mil años.",
+    "Tal vez algunas personas no llegan por suerte… tal vez ellas son la suerte. 🌸"
+  ],
+  luck: [
+    "Hay personas que llegan y terminan pareciéndose mucho a la suerte. 🌸",
+    "Quizá la suerte no siempre sea cuestión de azar.",
+    "Entre tantas casualidades, algunas personas se sienten como un premio. ✨",
+    "Mi suerte está sonando… creo que el jardín sabe por qué. 🎵🌸",
+    "Qué curioso que una canción pueda terminar describiendo a una persona. 🎵"
+  ],
+  flowers: [
+    "Dato curioso 🌷: los tulipanes continúan creciendo incluso después de ser cortados.",
+    "¿Sabías que los tulipanes pueden inclinarse buscando la luz? ☀️🌷",
+    "Hubo una época en los Países Bajos en la que algunos tulipanes llegaron a valer auténticas fortunas. 🌷",
+    "Los tulipanes no solo existen en rosa… pero estos tenían instrucciones específicas. 🤭🌷",
+    "Un tulipán puede seguir cambiando incluso después de florecer. Supongo que crecer nunca termina. 🌷",
+    "¿Sabías que las gerberas pertenecen a la misma familia que los girasoles? 🌸",
+    "Una gerbera parece una sola flor, pero su centro está formado por muchas flores diminutas. 🌸🔎",
+    "Existen gerberas de muchísimos colores… curiosamente aquí terminaron predominando ciertos tonos. 🌸🤭",
+    "Los tulipanes suelen seguir la luz incluso dentro de un florero. 🌷☀️",
+    "Las gerberas son originarias de regiones de África, Asia y Sudamérica. 🌸"
+  ],
+  cosmetology: [
+    "Dato curioso ✨: la epidermis está renovándose constantemente. Tu piel nunca está realmente quieta.",
+    "¿Sabías que la melanina también ayuda a proteger la piel frente a la radiación ultravioleta? ☀️✨",
+    "La piel es el órgano más grande del cuerpo humano. ✨",
+    "La piel tiene receptores que nos permiten percibir presión, temperatura y contacto. ✨",
+    "Dato curioso ✨: gran parte de lo que ocurre en la piel comienza mucho antes de que podamos verlo.",
+    "Este dato iba a ser sobre cosmetología, pero sospecho que tú podrías explicarlo mejor. 🤭✨",
+    "La barrera cutánea ayuda a conservar agua y a protegernos del entorno. ✨",
+    "Dato curioso: las uñas están formadas principalmente por queratina, igual que el cabello. 💅✨",
+    "La cosmetología mezcla ciencia, técnica y mucha atención al detalle. Algo me dice que eso te queda bastante bien. ✨"
+  ],
+  pets: [
+    "Dato curioso 🐱: los gatos pueden pasar gran parte del día durmiendo. Max probablemente lo considera productividad.",
+    "Los gatos maúllan mucho más para comunicarse con humanos que para hablar con otros gatos adultos. 🐱",
+    "Los perros pueden aprender a reconocer una sorprendente cantidad de palabras y señales humanas. 🐶",
+    "Lucas y Lupe solicitaron información sobre la sorpresa. Su solicitud fue rechazada. 🐶🐶",
+    "Max probablemente ya sabe qué hay al final del contador. Los gatos siempre parecen saber cosas. 👀🐱",
+    "Lucas, Lupe y Max también aparecen en los créditos de esta espera. 🐾",
+    "Los bigotes de los gatos son sensores muy sensibles que les ayudan a percibir su entorno. 🐱",
+    "La nariz de cada perro tiene un patrón de surcos particular, algo parecido a una huella. 🐶",
+    "Investigación en curso: determinar cuál de Lucas, Lupe y Max habría revelado primero la sorpresa. 🕵️🐾",
+    "⚠️ Información clasificada: Max fue considerado sospechoso de conocer el contenido de esta página. 🐱👀",
+    "Lucas y Lupe dicen que la espera sería más rápida si hubiera premios involucrados. 🐶🐶",
+    "Tres mascotas, una cumpleañera y demasiados secretos para una sola página. 🐾🌸"
+  ],
+  mysteries: [
+    "Momento conspiranoico 👀: existe una teoría que afirma que la Luna podría ser hueca. No hay evidencia científica que la demuestre. 🌙",
+    "¿Conoces el efecto Mandela? Es cuando muchas personas comparten un recuerdo que no coincide con los registros conocidos. 👀",
+    "Existe la hipótesis filosófica de que nuestro universo podría ser una simulación. Hasta ahora no tenemos evidencia que lo confirme. 🫠",
+    "Área 51 existe de verdad. Lo que ocurre allí con exactitud es lo que ha alimentado décadas de teorías. 👽",
+    "El déjà vu sigue siendo una experiencia fascinante: sentimos haber vivido antes una situación aunque sabemos que es nueva. 👀",
+    "Durante décadas han existido relatos sobre el Triángulo de las Bermudas; no hay evidencia de que allí ocurran más desapariciones misteriosas que en otras zonas transitadas. 🌊👀",
+    "Hay una teoría divertida que dice que los gatos saben mucho más de lo que aparentan. Esta página no ha conseguido interrogar a Max. 🐱👀",
+    "En 1977 se detectó una intensa señal de radio del espacio conocida como la señal Wow!. Su origen exacto sigue siendo motivo de interés. 📡✨",
+    "Nuestro cerebro es extraordinariamente bueno encontrando patrones, incluso donde podrían existir solamente coincidencias. 👀",
+    "Expediente secreto #09: demasiados tulipanes rosas aparecieron en el mismo lugar. Claramente alguien los puso aquí. 👀🌷"
+  ],
+  curiosities: [
+    "Dato curioso 🌌: la luz del Sol tarda unos ocho minutos en llegar a la Tierra.",
+    "Un día en Venus dura más que un año en Venus. 🪐",
+    "Los pulpos tienen tres corazones. 🐙",
+    "Los cuervos pueden reconocer rostros humanos y recordarlos durante años. 👀",
+    "Las abejas pueden comunicar la dirección de una fuente de alimento mediante una especie de danza. 🐝",
+    "El olor que queda después de la lluvia tiene nombre: petricor. 🌧️",
+    "Tu cerebro puede completar información que falta sin que te des cuenta. Por eso algunas ilusiones visuales funcionan tan bien. 👀",
+    "El océano cubre alrededor del 71% de la superficie de la Tierra. Y todavía guarda una cantidad enorme de cosas por descubrir. 🌊",
+    "Los relámpagos pueden calentar el aire a temperaturas superiores a la superficie del Sol durante un instante. ⚡",
+    "Algunas mariposas pueden saborear usando receptores que tienen en sus patas. 🦋",
+    "¿Sabías que? 🌮 El taco al pastor mexicano tiene una historia influida por técnicas de cocción traídas por inmigrantes libaneses.",
+    "¿Sabías que? 🍫 México es parte de la historia ancestral del cacao: pueblos mesoamericanos ya preparaban bebidas de cacao mucho antes del chocolate moderno.",
+    "¿Sabías que? 🌽 La nixtamalización del maíz, usada en México desde hace siglos, mejora su textura y también hace más aprovechables algunos de sus nutrientes.",
+    "¿Sabías que? 🫓 Las arepas forman parte de la tradición culinaria tanto de Colombia como de Venezuela, aunque cada región tiene sus propias versiones y formas de prepararlas.",
+    "¿Sabías que? 🇨🇴 La bandeja paisa reúne varios ingredientes en un solo plato y está especialmente asociada con la región de Antioquia, Colombia.",
+    "¿Sabías que? 🧀 En Colombia existen muchas versiones regionales de arepa: algunas llevan queso, otras huevo y otras son mucho más sencillas.",
+    "¿Sabías que? 🇻🇪 El pabellón criollo venezolano combina tradicionalmente carne mechada, caraotas negras, arroz blanco y plátano maduro.",
+    "¿Sabías que? 🫓 Una de las gracias de la arepa venezolana es que puede abrirse y rellenarse con muchísimas combinaciones distintas.",
+    "¿Sabías que? 🍌 El plátano maduro aparece tanto en platos colombianos como venezolanos y puede funcionar como acompañamiento dulce dentro de una comida salada.",
+    "¿Sabías que? 🍮 El flan llegó a América desde Europa y con el tiempo cada país latinoamericano fue creando sus propias variaciones.",
+    "¿Sabías que? 🥛 El pastel de tres leches recibe su nombre porque se empapa con una mezcla de tres tipos de leche.",
+    "¿Sabías que? 🍚 El arroz con leche tiene versiones en muchísimos países; canela, leche y arroz pueden terminar contando historias completamente distintas según dónde se prepare.",
+    "¿Sabías que? 🍨 El helado contiene diminutos cristales de hielo; controlar su tamaño es una de las claves para conseguir una textura más cremosa.",
+    "¿Sabías que? 🍫 El chocolate comienza con una fruta: las semillas de cacao crecen dentro de grandes mazorcas.",
+    "¿Sabías que? 🍓 El contraste entre algo cremoso y una fruta ligeramente ácida es una de las razones por las que combinaciones como yogurt y frutos rojos funcionan tan bien.",
+    "¿Sabías que? 🍰 En repostería, pesar los ingredientes suele dar resultados más consistentes que medirlos únicamente por volumen.",
+    "¿Sabías que? 🍮 El caramelo cambia de sabor a medida que el azúcar se calienta: pasa de dulce a notas más profundas y ligeramente amargas.",
+    "¿Sabías que? 🧁 La vainilla proviene de una orquídea; las vainas que usamos en postres son el fruto de esa planta.",
+    "¿Sabías que? 🍩 El aroma influye muchísimo en cómo percibimos el sabor; por eso un postre puede empezar a antojarnos incluso antes del primer bocado.",
+    "¿Sabías que? 🍧 La temperatura cambia nuestra percepción del dulzor, así que formular un helado requiere pensar en cómo sabrá cuando esté realmente frío."
+  ],
+  sunset: [
+    "Las gerberas también vinieron a esperar contigo 🌸",
+    "Creo que el cielo también quiso formar parte de la sorpresa. 🌅",
+    "Las gerberas llegaron justo a tiempo para ver el atardecer. 🌸",
+    "Por unos minutos, hasta el jardín cambia de color.",
+    "Yellow está sonando… y de repente este atardecer tiene un significado diferente. 💛🎵",
+    "Algunas canciones dejan de ser solamente canciones. 💛"
+  ],
+  night: [
+    "La luna también está esperando ✨",
+    "La luna también está haciendo guardia esta noche. 🌙",
+    "Las estrellas están listas. El jardín está listo. Falta alguien… 🌸✨",
+    "Si pasa una estrella fugaz, tienes permiso de interrumpir la espera para pedir un deseo. 🌠",
+    "Dato curioso ✨: la luz de algunas estrellas comenzó su viaje mucho antes de que tú nacieras.",
+    "Qué extraño pensar que miramos estrellas a años de distancia… mientras esperamos unos cuantos minutos. ✨",
+    "Shhh… creo que las flores están tramando algo. 🌷🌸",
+    "Virgo está por ahí arriba haciendo guardia. ✨"
+  ],
+  easterEggs: [
+    "🌸",
+    "¿Sigues aquí? 👀",
+    "No, actualizar la página no hará que el contador avance más rápido. 🤭",
+    "Intenté preguntarle a los tulipanes qué hay al final del contador. No colaboraron. 🌷",
+    "Este mensaje tenía algo importante que decirte… se me olvidó. 🌸",
+    "Dato curioso: llevas unos segundos leyendo datos curiosos mientras el contador sigue avanzando. 🤭",
+    "Hay un mensaje muy raro escondido por aquí. Este no es. 👀",
+    "Si estás leyendo esto, oficialmente estás investigando demasiado. 👀",
+    "No hay ningún código secreto aquí. Probablemente. 🤫",
+    "Max pidió que eliminara este mensaje. Decidí conservarlo. 🐱",
+    "Este jardín no recopila cookies. Solo flores. 🌷🤭"
+  ],
+  rare: [
+    "Tal vez algunas personas no llegan por suerte… tal vez ellas son la suerte. 🌸",
+    "Hay regalos que se compran y otros que necesitan tiempo, ideas y un poquito de locura. 🌷",
+    "Si llegaste hasta este mensaje, el jardín decidió contarte que alguien pensó muchísimo en cada detalle. 🌸"
+  ]
+} as const;

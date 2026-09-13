@@ -11,19 +11,19 @@ export const PETS: PetConfig[] = [
   {
     id: "lucas",
     name: "Lucas",
-    src: "/pets/lucas.webp",
+    src: "/memories/2026/pets/lucas.svg",
     className: "pet--lucas",
   },
   {
     id: "lupe",
     name: "Lupe",
-    src: "/pets/lupe.webp",
+    src: "/memories/2026/pets/lupe.svg",
     className: "pet--lupe",
   },
   {
     id: "max",
     name: "Max",
-    src: "/pets/max.webp",
+    src: "/memories/2026/pets/max.svg",
     className: "pet--max",
   },
 ];

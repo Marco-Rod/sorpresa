@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import { DeveloperPanel } from "../debug/DeveloperPanel";
 import { MusicControl } from "../audio/MusicControl";
@@ -9,6 +9,13 @@ import { useBirthdayCelebration } from "../../hooks/useBirthdayCelebration";
 import { useCelebrationPreload } from "../../hooks/useCelebrationPreload";
 
 export function AppLayout() {
+  const memory = useLocation().pathname === '/memories/2026';
+  if (memory) return <main className="memory-layout"><Outlet /><PwaUpdatePrompt /></main>;
+  return <LiveLayout />;
+}
+
+function LiveLayout() {
+  const isHome = useLocation().pathname === '/';
   useAudioUnlock();
   useBirthdayCelebration();
   useCelebrationPreload();
@@ -17,7 +24,7 @@ export function AppLayout() {
     <main>
       <Outlet />
 
-      <MusicControl />
+      {!isHome && <MusicControl />}
 
       <PwaUpdatePrompt />
 

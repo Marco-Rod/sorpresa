@@ -11,7 +11,13 @@ npm ci
 npm run dev
 ```
 
-Rutas: `/`, `/memories` y `/memories/2026` (placeholder). Los recuerdos se cargan bajo demanda.
+Rutas: `/`, `/memories` y `/memories/2026` (jardín histórico reproducible). Los recuerdos se cargan bajo demanda.
+
+## Recuerdo de 2026
+
+El recuerdo abre la celebración guardada, con foto, carta y mascotas. El acceso de la portada (`/memories/2026?replay=1`) y el botón de repetición reproducen los últimos diez segundos y la secuencia histórica. La música se prepara con el clic y comienza con la felicitación; el control de la canción permite pausar y continuar.
+
+El reloj histórico es independiente del cumpleaños actual. En desarrollo, `?debugPhase=t-10` permite comprobar el conteo. `npm run dev` y `npm run build` recuperan los recursos originales mediante `scripts/recover-2026.cjs`.
 
 ```sh
 npm run build

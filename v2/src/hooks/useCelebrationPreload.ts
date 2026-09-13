@@ -15,7 +15,7 @@ export function useCelebrationPreload() {
   useEffect(() => {
     if (phase !== "final-countdown") return;
 
-    void preloadImage("/images/birthday-photo.webp");
+    void preloadImage("/images/birthday-photo.jpg");
 
     for (const pet of PETS) {
       void preloadImage(pet.src);

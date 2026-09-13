@@ -40,6 +40,7 @@ interface AudioContextValue {
   ) => Promise<void>;
 
   toggleMuted: () => void;
+  suspend: (suspended: boolean) => void;
 }
 
 const AudioContext =
@@ -71,6 +72,12 @@ export function AudioProvider({
     useState<AudioTrackId | null>(null);
 
   const { isVisible } = useAppState();
+  const suspendedRef = useRef(false);
+  const suspend = useCallback((suspended: boolean) => {
+    suspendedRef.current = suspended;
+    if (suspended) engineRef.current?.pause();
+    else setCurrentTrack(null);
+  }, []);
 
   // ─── Pause / resume on tab visibility ──────────────────────────────────────
 
@@ -83,7 +90,7 @@ export function AudioProvider({
       return;
     }
 
-    if (unlocked) {
+    if (unlocked && !suspendedRef.current) {
       void engine.resume();
     }
   }, [isVisible, unlocked]);
@@ -145,6 +152,7 @@ export function AudioProvider({
         unlock,
         playTrack,
         toggleMuted,
+        suspend,
       }}
     >
       {children}

@@ -6,7 +6,7 @@ import { usePerformance } from "../context/PerformanceContext";
 import { StarFieldEngine } from "../engines/canvas/StarFieldEngine";
 import { useCanvasResize } from "../hooks/useCanvasResize";
 
-export function StarField() {
+export function StarField({ paused = false }: { paused?: boolean } = {}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<StarFieldEngine | null>(null);
 
@@ -52,13 +52,13 @@ export function StarField() {
     const engine = engineRef.current;
     if (!engine) return;
 
-    if (isVisible && !reducedMotion) {
+    if (isVisible && !reducedMotion && !paused) {
       engine.start();
     } else {
       engine.stop();
       if (isVisible) engine.renderOnce();
     }
-  }, [isVisible, reducedMotion]);
+  }, [isVisible, reducedMotion, paused]);
 
   return <canvas ref={canvasRef} className="star-field" aria-hidden="true" />;
 }

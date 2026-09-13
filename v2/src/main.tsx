@@ -7,6 +7,7 @@ import { AppErrorBoundary } from "./components/errors/AppErrorBoundary";
 import "./styles/variables.css";
 import "./styles/reset.css";
 import "./styles/globals.css";
+import "./styles/home.css";
 
 createRoot(
   document.getElementById("root")!,
