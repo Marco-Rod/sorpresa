@@ -1,0 +1,27 @@
+:root {
+  --color-background: #fff7fb;
+  --color-background-secondary: #fceaf3;
+
+  --color-pink-100: #fff0f6;
+  --color-pink-200: #ffd9e8;
+  --color-pink-300: #ffb8d2;
+  --color-pink-400: #f58db5;
+  --color-pink-500: #df6696;
+
+  --color-text: #4b3040;
+  --color-text-soft: #795c6d;
+
+  --font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  --content-max-width: 1200px;
+
+  --radius-small: 12px;
+  --radius-medium: 20px;
+  --radius-large: 32px;
+}

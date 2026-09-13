@@ -1,0 +1,152 @@
+body {
+  min-width: 320px;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 218, 235, 0.9),
+      transparent 45%
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-background),
+      var(--color-background-secondary)
+    );
+
+  color: var(--color-text);
+  font-family: var(--font-family);
+
+  overflow-x: hidden;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+.home-page,
+.memories-page,
+.memory-2026 {
+  min-height: 100dvh;
+  padding:
+    max(24px, env(safe-area-inset-top))
+    24px
+    max(24px, env(safe-area-inset-bottom));
+}
+
+.home-page {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.home-page__content {
+  width: min(100%, 600px);
+}
+
+.home-page__flower {
+  display: block;
+  margin-bottom: 24px;
+
+  font-size: clamp(52px, 15vw, 90px);
+}
+
+.home-page__eyebrow {
+  color: var(--color-pink-500);
+
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+}
+
+.home-page h1 {
+  margin: 10px 0 18px;
+
+  font-size: clamp(2.4rem, 9vw, 5rem);
+  line-height: 0.95;
+}
+
+.home-page__description {
+  color: var(--color-text-soft);
+
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  line-height: 1.7;
+}
+
+.home-page__memories,
+.memory-card a {
+  display: inline-flex;
+
+  margin-top: 24px;
+  padding: 12px 20px;
+
+  border: 1px solid
+    rgba(223, 102, 150, 0.25);
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.7);
+}
+
+.memories-page {
+  width: min(100%, 800px);
+  margin: auto;
+}
+
+.memory-card {
+  margin: 40px 0;
+  padding: 28px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.8);
+
+  border-radius:
+    var(--radius-large);
+
+  background:
+    rgba(255, 255, 255, 0.68);
+
+  box-shadow:
+    0 24px 80px rgba(133, 71, 101, 0.08);
+}
+
+.memory-card__year {
+  color: var(--color-pink-500);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.memory-2026 {
+  display: grid;
+  place-content: center;
+
+  max-width: 700px;
+  margin: auto;
+
+  text-align: center;
+}
+
+:focus-visible { outline: 3px solid var(--color-pink-500); outline-offset: 5px; }
+
