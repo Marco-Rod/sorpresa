@@ -10,6 +10,7 @@ import { SceneRenderer } from "./SceneRenderer";
 vi.mock("../effects/StarField", () => ({ StarField: () => <canvas aria-hidden="true" /> }));
 vi.mock("../effects/PetalField", () => ({ PetalField: () => <canvas aria-hidden="true" /> }));
 vi.mock("../effects/FireflyField", () => ({ FireflyField: () => <canvas aria-hidden="true" /> }));
+vi.mock("../components/garden/GardenLayer", () => ({ GardenLayer: () => <svg aria-hidden="true" /> }));
 
 function Providers({ children }: { children: ReactNode }) {
   return <StrictMode><AppStateProvider><BirthdayProvider>{children}</BirthdayProvider></AppStateProvider></StrictMode>;

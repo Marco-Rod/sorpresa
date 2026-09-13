@@ -5,7 +5,13 @@ import { PERFORMANCE_CONFIG } from "../config/performance";
 import { PetalEngine } from "../engines/particles/PetalEngine";
 import { getCanvasPixelRatio } from "../utils/canvas";
 
-export function PetalField() {
+interface PetalFieldProps {
+  intensity?: number;
+}
+
+export function PetalField({
+  intensity = 1,
+}: PetalFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<PetalEngine | null>(null);
   const { isVisible } = useAppState();
@@ -34,7 +40,11 @@ export function PetalField() {
     const engine = engineRef.current;
     const parent = canvas?.parentElement;
     if (!engine || !parent) return;
-    engine.setOptions({ maxParticles: PERFORMANCE_CONFIG[quality].petals, spawnRate: PERFORMANCE_CONFIG[quality].petalSpawnRate });
+    const scale = Math.max(0, Number.isFinite(intensity) ? intensity : 0);
+    engine.setOptions({
+      maxParticles: Math.round(PERFORMANCE_CONFIG[quality].petals * scale),
+      spawnRate: PERFORMANCE_CONFIG[quality].petalSpawnRate * scale,
+    });
     const resize = () => {
       const { width, height } = parent.getBoundingClientRect();
       engine.resize(width, height, getCanvasPixelRatio(quality));
@@ -48,7 +58,7 @@ export function PetalField() {
       observer.disconnect();
       window.removeEventListener("resize", resize);
     };
-  }, [quality]);
+  }, [quality, intensity]);
 
   useEffect(() => {
     const engine = engineRef.current;

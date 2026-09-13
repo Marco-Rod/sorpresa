@@ -345,7 +345,7 @@ a {
 
   inset: 0;
 
-  z-index: 2;
+  z-index: 6;
 
   width: 100%;
   height: 100%;
@@ -533,7 +533,7 @@ a {
 
   inset: 0;
 
-  z-index: 3;
+  z-index: 5;
 
   width: 100%;
   height: 100%;
@@ -697,6 +697,10 @@ a {
       );
   }
 
+  .garden-layer {
+    height: 43%;
+  }
+
   .night-scene__moon {
     top: 9%;
     left: 8%;
@@ -737,3 +741,240 @@ a {
 }
 
 .star-field { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+
+.garden-layer {
+  position: absolute;
+
+  inset: auto 0 0;
+
+  z-index: 4;
+
+  width: 100%;
+  height: 46%;
+
+  overflow: visible;
+
+  pointer-events: none;
+
+  opacity:
+    var(
+      --garden-brightness,
+      1
+    );
+}
+
+.garden-depth--background {
+  opacity: 0.55;
+}
+
+.garden-depth--midground {
+  opacity: 0.82;
+}
+
+.garden-depth--foreground {
+  opacity: 1;
+}
+
+.garden-stem {
+  stroke:
+    var(
+      --garden-green-dark,
+      #47774f
+    );
+
+  stroke-width: 3;
+
+  stroke-linecap: round;
+}
+
+.garden-leaf {
+  fill:
+    var(
+      --garden-green,
+      #5f9463
+    );
+}
+
+.garden-leaf--dark {
+  fill:
+    var(
+      --garden-green-dark,
+      #487c51
+    );
+}
+
+.tulip-petal--base {
+  fill: var(
+    --tulip-main,
+    #f08caf
+  );
+}
+
+.tulip-petal--left {
+  fill: var(
+    --tulip-light,
+    #f8b2cb
+  );
+}
+
+.tulip-petal--right {
+  fill: var(
+    --tulip-dark,
+    #d96f98
+  );
+}
+
+.gerbera-petal {
+  fill: var(
+    --gerbera-main,
+    #f398b8
+  );
+}
+
+.gerbera-center {
+  fill: #e8b455;
+}
+
+.gerbera-center-inner {
+  fill: #8c613a;
+}
+
+.garden-grass {
+  stroke: #48774f;
+
+  stroke-width: 2;
+
+  stroke-linecap: round;
+
+  opacity: 0.7;
+}
+
+.garden-layer--morning {
+  --garden-brightness: 1;
+  --garden-green: #5f9463;
+  --garden-green-dark: #47774f;
+}
+
+.garden-layer--day {
+  --garden-brightness: 1.04;
+  --garden-green: #5f9463;
+  --garden-green-dark: #47774f;
+}
+
+.garden-layer--sunset {
+  --garden-brightness: 0.96;
+  --garden-green: #46715a;
+  --garden-green-dark: #3a5c48;
+}
+
+.garden-layer--night {
+  --garden-brightness: 0.76;
+  --garden-green: #355b48;
+  --garden-green-dark: #274538;
+}
+
+@keyframes garden-sway-background {
+  0%,
+  100% {
+    transform:
+      rotate(-0.35deg);
+  }
+
+  50% {
+    transform:
+      rotate(0.4deg);
+  }
+}
+
+@keyframes garden-sway-midground {
+  0%,
+  100% {
+    transform:
+      rotate(0.3deg);
+  }
+
+  50% {
+    transform:
+      rotate(-0.45deg);
+  }
+}
+
+@keyframes garden-sway-foreground {
+  0%,
+  100% {
+    transform:
+      rotate(-0.25deg);
+  }
+
+  50% {
+    transform:
+      rotate(0.3deg);
+  }
+}
+
+.garden-layer--high
+.garden-depth--background {
+  transform-origin:
+    50% 100%;
+
+  animation:
+    garden-sway-background
+    9s
+    ease-in-out
+    infinite;
+}
+
+.garden-layer--high
+.garden-depth--midground {
+  transform-origin:
+    50% 100%;
+
+  animation:
+    garden-sway-midground
+    7.5s
+    ease-in-out
+    infinite;
+}
+
+.garden-layer--high
+.garden-depth--foreground {
+  transform-origin:
+    50% 100%;
+
+  animation:
+    garden-sway-foreground
+    6.5s
+    ease-in-out
+    infinite;
+}
+
+.garden-layer--medium
+.garden-depth--midground {
+  transform-origin:
+    50% 100%;
+
+  animation:
+    garden-sway-midground
+    10s
+    ease-in-out
+    infinite;
+}
+
+.garden-layer--medium
+.garden-depth--foreground {
+  transform-origin:
+    50% 100%;
+
+  animation:
+    garden-sway-foreground
+    9s
+    ease-in-out
+    infinite;
+}
+
+.garden-layer--low
+.garden-depth,
+.garden-layer--static
+.garden-depth {
+  animation: none;
+}

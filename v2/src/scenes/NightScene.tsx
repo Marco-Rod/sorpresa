@@ -1,4 +1,8 @@
 import {
+  GardenLayer,
+} from "../components/garden/GardenLayer";
+
+import {
   Moon,
 } from "../components/garden/Moon";
 
@@ -9,6 +13,10 @@ import {
 import {
   FireflyField,
 } from "../effects/FireflyField";
+
+import {
+  PetalField,
+} from "../effects/PetalField";
 
 import {
   StarField,
@@ -31,7 +39,13 @@ export function NightScene() {
 
       <div className="night-scene__horizon" aria-hidden="true" />
 
+      <GardenLayer mood="night" />
+
       <FireflyField />
+
+      <PetalField
+        intensity={0.35}
+      />
 
       <div className="night-scene__content">
         <p>
