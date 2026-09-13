@@ -291,3 +291,30 @@ a {
     );
 }
 
+.performance-debug {
+  position: fixed;
+
+  right: 10px;
+  bottom: 10px;
+
+  z-index: 9999;
+
+  display: grid;
+
+  gap: 2px;
+
+  padding: 8px 10px;
+
+  border-radius: 8px;
+
+  background:
+    rgba(20, 20, 20, 0.78);
+
+  color: white;
+
+  font-family: monospace;
+  font-size: 11px;
+
+  pointer-events: none;
+}
+

@@ -1,4 +1,4 @@
-# Un jardín en septiembre — fase 3
+# Un jardín en septiembre — fase 4
 
 React + TypeScript + Vite 8. La versión original permanece intacta en la raíz.
 
@@ -8,6 +8,6 @@ Rutas: /, /memories y /memories/2026 (placeholder). Vercel: Root Directory v2, b
 
 Objetivo: 10 de septiembre de 2027, medianoche de Bogotá.
 
-Reloj compartido, visibilidad y seis escenas por hora de Bogotá; una sola escena montada.
+Calidad adaptativa, monitor FPS, reduced motion, configuración visual y límites DPR.
 
 Pendientes las pruebas visuales y de rendimiento en dispositivos reales.
