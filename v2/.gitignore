@@ -17,6 +17,15 @@ public/audio/*.mp3
 public/audio/*.m4a
 public/audio/*.ogg
 
+# Memory 2026 assets — kept out of version control
+public/memories/2026/images/*.webp
+public/memories/2026/images/*.jpg
+public/memories/2026/images/*.jpeg
+public/memories/2026/images/*.png
+public/memories/2026/audio/*.mp3
+public/memories/2026/audio/*.m4a
+public/memories/2026/audio/*.ogg
+
 # Image assets — kept out of version control
 public/images/*.webp
 public/images/*.jpg

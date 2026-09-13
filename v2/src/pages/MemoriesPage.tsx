@@ -4,29 +4,25 @@ export function MemoriesPage() {
   return (
     <section className="memories-page">
       <header>
-        <p>Un jardín en septiembre</p>
+        <p className="home-page__eyebrow">Jardines que ya florecieron</p>
         <h1>Recuerdos 🌸</h1>
       </header>
 
-      <article className="memory-card">
-        <span className="memory-card__year">
-          2026
-        </span>
+      <div className="memory-cards">
+        <Link to="/memories/2026" className="memory-card">
+          <span className="memory-card__year">2026</span>
 
-        <h2>Donde comenzó el jardín</h2>
+          <strong>Un jardín en septiembre</strong>
 
-        <p>
-          Un cumpleaños, un jardín y una noche
-          llena de pequeñas sorpresas.
-        </p>
-
-        <Link to="/memories/2026">
-          Volver a ese día
+          <small>
+            El primer cumpleaños. Flores, noche, Virgo y una sorpresa que comenzó
+            aquí.
+          </small>
         </Link>
-      </article>
+      </div>
 
-      <Link to="/">
-        ← Volver al jardín
+      <Link to="/" className="memory-card__back">
+        ← Volver al jardín actual
       </Link>
     </section>
   );
