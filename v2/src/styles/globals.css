@@ -238,3 +238,56 @@ a {
       14px 4px;
   }
 }
+.scene {
+  display: grid;
+  place-items: center;
+
+  min-height: 230px;
+  margin-top: 30px;
+
+  text-align: center;
+}
+
+.scene > span {
+  font-size:
+    clamp(
+      4rem,
+      20vw,
+      8rem
+    );
+}
+
+.scene p {
+  color:
+    var(--color-text-soft);
+
+  line-height: 1.7;
+}
+
+.scene--final-countdown strong {
+  display: block;
+
+  font-size:
+    clamp(
+      5rem,
+      25vw,
+      11rem
+    );
+
+  font-variant-numeric:
+    tabular-nums;
+
+  line-height: 1;
+}
+
+.scene--birthday h2 {
+  margin-bottom: 4px;
+
+  font-size:
+    clamp(
+      2rem,
+      8vw,
+      4rem
+    );
+}
+

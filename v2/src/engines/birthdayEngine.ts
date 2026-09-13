@@ -1,5 +1,15 @@
 import { BIRTHDAY_CONFIG } from "../config/birthday";
 
+const bogotaHourFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: BIRTHDAY_CONFIG.timezone,
+  hour: "2-digit",
+  hourCycle: "h23",
+});
+
+export function getBogotaHour(date = new Date()): number {
+  return Number(bogotaHourFormatter.format(date)) % 24;
+}
+
 export type BirthdayPhase =
   | "waiting"
   | "final-countdown"

@@ -4,6 +4,8 @@ import { MemoryRouter } from "react-router-dom";
 import { afterEach, expect, it, vi } from "vitest";
 import { BIRTHDAY_TIMESTAMP } from "../engines/birthdayEngine";
 import { HomePage } from "./HomePage";
+import { BirthdayProvider } from "../context/BirthdayContext";
+import { AppStateProvider } from "../context/AppStateContext";
 
 afterEach(() => {
   cleanup();
@@ -15,7 +17,7 @@ it("shows 10 through 1 then birthday, never a premature zero", () => {
   vi.useFakeTimers();
   vi.setSystemTime(BIRTHDAY_TIMESTAMP - 10_000);
   vi.spyOn(document, "visibilityState", "get").mockReturnValue("visible");
-  render(<MemoryRouter><HomePage /></MemoryRouter>);
+  render(<AppStateProvider><BirthdayProvider><MemoryRouter><HomePage /></MemoryRouter></BirthdayProvider></AppStateProvider>);
   expect(screen.getByRole("timer").textContent).toContain("10");
   act(() => { vi.advanceTimersByTime(250); });
   expect(screen.getByRole("timer").textContent).toContain("10");
@@ -23,5 +25,6 @@ it("shows 10 through 1 then birthday, never a premature zero", () => {
   expect(screen.getByRole("timer").querySelector("strong")?.textContent).toBe("1");
   act(() => { vi.advanceTimersByTime(250); });
   expect(screen.queryByRole("timer")).toBeNull();
-  expect(screen.getByText("🌸 El jardín está floreciendo.")).toBeTruthy();
+  expect(screen.getByText("El jardín está floreciendo.")).toBeTruthy();
+  expect(document.querySelectorAll(".scene")).toHaveLength(1);
 });
