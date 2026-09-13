@@ -1,6 +1,12 @@
 // Recover only static historical content; never execute the legacy application.
 const fs = require('node:fs');
 process.chdir(require('node:path').resolve(__dirname,'../..'));
+// Installed-app icons must exist in every deployment, not just the local checkout.
+fs.mkdirSync('v2/public/icons',{recursive:true});
+for (const [size, name] of [[180, 'apple-touch-icon'], [192, 'pwa-192x192'], [512, 'pwa-512x512']]) {
+  fs.copyFileSync(`assets/icons/tulip-${size}.png`, `v2/public/icons/${name}.png`);
+}
+fs.copyFileSync('assets/icons/tulip.svg', 'v2/public/favicon.svg');
 const source = fs.readFileSync('2026.js','utf8');
 const html = fs.readFileSync('2026.html','utf8');
 const css = fs.readFileSync('2026.css','utf8');
