@@ -1,4 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
+import { useLayoutEffect } from "react";
 
 import { DeveloperPanel } from "../debug/DeveloperPanel";
 import { MusicControl } from "../audio/MusicControl";
@@ -9,7 +10,12 @@ import { useBirthdayCelebration } from "../../hooks/useBirthdayCelebration";
 import { useCelebrationPreload } from "../../hooks/useCelebrationPreload";
 
 export function AppLayout() {
-  const memory = useLocation().pathname === '/memories/2026';
+  const { pathname } = useLocation();
+  // Reset before paint: the long memory must not leave the home page scrolled.
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname]);
+  const memory = pathname === '/memories/2026';
   if (memory) return <main className="memory-layout"><Outlet /><PwaUpdatePrompt /></main>;
   return <LiveLayout />;
 }

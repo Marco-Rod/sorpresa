@@ -83,3 +83,17 @@
 .home-page--night .home-page__relive:hover { background: #ffffff35; }
 .home-page--night .home-page__relive:focus-visible { outline-color: #ffc3df; }
 @media(max-width:520px) { .home-page__relive { width: 100%; padding: 12px; } }
+
+/* Safe-area padding belongs to the content, not to the full-bleed sky. */
+.home-page {
+  min-height: 100dvh;
+  padding-top: calc(40px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(18px, env(safe-area-inset-left, 0px));
+  padding-right: max(18px, env(safe-area-inset-right, 0px));
+}
+.home-page__world { min-height: 100dvh; }
+@media(max-width:520px) {
+  .home-page { padding-top: calc(20px + env(safe-area-inset-top, 0px)); padding-bottom: calc(36px + env(safe-area-inset-bottom, 0px)); }
+}
+.home-page--birthday, .home-page--final-countdown { padding: 0; }

@@ -2975,3 +2975,10 @@ a {
     transform: none;
   }
 }
+
+/* Installed iOS: paint the entire viewport, including the home-indicator area. */
+html { min-height: 100%; background: #946344; }
+body, #root, #root > main { min-height: 100dvh; }
+html:has(.memory-2026-page) { background: #fff1c7; }
+html:has(.home-page--night) { background: #211d35; }
+body { overscroll-behavior-y: none; }

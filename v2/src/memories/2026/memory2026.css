@@ -41,3 +41,21 @@
 .memory-stage .memory-song__text { font-size:inherit; color:inherit; }
 .memory-song[hidden], .memory-birthday[hidden] { display:none; }
 .memory-song:focus-visible { outline:3px solid #a72b65; outline-offset:4px; }
+
+/* Dynamic viewport and safe areas also apply after the cinematic replay. */
+.memory-2026-page, .memory-stage { min-height: 100dvh; }
+.memory-stage {
+  padding-top: calc(75px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(18px, env(safe-area-inset-left, 0px));
+  padding-right: max(18px, env(safe-area-inset-right, 0px));
+}
+.memory-nav { top: calc(12px + env(safe-area-inset-top, 0px)); left: max(24px, env(safe-area-inset-left, 0px)); right: max(24px, env(safe-area-inset-right, 0px)); }
+.memory-2026-page[data-phase=final-countdown] .memory-stage {
+  height: auto; min-height: 100dvh;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+}
+.memory-final, .memory-finale {
+  min-height: max(180px, calc(100dvh - 190px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)));
+}
+@media(max-width:520px) { .memory-stage { padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px)); } }
