@@ -33,5 +33,12 @@ export class ParticlePool {
     return count;
   }
   clear() { for (const particle of this.particles) particle.active = false; }
+  trimActive(maxActive: number) {
+    const limit = Number.isFinite(maxActive) ? Math.max(0, Math.floor(maxActive)) : 0;
+    let count = 0;
+    for (const particle of this.particles) {
+      if (particle.active && ++count > limit) particle.active = false;
+    }
+  }
   getCapacity() { return this.particles.length; }
 }

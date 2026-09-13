@@ -13,6 +13,7 @@ let frames: Map<number, FrameRequestCallback>;
 let observers: Set<() => void>;
 let ctx: { clearRect: ReturnType<typeof vi.fn>; setTransform: ReturnType<typeof vi.fn>; beginPath: ReturnType<typeof vi.fn>; arc: ReturnType<typeof vi.fn>; fill: ReturnType<typeof vi.fn>; globalAlpha: number };
 beforeEach(() => {
+  vi.spyOn(Math, "random").mockReturnValue(0.5);
   settings.quality = "high"; settings.reducedMotion = false; settings.isVisible = true;
   frames = new Map(); observers = new Set(); let id = 0;
   ctx = { clearRect: vi.fn(), setTransform: vi.fn(), beginPath: vi.fn(), arc: vi.fn(), fill: vi.fn(), globalAlpha: 1 };
@@ -97,4 +98,15 @@ it("keeps the decorative canvas harmless if 2D is unavailable", () => {
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null);
   render(<div><StarField /></div>);
   expect(frames.size).toBe(0); expect(observers.size).toBe(0);
+});
+
+it("draws bright stars with a halo and cross instead of blur", () => {
+  vi.spyOn(Math, "random").mockReturnValue(0.99);
+  const stroke = vi.fn();
+  Object.assign(ctx, { moveTo: vi.fn(), lineTo: vi.fn(), stroke });
+  const engine = new StarFieldEngine(document.createElement("canvas"), 1);
+  engine.resize(100, 100);
+  expect(ctx.arc).toHaveBeenCalledTimes(2);
+  expect(stroke).toHaveBeenCalledTimes(1);
+  expect(ctx.arc.mock.calls[0][2]).toBeCloseTo(ctx.arc.mock.calls[1][2] * 4);
 });

@@ -3,6 +3,7 @@ import {
 } from "./CanvasEngine";
 
 interface Star {
+  type: "tiny" | "normal" | "bright";
   x: number;
   y: number;
 
@@ -57,13 +58,15 @@ export class StarFieldEngine
 
   private createStar():
     Star {
+    const random = Math.random();
+    const type: Star["type"] = random > 0.92 ? "bright" : random > 0.55 ? "normal" : "tiny";
     return {
+      type,
       x: Math.random(),
       y: Math.random(),
 
       radius:
-        0.5 +
-        Math.random() * 1.4,
+        type === "bright" ? 1.8 + Math.random() * 0.8 : type === "normal" ? 0.8 + Math.random() * 0.7 : 0.35 + Math.random() * 0.5,
 
       alpha:
         0.35 +
@@ -134,6 +137,24 @@ export class StarFieldEngine
         ) *
           0.45;
 
+      if (star.type === "bright") {
+        ctx.globalAlpha = star.alpha * twinkle * 0.14;
+        ctx.beginPath();
+        ctx.arc(x, y, star.radius * 4, 0, Math.PI * 2);
+        ctx.fillStyle = "#dbe6ff";
+        ctx.fill();
+        const length = star.radius * 3.2;
+        ctx.globalAlpha = star.alpha * twinkle * 0.45;
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(x - length, y);
+        ctx.lineTo(x + length, y);
+        ctx.moveTo(x, y - length);
+        ctx.lineTo(x, y + length);
+        ctx.stroke();
+      }
+
       ctx.globalAlpha =
         star.alpha *
         twinkle;
@@ -149,7 +170,7 @@ export class StarFieldEngine
       );
 
       ctx.fillStyle =
-        "#ffffff";
+        star.type === "bright" ? "#edf3ff" : "#ffffff";
 
       ctx.fill();
     }

@@ -24,10 +24,7 @@ export class PetalEngine extends ParticleEngine {
       spawnRate: Number.isFinite(options.spawnRate) ? Math.max(0, options.spawnRate) : 0,
     };
     this.spawnAccumulator = 0;
-    let kept = 0;
-    for (const particle of this.pool.getParticles()) {
-      if (particle.active && ++kept > this.options.maxParticles) this.pool.release(particle);
-    }
+    this.pool.trimActive(this.options.maxParticles);
   }
 
   protected beforeUpdate(deltaTime: number) {
