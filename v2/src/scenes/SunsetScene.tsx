@@ -1,13 +1,24 @@
+import {
+  PetalField,
+} from "../effects/PetalField";
+
 export function SunsetScene() {
   return (
-    <div className="scene scene--sunset">
-      <span aria-hidden="true">
-        🌇
-      </span>
+    <div className="scene scene--sunset sunset-scene">
+      <PetalField />
 
-      <p>
-        El cielo comienza a cambiar.
-      </p>
+      <div className="sunset-scene__content">
+        <span
+          className="sunset-scene__sun"
+          aria-hidden="true"
+        >
+          🌇
+        </span>
+
+        <p>
+          El cielo comienza a cambiar.
+        </p>
+      </div>
     </div>
   );
 }

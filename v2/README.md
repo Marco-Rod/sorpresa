@@ -1,6 +1,6 @@
 # Un jardín en septiembre — V2
 
-Fases 1 a 5 en React + TypeScript + Vite 8. La experiencia original permanece intacta en la raíz del repositorio.
+Fases 1 a 6 en React + TypeScript + Vite 8. La experiencia original permanece intacta en la raíz del repositorio.
 
 ## Desarrollo
 
@@ -34,7 +34,7 @@ AppStateProvider envuelve BirthdayProvider y el router. BirthdayProvider es el �
 
 useScene comprueba la hora cada 30 segundos mientras la página es visible y la fase depende de la hora. Pausa en background y recalcula al volver. Las fases finales tienen prioridad inmediata y no necesitan comprobar la hora. SceneRenderer monta únicamente el componente seleccionado; estas escenas provisionales pequeñas se importan estáticamente. Los recuerdos conservan su carga bajo demanda.
 
-`effects/StarField.tsx` conecta el cielo con los motores. `memories/2026` queda reservado para la migración histórica. React controla interfaz, estados y navegación. Las estrellas usan Canvas y requestAnimationFrame fuera del ciclo de render de React. Esta fase no incluye el motor genérico de partículas, audio, mascotas ni PWA. No importa ni registra el service worker original.
+`effects/StarField.tsx` y `effects/PetalField.tsx` conectan las escenas con los motores. `memories/2026` queda reservado para la migración histórica. React controla interfaz, estados y navegación. Las estrellas y los pétalos usan Canvas y requestAnimationFrame fuera del ciclo de render de React. Esta fase no incluye audio, mascotas ni PWA. No importa ni registra el service worker original.
 
 ## Rendimiento (fase 4)
 
@@ -59,6 +59,18 @@ Las pruebas cubren StrictMode, canvas único, cambio de calidad sin remontaje, D
 QA visual pendiente: durante la noche de Bogotá (20:00–05:00), revisar escritorio y móvil, rotación, pestaña oculta, reduced motion y CPU 6x. Para la prueba de estrés temporal se pueden usar 500 estrellas HIGH, restaurando 70 después. No se realizó esa medición en navegador ni se afirma una mejora de FPS medida; las pruebas de canvas usan un contexto 2D simulado.
 
 Las pruebas simulan frames para validar degradación con muestras idénticas, recuperación de visibilidad, limpieza en StrictMode, cambios de reduced motion y límites DPR. El monitor mide frecuencia de callbacks, no certifica frames pintados por la GPU. Para QA manual usar CPU throttling y reduced motion en DevTools; una escena estática puede conservar FPS altos incluso con throttling. La evaluación con carga visual y dispositivos reales sigue pendiente.
+
+## Partículas y pétalos (fase 6)
+
+`ParticlePool` preasigna objetos y reutiliza su identidad con acquire/release/clear. Los emisores inicializan todos los campos al adquirir una partícula. `ParticleEngine` extiende CanvasEngine con emisión, envejecimiento, liberación por vida/límites y hooks beforeUpdate/afterUpdate. No crea objetos ni nodos DOM por emisión.
+
+`PetalEngine` mantiene un pool fijo de 24 objetos: HIGH permite 24 activos a 2.5/s; MEDIUM, 14 a 1.4/s; LOW, 7 a 0.6/s. Al degradar, recorta inmediatamente los activos sin reconstruir el pool. Descarta emisiones cuando está lleno para no generar ráfagas posteriores. El viento suavizado se comparte entre pétalos, el desplazamiento lateral es acotado y la opacidad depende del progreso de vida conservando la opacidad inicial. Tres colores constantes evitan crear paletas por frame.
+
+SunsetScene (17:00–20:00 Bogotá) monta PetalField como canvas independiente en primer plano. Conserva el motor al cambiar calidad, actualiza DPR y desconecta ResizeObserver/RAF al desmontar. Background pausa; reduced motion detiene y vacía el efecto, también después de resize. El cielo nocturno conserva su canvas separado.
+
+En desarrollo se puede recargar con `/?quality=high`, `/?quality=medium` o `/?quality=low`. Esto selecciona el nivel inicial: la degradación automática sigue activa y reduced motion tiene prioridad. Producción ignora el parámetro. La escena sigue dependiendo de la hora real de Bogotá.
+
+Validación: pruebas del pool, tasas de emisión, límites inmediatos, reciclaje, liberación, viento acotado, fade, reset, DPR, visibilidad, StrictMode y parámetros de desarrollo. Build y lint forman parte de las comprobaciones. La revisión visual del atardecer y las mediciones CPU/FPS en dispositivos reales siguen pendientes; el contexto canvas en las pruebas está simulado.
 
 ## Pruebas del reloj y escenas
 

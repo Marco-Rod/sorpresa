@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useMemo, useRef, useState, type R
 import { detectInitialPerformanceProfile, type PerformanceTier } from "../engines/performanceEngine";
 import { useAppState } from "./AppStateContext";
 import { useFpsMonitor } from "../hooks/useFpsMonitor";
+import { getForcedQuality } from "../utils/forcedQuality";
 
 interface PerformanceContextValue {
   quality: PerformanceTier;
@@ -15,7 +16,7 @@ const PerformanceContext = createContext<PerformanceContextValue | null>(null);
 export function PerformanceProvider({ children }: { children: ReactNode }) {
   const { isVisible } = useAppState();
   const [profile] = useState(detectInitialPerformanceProfile);
-  const [quality, setQuality] = useState(profile.tier);
+  const [quality, setQuality] = useState(() => profile.reducedMotion ? "low" : getForcedQuality() ?? profile.tier);
   const [reducedMotion, setReducedMotion] = useState(profile.reducedMotion);
   const sample = useFpsMonitor({ enabled: isVisible });
   const lowSamples = useRef(0);

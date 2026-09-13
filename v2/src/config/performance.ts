@@ -7,6 +7,7 @@ export interface VisualQualityConfig {
 
   stars: number;
   petals: number;
+  petalSpawnRate: number;
   fireflies: number;
   butterflies: number;
 
@@ -26,6 +27,7 @@ export const PERFORMANCE_CONFIG:
 
     stars: 70,
     petals: 24,
+    petalSpawnRate: 2.5,
     fireflies: 12,
     butterflies: 4,
 
@@ -40,6 +42,7 @@ export const PERFORMANCE_CONFIG:
 
     stars: 42,
     petals: 14,
+    petalSpawnRate: 1.4,
     fireflies: 7,
     butterflies: 2,
 
@@ -54,6 +57,7 @@ export const PERFORMANCE_CONFIG:
 
     stars: 22,
     petals: 7,
+    petalSpawnRate: 0.6,
     fireflies: 3,
     butterflies: 0,
 
