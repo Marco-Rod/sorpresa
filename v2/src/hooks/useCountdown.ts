@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   getBirthdayPhase,
+  getForcedBirthdayPhase,
   getCountdown,
   type BirthdayPhase,
   type CountdownState,
@@ -16,7 +17,8 @@ const TICK_INTERVAL = 250;
 function readClock(): UseCountdownResult {
   // Both values must describe the same instant, including at midnight.
   const now = Date.now();
-  return { countdown: getCountdown(now), phase: getBirthdayPhase(now) };
+  const phase = getForcedBirthdayPhase() ?? getBirthdayPhase(now);
+  return { countdown: getCountdown(now), phase };
 }
 
 export function useCountdown(): UseCountdownResult {

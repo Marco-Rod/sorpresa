@@ -1646,3 +1646,332 @@ a {
 
   touch-action: manipulation;
 }
+
+/* ─── Final Countdown Scene ─────────────────────────────────────────────────── */
+
+.final-countdown-scene {
+  position: relative;
+
+  overflow: hidden;
+
+  min-height: min(72dvh, 720px);
+
+  border-radius: var(--radius-large);
+
+  background: linear-gradient(
+    180deg,
+    #17162f,
+    #342d55 55%,
+    #755b78
+  );
+
+  color: white;
+
+  isolation: isolate;
+}
+
+.final-countdown-scene__backdrop {
+  position: absolute;
+
+  inset: 0;
+
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(255, 190, 218, 0.14),
+    transparent 48%
+  );
+
+  pointer-events: none;
+}
+
+.final-countdown-scene__content {
+  position: relative;
+
+  z-index: 1;
+
+  display: grid;
+  place-content: center;
+
+  min-height: min(72dvh, 720px);
+
+  padding: 24px;
+
+  text-align: center;
+}
+
+.final-countdown-scene__content p {
+  margin-bottom: 30px;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  letter-spacing: 0.05em;
+}
+
+.final-countdown-number {
+  font-size: clamp(7rem, 32vw, 15rem);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  line-height: 0.9;
+
+  animation: final-number-enter 850ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes final-number-enter {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+
+  28% {
+    opacity: 1;
+  }
+
+  70% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    opacity: 0.84;
+    transform: scale(1);
+  }
+}
+
+/* ─── Birthday Scene ─────────────────────────────────────────────────────────── */
+
+.birthday-scene {
+  position: relative;
+
+  overflow: hidden;
+
+  min-height: min(78dvh, 760px);
+
+  border-radius: var(--radius-large);
+
+  background: #17152f;
+
+  isolation: isolate;
+}
+
+.birthday-scene__sky {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(221, 129, 172, 0.3),
+      transparent 45%
+    ),
+    linear-gradient(180deg, #181631, #332a51 58%, #72576e);
+
+  pointer-events: none;
+}
+
+.birthday-scene__content {
+  position: relative;
+
+  z-index: 10;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+
+  min-height: min(78dvh, 760px);
+
+  padding: 40px 24px 110px;
+}
+
+/* ─── Birthday Flash ─────────────────────────────────────────────────────────── */
+
+.birthday-flash {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 20;
+
+  background: rgba(255, 246, 251, 0.94);
+
+  pointer-events: none;
+
+  animation: birthday-flash-enter 520ms ease-out both;
+}
+
+@keyframes birthday-flash-enter {
+  0%   { opacity: 0; }
+  18%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ─── Confetti Field ─────────────────────────────────────────────────────────── */
+
+.confetti-field {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 7;
+
+  width: 100%;
+  height: 100%;
+
+  pointer-events: none;
+}
+
+/* ─── Birthday Photo ─────────────────────────────────────────────────────────── */
+
+.birthday-photo {
+  position: relative;
+
+  width: min(72vw, 300px);
+
+  animation: birthday-photo-enter 1s cubic-bezier(0.18, 0.89, 0.32, 1.16) both;
+}
+
+.birthday-photo__halo {
+  position: absolute;
+
+  inset: 12%;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 185, 215, 0.3),
+    transparent 68%
+  );
+}
+
+.heart-frame {
+  position: relative;
+
+  z-index: 1;
+
+  display: block;
+
+  width: 100%;
+  height: auto;
+}
+
+@keyframes birthday-photo-enter {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.82);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ─── Birthday Message ───────────────────────────────────────────────────────── */
+
+.birthday-message {
+  text-align: center;
+
+  animation: birthday-message-enter 900ms ease-out both;
+}
+
+.birthday-message__flower {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 30px;
+}
+
+.birthday-message h2 {
+  margin: 0;
+
+  color: white;
+
+  font-size: clamp(2rem, 9vw, 4.4rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.birthday-message p {
+  max-width: 430px;
+
+  margin: 16px auto 0;
+
+  color: rgba(255, 255, 255, 0.76);
+
+  line-height: 1.7;
+}
+
+@keyframes birthday-message-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Birthday Buttons ───────────────────────────────────────────────────────── */
+
+.birthday-letter-button {
+  padding: 13px 22px;
+
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.88);
+
+  color: #714d60;
+
+  font-weight: 600;
+
+  box-shadow: 0 10px 36px rgba(30, 20, 40, 0.14);
+
+  animation: letter-button-enter 650ms ease-out both;
+}
+
+@keyframes letter-button-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.birthday-replay-button {
+  border: 0;
+
+  background: transparent;
+
+  color: rgba(255, 255, 255, 0.68);
+
+  font-size: 0.85rem;
+
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ─── Reduced Motion overrides ───────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .birthday-photo,
+  .birthday-message,
+  .birthday-letter-button,
+  .final-countdown-number {
+    animation: none;
+  }
+
+  /* Flash is purely decorative and can be jarring — hide it. */
+  .birthday-flash {
+    display: none;
+  }
+}

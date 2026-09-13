@@ -17,6 +17,12 @@ public/audio/*.mp3
 public/audio/*.m4a
 public/audio/*.ogg
 
+# Image assets — kept out of version control
+public/images/*.webp
+public/images/*.jpg
+public/images/*.jpeg
+public/images/*.png
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

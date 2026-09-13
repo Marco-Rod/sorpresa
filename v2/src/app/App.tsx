@@ -3,6 +3,7 @@ import { router } from "./router";
 import { AppStateProvider } from "../context/AppStateContext";
 import { AudioProvider } from "../context/AudioContext";
 import { BirthdayProvider } from "../context/BirthdayContext";
+import { CelebrationProvider } from "../context/CelebrationContext";
 import { PerformanceProvider } from "../context/PerformanceContext";
 
 export function App() {
@@ -11,7 +12,9 @@ export function App() {
       <PerformanceProvider>
         <BirthdayProvider>
           <AudioProvider>
-            <RouterProvider router={router} />
+            <CelebrationProvider>
+              <RouterProvider router={router} />
+            </CelebrationProvider>
           </AudioProvider>
         </BirthdayProvider>
       </PerformanceProvider>

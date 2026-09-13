@@ -11,17 +11,18 @@ export interface VisualQualityConfig {
   fireflies: number;
   butterflies: number;
 
+  confettiBurst: number;
+
   enableBlur: boolean;
   enableShadows: boolean;
 
   particleMultiplier: number;
 }
 
-export const PERFORMANCE_CONFIG:
-  Record<
-    PerformanceTier,
-    VisualQualityConfig
-  > = {
+export const PERFORMANCE_CONFIG: Record<
+  PerformanceTier,
+  VisualQualityConfig
+> = {
   high: {
     maxDevicePixelRatio: 2,
 
@@ -30,6 +31,7 @@ export const PERFORMANCE_CONFIG:
     petalSpawnRate: 2.5,
     fireflies: 12,
     butterflies: 4,
+    confettiBurst: 120,
 
     enableBlur: true,
     enableShadows: true,
@@ -45,6 +47,7 @@ export const PERFORMANCE_CONFIG:
     petalSpawnRate: 1.4,
     fireflies: 7,
     butterflies: 2,
+    confettiBurst: 75,
 
     enableBlur: false,
     enableShadows: true,
@@ -60,6 +63,7 @@ export const PERFORMANCE_CONFIG:
     petalSpawnRate: 0.6,
     fireflies: 3,
     butterflies: 0,
+    confettiBurst: 38,
 
     enableBlur: false,
     enableShadows: false,

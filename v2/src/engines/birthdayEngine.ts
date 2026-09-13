@@ -104,3 +104,25 @@ export function getBirthdayPhase(
 
   return "waiting";
 }
+
+/**
+ * DEV-only: override the birthday phase via ?phase=waiting|final-countdown|birthday.
+ * Returns null in production builds.
+ */
+export function getForcedBirthdayPhase(): BirthdayPhase | null {
+  if (!import.meta.env.DEV) {
+    return null;
+  }
+
+  const phase = new URLSearchParams(window.location.search).get("phase");
+
+  if (
+    phase === "waiting" ||
+    phase === "final-countdown" ||
+    phase === "birthday"
+  ) {
+    return phase;
+  }
+
+  return null;
+}
