@@ -7,7 +7,8 @@ it('primes on gesture, waits for congratulations, and pauses/resumes without rew
   const instances: FakeAudio[] = [];
   class FakeAudio extends EventTarget {
     paused = true; currentTime = 0; volume = 1; preload = ''; loop = false;
-    constructor(public src: string) { super(); instances.push(this); }
+    src: string;
+    constructor(src: string) { super(); this.src = src; instances.push(this); }
     play = vi.fn(async () => { this.paused = false; this.dispatchEvent(new Event('play')); });
     pause = vi.fn(() => { this.paused = true; this.dispatchEvent(new Event('pause')); });
   }
