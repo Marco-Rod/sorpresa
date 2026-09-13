@@ -8,6 +8,7 @@ import { PerformanceLab } from "../../debug/performance/PerformanceLab";
 import type { AmbientEventType } from "../../engines/ambient/types";
 import type { PerformanceTier } from "../../engines/performanceEngine";
 import type { SceneName } from "../../engines/sceneEngine";
+import { DEBUG_ENABLED } from "../../utils/debugFlag";
 
 const SCENES: SceneName[] = [
   "morning",
@@ -36,7 +37,7 @@ const TIME_PRESETS: { label: string; value: TimePreset }[] = [
 ];
 
 export function DeveloperPanel() {
-  if (!import.meta.env.DEV) return null;
+  if (!DEBUG_ENABLED) return null;
   return <DeveloperPanelInner />;
 }
 

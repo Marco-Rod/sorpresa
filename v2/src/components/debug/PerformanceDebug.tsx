@@ -1,9 +1,9 @@
 import { usePerformance } from "../../context/PerformanceContext";
 import { useScene } from "../../hooks/useScene";
+import { DEBUG_ENABLED } from "../../utils/debugFlag";
 
 export function PerformanceDebug() {
-  if (!import.meta.env.DEV) return null;
-
+  if (!DEBUG_ENABLED) return null;
   return <PerformanceDebugInner />;
 }
 

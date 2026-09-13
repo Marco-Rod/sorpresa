@@ -2,14 +2,15 @@ import { useAppState } from "../../context/AppStateContext";
 import { usePerformance } from "../../context/PerformanceContext";
 import { PERFORMANCE_CONFIG } from "../../config/performance";
 import { useScene } from "../../hooks/useScene";
+import { DEBUG_ENABLED } from "../../utils/debugFlag";
 import { usePerformanceMetrics } from "./usePerformanceMetrics";
 
 /**
- * Detailed live metrics panel — DEV only.
+ * Detailed live metrics panel — visible when DEBUG_ENABLED (DEV or staging).
  * Renders null in production builds.
  */
 export function PerformanceLab() {
-  if (!import.meta.env.DEV) return null;
+  if (!DEBUG_ENABLED) return null;
 
   return <PerformanceLabInner />;
 }

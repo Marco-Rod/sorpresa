@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { PerformanceMetrics } from "./performanceTypes";
+import { DEBUG_ENABLED } from "../../utils/debugFlag";
 
 const INITIAL_METRICS: PerformanceMetrics = {
   fps: 60,
@@ -36,7 +37,7 @@ export function usePerformanceMetrics(): PerformanceMetrics {
 
   // RAF loop — measures fps, dropped frames and DOM snapshot every second.
   useEffect(() => {
-    if (!import.meta.env.DEV) return;
+    if (!DEBUG_ENABLED) return;
 
     let frameId: number | null = null;
 
@@ -107,7 +108,7 @@ export function usePerformanceMetrics(): PerformanceMetrics {
 
   // PerformanceObserver for long tasks.
   useEffect(() => {
-    if (!import.meta.env.DEV || !("PerformanceObserver" in window)) return;
+    if (!DEBUG_ENABLED || !("PerformanceObserver" in window)) return;
 
     try {
       const observer = new PerformanceObserver(list => {

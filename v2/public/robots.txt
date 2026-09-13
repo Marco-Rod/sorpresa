@@ -1,0 +1,4 @@
+# Un jardín en septiembre — no indexado intencionalmente.
+# Este sitio es una sorpresa personal y no debe aparecer en buscadores.
+User-agent: *
+Disallow: /
