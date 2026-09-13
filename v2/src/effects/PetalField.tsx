@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { PERFORMANCE_CONFIG } from "../config/performance";
 import { useAppState } from "../context/AppStateContext";
 import { usePerformance } from "../context/PerformanceContext";
 import { PetalEngine } from "../engines/particles/PetalEngine";
-import { getCanvasPixelRatio } from "../utils/canvas";
+import { useCanvasResize } from "../hooks/useCanvasResize";
 
 interface PetalFieldProps {
   intensity?: number;
@@ -17,20 +17,9 @@ export function PetalField({ intensity = 1 }: PetalFieldProps) {
   const { isVisible } = useAppState();
   const { quality, reducedMotion } = usePerformance();
 
-  const qualityRef = useRef(quality);
-  qualityRef.current = quality;
+  const resizeCanvas = useCanvasResize(canvasRef, engineRef, quality);
 
-  const resizeCanvas = useCallback(() => {
-    const canvas = canvasRef.current;
-    const engine = engineRef.current;
-    const parent = canvas?.parentElement;
-    if (!engine || !parent) return;
-
-    const { width, height } = parent.getBoundingClientRect();
-    engine.resize(width, height, getCanvasPixelRatio(qualityRef.current));
-  }, []);
-
-  // Create engine once.
+  // Create engine once on mount.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -49,28 +38,25 @@ export function PetalField({ intensity = 1 }: PetalFieldProps) {
     engineRef.current = engine;
     resizeCanvas();
 
-    const observer = new ResizeObserver(resizeCanvas);
-    if (canvas.parentElement) observer.observe(canvas.parentElement);
-    window.addEventListener("resize", resizeCanvas);
-
     return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", resizeCanvas);
       engine.destroy();
       engineRef.current = null;
     };
   }, [resizeCanvas]);
 
-  // Apply new quality settings when tier or intensity changes.
+  // Apply quality / intensity settings.
   useEffect(() => {
     const engine = engineRef.current;
     if (!engine) return;
 
+    const cfg   = PERFORMANCE_CONFIG[quality];
     const scale = Math.max(0, Number.isFinite(intensity) ? intensity : 0);
+
     engine.setOptions({
-      maxParticles: Math.round(PERFORMANCE_CONFIG[quality].petals * scale),
-      spawnRate: PERFORMANCE_CONFIG[quality].petalSpawnRate * scale,
+      maxParticles: Math.round(cfg.petals * scale),
+      spawnRate:    cfg.petalSpawnRate * scale,
     });
+    engine.setTargetFps(cfg.targetFps);
     resizeCanvas();
   }, [quality, intensity, resizeCanvas]);
 

@@ -5,22 +5,25 @@ import { AmbientEventProvider } from "../context/AmbientEventContext";
 import { AudioProvider } from "../context/AudioContext";
 import { BirthdayProvider } from "../context/BirthdayContext";
 import { CelebrationProvider } from "../context/CelebrationContext";
+import { DevToolsProvider } from "../context/DevToolsContext";
 import { PerformanceProvider } from "../context/PerformanceContext";
 
 export function App() {
   return (
-    <AppStateProvider>
-      <PerformanceProvider>
-        <BirthdayProvider>
-          <AudioProvider>
-            <CelebrationProvider>
-              <AmbientEventProvider>
-                <RouterProvider router={router} />
-              </AmbientEventProvider>
-            </CelebrationProvider>
-          </AudioProvider>
-        </BirthdayProvider>
-      </PerformanceProvider>
-    </AppStateProvider>
+    <DevToolsProvider>
+      <AppStateProvider>
+        <PerformanceProvider>
+          <BirthdayProvider>
+            <AudioProvider>
+              <CelebrationProvider>
+                <AmbientEventProvider>
+                  <RouterProvider router={router} />
+                </AmbientEventProvider>
+              </CelebrationProvider>
+            </AudioProvider>
+          </BirthdayProvider>
+        </PerformanceProvider>
+      </AppStateProvider>
+    </DevToolsProvider>
   );
 }

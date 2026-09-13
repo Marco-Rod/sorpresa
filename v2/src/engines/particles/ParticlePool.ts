@@ -1,20 +1,25 @@
-import type { Particle } from "./types";
+import type { BaseParticle } from "./types";
 
-export class ParticlePool {
-  private readonly particles: Particle[];
+export class ParticlePool<T extends BaseParticle> {
+  private readonly particles: T[];
 
-  constructor(maxParticles: number) {
-    if (!Number.isInteger(maxParticles) || maxParticles < 0) {
+  constructor(
+    capacity: number,
+    factory?: () => T,
+  ) {
+    if (!Number.isInteger(capacity) || capacity < 0) {
       throw new RangeError("Particle capacity must be a nonnegative integer");
     }
-    this.particles = Array.from({ length: maxParticles }, () => ({
-      active: false, x: 0, y: 0, vx: 0, vy: 0, baseVx: 0,
-      rotation: 0, rotationSpeed: 0, size: 1, alpha: 1, baseAlpha: 1,
-      age: 0, lifetime: 1000, variant: 0,
-    }));
+
+    // If no factory is provided, fall back to a minimal BaseParticle.
+    const create =
+      factory ??
+      (() => ({ active: false, age: 0, lifetime: 1000 }) as unknown as T);
+
+    this.particles = Array.from({ length: capacity }, create);
   }
 
-  acquire(): Particle | null {
+  acquire(): T | null {
     for (const particle of this.particles) {
       if (!particle.active) {
         particle.active = true;
@@ -25,20 +30,44 @@ export class ParticlePool {
     return null;
   }
 
-  release(particle: Particle) { particle.active = false; }
-  getParticles(): readonly Particle[] { return this.particles; }
-  getActiveCount() {
+  release(particle: T) {
+    particle.active = false;
+    particle.age = 0;
+  }
+
+  getParticles(): readonly T[] {
+    return this.particles;
+  }
+
+  getActiveCount(): number {
     let count = 0;
-    for (const particle of this.particles) if (particle.active) count++;
+    for (const p of this.particles) {
+      if (p.active) count++;
+    }
     return count;
   }
-  clear() { for (const particle of this.particles) particle.active = false; }
+
   trimActive(maxActive: number) {
-    const limit = Number.isFinite(maxActive) ? Math.max(0, Math.floor(maxActive)) : 0;
+    const limit =
+      Number.isFinite(maxActive)
+        ? Math.max(0, Math.floor(maxActive))
+        : 0;
     let count = 0;
-    for (const particle of this.particles) {
-      if (particle.active && ++count > limit) particle.active = false;
+    for (const p of this.particles) {
+      if (p.active && ++count > limit) {
+        p.active = false;
+      }
     }
   }
-  getCapacity() { return this.particles.length; }
+
+  clear() {
+    for (const p of this.particles) {
+      p.active = false;
+      p.age = 0;
+    }
+  }
+
+  getCapacity(): number {
+    return this.particles.length;
+  }
 }

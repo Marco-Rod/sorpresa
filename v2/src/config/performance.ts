@@ -13,6 +13,8 @@ export interface VisualQualityConfig {
 
   confettiBurst: number;
 
+  targetFps: number;
+
   enableBlur: boolean;
   enableShadows: boolean;
 
@@ -33,6 +35,8 @@ export const PERFORMANCE_CONFIG: Record<
     butterflies: 4,
     confettiBurst: 120,
 
+    targetFps: 60,
+
     enableBlur: true,
     enableShadows: true,
 
@@ -49,6 +53,8 @@ export const PERFORMANCE_CONFIG: Record<
     butterflies: 2,
     confettiBurst: 75,
 
+    targetFps: 60,
+
     enableBlur: false,
     enableShadows: true,
 
@@ -64,6 +70,8 @@ export const PERFORMANCE_CONFIG: Record<
     fireflies: 3,
     butterflies: 0,
     confettiBurst: 38,
+
+    targetFps: 30,
 
     enableBlur: false,
     enableShadows: false,

@@ -1,6 +1,7 @@
 /* oxlint-disable react/only-export-components -- Provider and consumer share an API */
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -40,6 +41,7 @@ function shouldAllowEvent(
 
 interface AmbientEventContextValue {
   event: AmbientEvent | null;
+  emitDebugEvent: (type: AmbientEventType) => void;
 }
 
 const AmbientEventContext =
@@ -122,8 +124,15 @@ export function AmbientEventProvider({
     engine.resume();
   }, [isVisible, reducedMotion]);
 
+  const emitDebugEvent = useCallback(
+    (type: AmbientEventType) => {
+      engineRef.current?.emitDebugEvent(type);
+    },
+    [],
+  );
+
   return (
-    <AmbientEventContext.Provider value={{ event }}>
+    <AmbientEventContext.Provider value={{ event, emitDebugEvent }}>
       {children}
     </AmbientEventContext.Provider>
   );

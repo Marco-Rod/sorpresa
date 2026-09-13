@@ -1,39 +1,30 @@
-import {
-  usePerformance,
-} from "../../context/PerformanceContext";
+import { usePerformance } from "../../context/PerformanceContext";
+import { useScene } from "../../hooks/useScene";
 
 export function PerformanceDebug() {
-  const {
-    quality,
-    fps,
-    reducedMotion,
-  } = usePerformance();
+  if (!import.meta.env.DEV) return null;
 
-  if (!import.meta.env.DEV) {
-    return null;
-  }
+  return <PerformanceDebugInner />;
+}
+
+function PerformanceDebugInner() {
+  const { quality, qualityMode, fps, reducedMotion } = usePerformance();
+  const scene = useScene();
+
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
 
   return (
-    <aside
-      className="
-        performance-debug
-      "
-    >
+    <aside className="performance-debug">
+      <span>FPS: {fps ?? "—"}</span>
       <span>
-        FPS: {fps ?? "—"}
+        {quality.toUpperCase()} · {qualityMode}
       </span>
-
+      <span>Scene: {scene}</span>
       <span>
-        QUALITY:
-        {" "}
-        {quality.toUpperCase()}
+        {vw}×{vh}
       </span>
-
-      {reducedMotion && (
-        <span>
-          Reduced Motion
-        </span>
-      )}
+      {reducedMotion && <span>reduced-motion</span>}
     </aside>
   );
 }

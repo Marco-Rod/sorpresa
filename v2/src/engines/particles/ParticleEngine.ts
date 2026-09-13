@@ -1,90 +1,65 @@
-import {
-  CanvasEngine,
-} from "../canvas/CanvasEngine";
+import { CanvasEngine } from "../canvas/CanvasEngine";
+import { ParticlePool } from "./ParticlePool";
+import type { BaseParticle } from "./types";
 
-import {
-  ParticlePool,
-} from "./ParticlePool";
-
-import type {
-  Particle,
-} from "./types";
-
-export abstract class ParticleEngine
-  extends CanvasEngine {
-  protected pool:
-    ParticlePool;
+export abstract class ParticleEngine<
+  T extends BaseParticle,
+> extends CanvasEngine {
+  protected pool: ParticlePool<T>;
 
   protected elapsed = 0;
 
   constructor(
     canvas: HTMLCanvasElement,
-    maxParticles: number,
+    capacity: number,
+    factory: () => T,
   ) {
     super(canvas);
-
-    this.pool =
-      new ParticlePool(
-        maxParticles,
-      );
+    this.pool = new ParticlePool<T>(capacity, factory);
   }
 
-  protected update(
-    deltaTime: number,
-  ) {
-    this.elapsed +=
-      deltaTime;
+  protected update(deltaTime: number) {
+    this.elapsed += deltaTime;
     this.beforeUpdate(deltaTime);
+    this.spawn(deltaTime);
 
-    this.spawn(
-      deltaTime,
-    );
+    for (const particle of this.pool.getParticles()) {
+      if (!particle.active) continue;
 
-    for (
-      const particle
-      of this.pool
-        .getParticles()
-    ) {
+      particle.age += deltaTime;
+
       if (
-        !particle.active
+        Number.isFinite(particle.lifetime) &&
+        particle.age >= particle.lifetime
       ) {
+        this.pool.release(particle);
         continue;
       }
 
-      particle.age +=
-        deltaTime;
+      this.updateParticle(particle, deltaTime);
 
-      if (
-        particle.age >=
-        particle.lifetime
-      ) {
-        this.pool.release(
-          particle,
-        );
-
-        continue;
-      }
-
-      this.updateParticle(
-        particle,
-        deltaTime,
-      );
-
-      if (
-        this.shouldRelease(
-          particle,
-        )
-      ) {
-        this.pool.release(
-          particle,
-        );
+      if (this.shouldRelease(particle)) {
+        this.pool.release(particle);
       }
     }
+
     this.afterUpdate(deltaTime);
   }
 
-  protected beforeUpdate(_deltaTime: number) {}
-  protected afterUpdate(_deltaTime: number) {}
+  protected render() {
+    const ctx = this.ctx;
+
+    // save/restore isolates globalAlpha, transforms and compositeOperation
+    // so no particle can bleed state into the next one.
+    ctx.save();
+
+    for (const particle of this.pool.getParticles()) {
+      if (!particle.active) continue;
+      this.renderParticle(particle);
+    }
+
+    ctx.restore();
+  }
 
   reset() {
     this.pool.clear();
@@ -97,49 +72,16 @@ export abstract class ParticleEngine
     super.destroy();
   }
 
-  protected render() {
-    for (
-      const particle
-      of this.pool
-        .getParticles()
-    ) {
-      if (
-        !particle.active
-      ) {
-        continue;
-      }
+  // ─── Overrideable hooks ────────────────────────────────────────────────────
 
-      this.renderParticle(
-        particle,
-      );
-    }
+  protected beforeUpdate(_deltaTime: number): void {}
+  protected afterUpdate(_deltaTime: number): void {}
 
-    this.ctx.globalAlpha = 1;
+  protected shouldRelease(_particle: T): boolean {
+    return false;
   }
 
-  protected abstract spawn(
-    deltaTime: number,
-  ): void;
-
-  protected abstract updateParticle(
-    particle: Particle,
-    deltaTime: number,
-  ): void;
-
-  protected abstract renderParticle(
-    particle: Particle,
-  ): void;
-
-  protected shouldRelease(
-    particle: Particle,
-  ) {
-    return (
-      particle.x < -100 ||
-      particle.x >
-        this.size.width + 100 ||
-      particle.y < -100 ||
-      particle.y >
-        this.size.height + 100
-    );
-  }
+  protected abstract spawn(deltaTime: number): void;
+  protected abstract updateParticle(particle: T, deltaTime: number): void;
+  protected abstract renderParticle(particle: T): void;
 }

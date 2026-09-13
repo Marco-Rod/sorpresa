@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 
+import { DeveloperPanel } from "../debug/DeveloperPanel";
 import { MusicControl } from "../audio/MusicControl";
 import { PerformanceDebug } from "../debug/PerformanceDebug";
 import { useAudioUnlock } from "../../hooks/useAudioUnlock";
@@ -17,7 +18,12 @@ export function AppLayout() {
 
       <MusicControl />
 
-      {import.meta.env.DEV && <PerformanceDebug />}
+      {import.meta.env.DEV && (
+        <>
+          <PerformanceDebug />
+          <DeveloperPanel />
+        </>
+      )}
     </main>
   );
 }

@@ -2654,3 +2654,78 @@ a {
     animation: none;
   }
 }
+
+/* ─── Developer Panel (DEV only) ─────────────────────────────────────────────── */
+
+.developer-panel {
+  position: fixed;
+
+  right: 12px;
+  bottom: 12px;
+
+  z-index: 50000;
+
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.developer-panel__toggle {
+  display: block;
+
+  margin-left: auto;
+
+  padding: 7px 10px;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: rgba(15, 15, 20, 0.9);
+
+  color: white;
+
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.developer-panel__body {
+  width: min(92vw, 340px);
+
+  max-height: 70dvh;
+
+  margin-top: 8px;
+  padding: 14px;
+
+  overflow-y: auto;
+
+  border-radius: 12px;
+
+  background: rgba(15, 15, 20, 0.94);
+
+  color: white;
+
+  font-size: 12px;
+}
+
+.developer-panel section + section {
+  margin-top: 14px;
+}
+
+.dev-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.dev-buttons button {
+  padding: 5px 7px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  color: inherit;
+
+  font-family: inherit;
+  font-size: inherit;
+}
