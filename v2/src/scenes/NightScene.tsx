@@ -1,30 +1,17 @@
-import {
-  GardenLayer,
-} from "../components/garden/GardenLayer";
-
-import {
-  Moon,
-} from "../components/garden/Moon";
-
-import {
-  VirgoConstellation,
-} from "../components/garden/VirgoConstellation";
-
-import {
-  FireflyField,
-} from "../effects/FireflyField";
-
-import {
-  PetalField,
-} from "../effects/PetalField";
-
-import {
-  StarField,
-} from "../effects/StarField";
+import { GardenLayer } from "../components/garden/GardenLayer";
+import { Moon } from "../components/garden/Moon";
+import { VirgoConstellation } from "../components/garden/VirgoConstellation";
+import { GardenMessage } from "../components/narrative/GardenMessage";
+import { FireflyField } from "../effects/FireflyField";
+import { PetalField } from "../effects/PetalField";
+import { StarField } from "../effects/StarField";
 
 export function NightScene() {
   return (
-    <section className="scene scene--night night-scene" aria-label="Jardín nocturno">
+    <section
+      className="scene scene--night night-scene"
+      aria-label="Jardín nocturno"
+    >
       <StarField />
 
       <div className="night-scene__sky">
@@ -43,15 +30,10 @@ export function NightScene() {
 
       <FireflyField />
 
-      <PetalField
-        intensity={0.35}
-      />
+      <PetalField intensity={0.35} />
 
       <div className="night-scene__content">
-        <p>
-          Las estrellas empiezan
-          a aparecer.
-        </p>
+        <GardenMessage scene="night" />
       </div>
     </section>
   );

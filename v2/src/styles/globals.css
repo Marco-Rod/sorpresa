@@ -2914,3 +2914,57 @@ a {
 
   font-size: 1rem;
 }
+
+/* ─── Garden Message ─────────────────────────────────────────────────────────── */
+
+.garden-message {
+  margin: 0;
+
+  font-size: clamp(0.9rem, 3vw, 1.05rem);
+  font-style: italic;
+  letter-spacing: 0.03em;
+  line-height: 1.65;
+
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+/* Visible state — normal */
+.garden-message--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hidden state — fading out upward before the text swaps */
+.garden-message--hidden {
+  opacity: 0;
+  transform: translateY(-5px);
+  pointer-events: none;
+}
+
+/* Daylight scenes: slightly dark-on-light text */
+.daylight-scene .garden-message {
+  color: rgba(67, 48, 59, 0.78);
+}
+
+/* Sunset overrides to white */
+.daylight-scene--sunset .garden-message {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+/* Night scene */
+.night-scene .garden-message {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+/* Reduced motion — skip the slide, keep the fade (short) */
+@media (prefers-reduced-motion: reduce) {
+  .garden-message {
+    transition: opacity 0.15s ease;
+  }
+
+  .garden-message--hidden {
+    transform: none;
+  }
+}
