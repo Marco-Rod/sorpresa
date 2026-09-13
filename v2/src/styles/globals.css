@@ -2729,3 +2729,60 @@ a {
   font-family: inherit;
   font-size: inherit;
 }
+
+/* ─── PWA Update Prompt ──────────────────────────────────────────────────────── */
+
+.pwa-toast {
+  position: fixed;
+
+  right: 18px;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  left: 18px;
+
+  z-index: 40000;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  width: min(calc(100% - 36px), 480px);
+
+  margin-left: auto;
+
+  padding: 14px 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 18px;
+
+  background: rgba(35, 29, 52, 0.94);
+
+  color: white;
+
+  font-size: 0.9rem;
+
+  box-shadow: 0 18px 50px rgba(10, 7, 17, 0.26);
+}
+
+.pwa-toast__actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.pwa-toast button {
+  padding: 8px 12px;
+
+  border: 0;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  color: inherit;
+
+  font-size: 0.85rem;
+
+  white-space: nowrap;
+}

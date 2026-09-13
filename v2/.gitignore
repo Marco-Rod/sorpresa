@@ -29,6 +29,9 @@ public/pets/*.jpg
 public/pets/*.jpeg
 public/pets/*.png
 
+# PWA icons — generated assets, add your own before deploying
+public/icons/*.png
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
