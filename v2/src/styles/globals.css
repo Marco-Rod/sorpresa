@@ -2273,3 +2273,384 @@ a {
     animation: none;
   }
 }
+
+/* ─── Ambient Event Layer ────────────────────────────────────────────────────── */
+
+.ambient-event-layer {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 20;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+/* ─── Shooting Star ──────────────────────────────────────────────────────────── */
+
+.shooting-star-event {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 4;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+.shooting-star-event span {
+  position: absolute;
+
+  top: var(--shooting-top, 17%);
+  left: var(--shooting-left, 78%);
+
+  width: 90px;
+  height: 2px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.92)
+  );
+
+  transform: rotate(-32deg);
+  transform-origin: right center;
+
+  animation: shooting-star-pass 1.25s ease-out both;
+}
+
+@keyframes shooting-star-pass {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(-32deg) scaleX(0.35);
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-48vw, 34vh, 0) rotate(-32deg) scaleX(1);
+  }
+}
+
+/* ─── Wind Gust ──────────────────────────────────────────────────────────────── */
+
+.wind-gust {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 5;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+.wind-gust span {
+  position: absolute;
+
+  left: -25%;
+
+  width: 22%;
+  height: 1px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
+
+  animation: wind-line-pass 1.8s ease-out both;
+}
+
+.wind-gust span:nth-child(1) {
+  top: 52%;
+  animation-delay: 0ms;
+}
+
+.wind-gust span:nth-child(2) {
+  top: 60%;
+  animation-delay: 110ms;
+}
+
+.wind-gust span:nth-child(3) {
+  top: 68%;
+  animation-delay: 190ms;
+}
+
+@keyframes wind-line-pass {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  18% {
+    opacity: 0.75;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(150vw, -20px, 0);
+  }
+}
+
+/* Garden reacts to wind */
+
+.garden-layer--wind .garden-depth--foreground {
+  transform-origin: 50% 100%;
+
+  animation: garden-wind-sway 1.8s ease-in-out 1 !important;
+}
+
+@keyframes garden-wind-sway {
+  0%   { transform: rotate(0deg); }
+  30%  { transform: rotate(1.8deg); }
+  65%  { transform: rotate(-0.8deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* ─── Dandelion ──────────────────────────────────────────────────────────────── */
+
+.dandelion-event {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 5;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+.dandelion-seed {
+  position: absolute;
+
+  left: -5%;
+
+  width: 12px;
+  height: 12px;
+
+  opacity: 0;
+
+  animation-name: dandelion-flight;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+.dandelion-seed::before {
+  content: "";
+
+  position: absolute;
+
+  top: 5px;
+  left: 5px;
+
+  width: 6px;
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.72);
+
+  transform: rotate(-35deg);
+}
+
+.dandelion-seed i {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 9px;
+  height: 9px;
+
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+}
+
+@keyframes dandelion-flight {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  10% {
+    opacity: 0.75;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(110vw, -18vh, 0) rotate(180deg);
+  }
+}
+
+/* ─── Sparkle ────────────────────────────────────────────────────────────────── */
+
+.sparkle-event {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 5;
+
+  pointer-events: none;
+}
+
+.sparkle-event span {
+  position: absolute;
+
+  width: 8px;
+  height: 8px;
+
+  opacity: 0;
+
+  animation: sparkle-pop 1.8s ease-out both;
+}
+
+.sparkle-event span::before,
+.sparkle-event span::after {
+  content: "";
+
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  background: rgba(255, 244, 213, 0.9);
+
+  transform: translate(-50%, -50%);
+}
+
+.sparkle-event span::before {
+  width: 100%;
+  height: 1px;
+}
+
+.sparkle-event span::after {
+  width: 1px;
+  height: 100%;
+}
+
+@keyframes sparkle-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.25);
+  }
+
+  35% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+/* ─── Pet Visit ──────────────────────────────────────────────────────────────── */
+
+.pet-visit {
+  position: absolute;
+
+  right: 4%;
+  bottom: 16%;
+
+  z-index: 6;
+
+  width: min(38vw, 220px);
+  height: 145px;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+.pet-visit img {
+  position: absolute;
+
+  bottom: -8px;
+
+  object-fit: contain;
+
+  animation: pet-peek 6s ease-in-out both;
+}
+
+.pet-visit__lucas {
+  left: 4%;
+  width: 52%;
+}
+
+.pet-visit__lupe {
+  right: 0;
+  width: 56%;
+  animation-delay: 120ms;
+}
+
+.pet-visit__max {
+  right: 12%;
+  width: 58%;
+}
+
+@keyframes pet-peek {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  15% {
+    opacity: 1;
+    transform: translateY(12%);
+  }
+
+  72% {
+    opacity: 1;
+    transform: translateY(12%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+/* Pet visit — mobile */
+
+@media (max-width: 600px) {
+  .pet-visit {
+    right: 2%;
+    bottom: 20%;
+
+    width: min(46vw, 180px);
+    height: 115px;
+  }
+
+  .pet-visit__max {
+    right: 6%;
+    width: 66%;
+  }
+}
+
+/* ─── Ambient events — reduced motion ───────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .shooting-star-event span,
+  .wind-gust span,
+  .dandelion-seed,
+  .sparkle-event span,
+  .pet-visit img,
+  .garden-layer--wind .garden-depth--foreground {
+    animation: none;
+  }
+}

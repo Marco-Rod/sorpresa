@@ -1,6 +1,7 @@
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
 import { AppStateProvider } from "../context/AppStateContext";
+import { AmbientEventProvider } from "../context/AmbientEventContext";
 import { AudioProvider } from "../context/AudioContext";
 import { BirthdayProvider } from "../context/BirthdayContext";
 import { CelebrationProvider } from "../context/CelebrationContext";
@@ -13,7 +14,9 @@ export function App() {
         <BirthdayProvider>
           <AudioProvider>
             <CelebrationProvider>
-              <RouterProvider router={router} />
+              <AmbientEventProvider>
+                <RouterProvider router={router} />
+              </AmbientEventProvider>
             </CelebrationProvider>
           </AudioProvider>
         </BirthdayProvider>

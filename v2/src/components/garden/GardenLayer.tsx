@@ -4,6 +4,10 @@ import {
 } from "../../config/garden";
 
 import {
+  useAmbientEvent,
+} from "../../context/AmbientEventContext";
+
+import {
   usePerformance,
 } from "../../context/PerformanceContext";
 
@@ -36,6 +40,9 @@ export function GardenLayer({
     reducedMotion,
   } = usePerformance();
 
+  const { event } = useAmbientEvent();
+  const windy = event?.type === "wind-gust";
+
   const flowers =
     filterFlowers(
       mood,
@@ -53,9 +60,8 @@ export function GardenLayer({
         "garden-layer",
         `garden-layer--${quality}`,
         `garden-layer--${mood}`,
-        reducedMotion
-          ? "garden-layer--static"
-          : "",
+        reducedMotion ? "garden-layer--static" : "",
+        windy ? "garden-layer--wind" : "",
       ]
         .filter(Boolean)
         .join(" ")}
