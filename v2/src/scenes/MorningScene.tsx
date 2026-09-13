@@ -1,13 +1,13 @@
+import {
+  DaylightScene,
+} from "./components/DaylightScene";
+
 export function MorningScene() {
   return (
-    <div className="scene scene--morning">
-      <span aria-hidden="true">
-        🌅
-      </span>
-
-      <p>
-        El jardín comienza a despertar.
-      </p>
-    </div>
+    <DaylightScene
+      mood="morning"
+      message="El jardín comienza a despertar."
+      petalIntensity={0.18}
+    />
   );
 }

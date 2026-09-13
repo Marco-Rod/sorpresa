@@ -1,24 +1,13 @@
 import {
-  PetalField,
-} from "../effects/PetalField";
+  DaylightScene,
+} from "./components/DaylightScene";
 
 export function SunsetScene() {
   return (
-    <div className="scene scene--sunset sunset-scene">
-      <PetalField />
-
-      <div className="sunset-scene__content">
-        <span
-          className="sunset-scene__sun"
-          aria-hidden="true"
-        >
-          🌇
-        </span>
-
-        <p>
-          El cielo comienza a cambiar.
-        </p>
-      </div>
-    </div>
+    <DaylightScene
+      mood="sunset"
+      message="El cielo comienza a cambiar."
+      petalIntensity={1}
+    />
   );
 }

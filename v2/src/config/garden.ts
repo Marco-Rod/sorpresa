@@ -28,6 +28,7 @@ export const GARDEN_FLOWERS:
     scale: 0.55,
     rotation: 5,
     variant: 1,
+    visibleIn: ["day", "sunset", "night"],
   },
   {
     id: "bg-tulip-2",
@@ -58,6 +59,7 @@ export const GARDEN_FLOWERS:
     scale: 0.55,
     rotation: 7,
     variant: 0,
+    visibleIn: ["day", "sunset"],
   },
   {
     id: "bg-tulip-4",
@@ -114,6 +116,7 @@ export const GARDEN_FLOWERS:
     scale: 0.88,
     rotation: 8,
     variant: 0,
+    visibleIn: ["day", "sunset", "night"],
   },
   {
     id: "mid-tulip-2",
@@ -135,6 +138,7 @@ export const GARDEN_FLOWERS:
     scale: 0.85,
     rotation: -5,
     variant: 2,
+    visibleIn: ["sunset"],
   },
   {
     id: "mid-tulip-3",
@@ -215,6 +219,7 @@ export const GARDEN_FLOWERS:
     rotation: 5,
     variant: 1,
     essential: true,
+    visibleIn: ["day", "sunset", "night"],
   },
   {
     id: "front-tulip-2",
@@ -237,6 +242,7 @@ export const GARDEN_FLOWERS:
     rotation: -4,
     variant: 0,
     essential: true,
+    visibleIn: ["day", "sunset", "night"],
   },
   {
     id: "front-tulip-3",
@@ -259,6 +265,7 @@ export const GARDEN_FLOWERS:
     rotation: 6,
     variant: 2,
     essential: true,
+    visibleIn: ["day", "sunset", "night"],
   },
   {
     id: "front-tulip-4",
