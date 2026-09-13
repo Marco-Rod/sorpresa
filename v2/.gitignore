@@ -23,6 +23,12 @@ public/images/*.jpg
 public/images/*.jpeg
 public/images/*.png
 
+# Pet illustrations — kept out of version control
+public/pets/*.webp
+public/pets/*.jpg
+public/pets/*.jpeg
+public/pets/*.png
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

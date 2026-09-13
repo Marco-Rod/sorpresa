@@ -1,6 +1,8 @@
 import { BirthdayMessage } from "../components/celebration/BirthdayMessage";
 import { BirthdayPhoto } from "../components/celebration/BirthdayPhoto";
+import { LetterModal } from "../components/celebration/LetterModal";
 import { GardenLayer } from "../components/garden/GardenLayer";
+import { PetCloud } from "../components/pets/PetCloud";
 import { useCelebration } from "../context/CelebrationContext";
 import { ConfettiField } from "../effects/ConfettiField";
 
@@ -9,8 +11,12 @@ export function BirthdayScene() {
     showFlash,
     showPhoto,
     showMessage,
+    showPets,
     showLetterButton,
     complete,
+    letterOpen,
+    openLetter,
+    closeLetter,
     replayCelebration,
   } = useCelebration();
 
@@ -31,10 +37,13 @@ export function BirthdayScene() {
 
         {showMessage && <BirthdayMessage />}
 
+        {showPets && <PetCloud />}
+
         {showLetterButton && (
           <button
             type="button"
             className="birthday-letter-button"
+            onClick={openLetter}
           >
             Abrir tu carta 🌸
           </button>
@@ -50,6 +59,8 @@ export function BirthdayScene() {
           </button>
         )}
       </div>
+
+      <LetterModal open={letterOpen} onClose={closeLetter} />
     </section>
   );
 }

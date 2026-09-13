@@ -21,10 +21,13 @@ interface CelebrationState {
   showFlash: boolean;
   showPhoto: boolean;
   showMessage: boolean;
+  showPets: boolean;
   showLetterButton: boolean;
 
   /** Increments each time a confetti burst should fire. */
   confettiBurst: number;
+
+  letterOpen: boolean;
 }
 
 const INITIAL_STATE: CelebrationState = {
@@ -34,9 +37,12 @@ const INITIAL_STATE: CelebrationState = {
   showFlash: false,
   showPhoto: false,
   showMessage: false,
+  showPets: false,
   showLetterButton: false,
 
   confettiBurst: 0,
+
+  letterOpen: false,
 };
 
 // ─── Context ─────────────────────────────────────────────────────────────────
@@ -45,6 +51,9 @@ interface CelebrationContextValue extends CelebrationState {
   startCelebration: () => void;
   resetCelebration: () => void;
   replayCelebration: () => void;
+
+  openLetter: () => void;
+  closeLetter: () => void;
 }
 
 const CelebrationContext =
@@ -70,6 +79,8 @@ export function CelebrationProvider({
     timelineRef.current?.destroy();
 
     timelineRef.current = new TimelineEngine({
+      // Sequence: flash(0) → confetti(250) → flash-off(500) → photo(750)
+      //           → message(1550) → pets(2100) → letter(2600) → [complete]
       duration: 3400,
 
       cues: [
@@ -99,6 +110,11 @@ export function CelebrationProvider({
           id: "message",
           at: 1550,
           run: () => setState(s => ({ ...s, showMessage: true })),
+        },
+        {
+          id: "pets",
+          at: 2100,
+          run: () => setState(s => ({ ...s, showPets: true })),
         },
         {
           id: "letter",
@@ -138,10 +154,7 @@ export function CelebrationProvider({
 
   const startCelebration = useCallback(() => {
     const timeline = timelineRef.current;
-
-    // Idempotent: never start twice.
     if (!timeline || state.started) return;
-
     timeline.start();
   }, [state.started]);
 
@@ -166,6 +179,14 @@ export function CelebrationProvider({
     });
   }, []);
 
+  const openLetter = useCallback(() => {
+    setState(s => ({ ...s, letterOpen: true }));
+  }, []);
+
+  const closeLetter = useCallback(() => {
+    setState(s => ({ ...s, letterOpen: false }));
+  }, []);
+
   return (
     <CelebrationContext.Provider
       value={{
@@ -173,6 +194,8 @@ export function CelebrationProvider({
         startCelebration,
         resetCelebration,
         replayCelebration,
+        openLetter,
+        closeLetter,
       }}
     >
       {children}
