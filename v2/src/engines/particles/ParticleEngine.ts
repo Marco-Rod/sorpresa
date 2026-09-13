@@ -72,6 +72,11 @@ export abstract class ParticleEngine<
     super.destroy();
   }
 
+  /** Returns the number of currently active particles. */
+  getActiveCount(): number {
+    return this.pool.getActiveCount();
+  }
+
   // ─── Overrideable hooks ────────────────────────────────────────────────────
 
   protected beforeUpdate(_deltaTime: number): void {}

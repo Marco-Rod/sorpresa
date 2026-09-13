@@ -87,8 +87,7 @@ export function CelebrationProvider({
         {
           id: "flash-on",
           at: 0,
-          run: () =>
-            setState(s => ({ ...s, started: true, showFlash: true })),
+          run: () => setState(s => ({ ...s, showFlash: true })),
         },
         {
           id: "confetti",
@@ -155,6 +154,10 @@ export function CelebrationProvider({
   const startCelebration = useCallback(() => {
     const timeline = timelineRef.current;
     if (!timeline || state.started) return;
+
+    // Set started=true synchronously before the first RAF fires so the state
+    // is correct immediately (idempotency guard works even on the same tick).
+    setState(s => ({ ...s, started: true }));
     timeline.start();
   }, [state.started]);
 

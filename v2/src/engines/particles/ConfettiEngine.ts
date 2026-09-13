@@ -51,6 +51,18 @@ export class ConfettiEngine extends ParticleEngine<ConfettiParticle> {
 
       p.active = true;
     }
+
+    // Start the render loop only when there are particles to animate.
+    if (this.getActiveCount() > 0) {
+      this.start();
+    }
+  }
+
+  protected override afterUpdate(): void {
+    // Auto-stop when all particles have expired — no idle RAF overhead.
+    if (this.getActiveCount() === 0) {
+      this.stop();
+    }
   }
 
   protected updateParticle(p: ConfettiParticle, deltaTime: number): void {

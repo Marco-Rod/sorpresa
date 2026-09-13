@@ -1,37 +1,20 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useBirthdayPhase } from "../context/BirthdayContext";
 import { useCelebration } from "../context/CelebrationContext";
 
 /**
- * Coordinates the transition from `final-countdown` (or `waiting`) → `birthday`
- * by calling `startCelebration()` exactly once when the phase changes.
+ * Starts the celebration exactly once when phase becomes "birthday".
  *
- * Lives in AppLayout so it stays alive across all routes.
+ * Idempotent — does not rely on previousPhase tracking, so it works correctly
+ * whether the user arrives from final-countdown, reloads during birthday, or
+ * opens the app after midnight.
  */
 export function useBirthdayCelebration() {
   const phase = useBirthdayPhase();
   const { started, startCelebration } = useCelebration();
 
-  const previousPhaseRef = useRef(phase);
-
   useEffect(() => {
-    const previousPhase = previousPhaseRef.current;
-    previousPhaseRef.current = phase;
-
-    if (phase !== "birthday") {
-      return;
-    }
-
-    // Already running — nothing to do.
-    if (started) {
-      return;
-    }
-
-    // Only trigger when arriving from a meaningful prior phase.
-    if (
-      previousPhase === "final-countdown" ||
-      previousPhase === "waiting"
-    ) {
+    if (phase === "birthday" && !started) {
       startCelebration();
     }
   }, [phase, started, startCelebration]);

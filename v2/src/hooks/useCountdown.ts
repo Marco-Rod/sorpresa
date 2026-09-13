@@ -6,6 +6,8 @@ import {
   type BirthdayPhase,
   type CountdownState,
 } from "../engines/birthdayEngine";
+import type { ExperienceClock } from "../time/ExperienceClock";
+import { systemClock } from "../time/ExperienceClock";
 
 interface UseCountdownResult {
   countdown: CountdownState;
@@ -14,15 +16,21 @@ interface UseCountdownResult {
 
 const TICK_INTERVAL = 250;
 
-function readClock(): UseCountdownResult {
+function readClock(clock: ExperienceClock): UseCountdownResult {
   // Both values must describe the same instant, including at midnight.
-  const now = Date.now();
+  const now = clock.now();
   const phase = getForcedBirthdayPhase() ?? getBirthdayPhase(now);
   return { countdown: getCountdown(now), phase };
 }
 
-export function useCountdown(): UseCountdownResult {
-  const [state, setState] = useState(readClock);
+export function useCountdown(clock: ExperienceClock = systemClock): UseCountdownResult {
+  const [state, setState] = useState(() => readClock(clock));
+
+  // Re-read immediately when the clock instance changes (DEV preview swap).
+  useEffect(() => {
+    setState(readClock(clock));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clock]);
 
   useEffect(() => {
     let timeoutId: number | undefined;
@@ -39,13 +47,11 @@ export function useCountdown(): UseCountdownResult {
       clearTick();
       if (cancelled || document.visibilityState === "hidden") return;
 
-      const next = readClock();
+      const next = readClock(clock);
       setState(next);
 
-      // A delayed callback reads the current timestamp; it never replays ticks.
-      // Birthday is terminal for this phase; memory will be defined later.
       if (!next.countdown.isFinished) {
-        const delay = TICK_INTERVAL - (Date.now() % TICK_INTERVAL);
+        const delay = TICK_INTERVAL - (clock.now() % TICK_INTERVAL);
         timeoutId = window.setTimeout(sync, delay);
       }
     };
@@ -64,7 +70,7 @@ export function useCountdown(): UseCountdownResult {
       window.removeEventListener("focus", sync);
       window.removeEventListener("pagehide", clearTick);
     };
-  }, []);
+  }, [clock]);
 
   return state;
 }

@@ -53,11 +53,15 @@ export function ConfettiField() {
     const engine = engineRef.current;
     if (!engine) return;
 
+    // ConfettiEngine manages its own start/stop lifecycle:
+    //   burst() → start()  (when particles are emitted)
+    //   afterUpdate() → stop()  (when all particles expire)
+    // We only need to stop it when the component becomes invisible or
+    // reduced-motion is requested.
     if (!isVisible || reducedMotion) {
       engine.stop();
-      return;
     }
-    engine.start();
+    // Do NOT call engine.start() here — that would start an idle loop.
   }, [isVisible, reducedMotion]);
 
   // Burst on each new confettiBurst counter value.

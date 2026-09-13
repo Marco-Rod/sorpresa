@@ -107,6 +107,9 @@ export abstract class CanvasEngine {
       this.render();
     }
 
+    // Re-check running AFTER update/render: an engine can stop itself from
+    // within afterUpdate() (e.g. ConfettiEngine stopping when pool is empty).
+    // Without this check we would schedule one extra unwanted frame.
     if (!this.running) return;
     this.animationFrameId = requestAnimationFrame(this.frame);
   };

@@ -2,8 +2,9 @@ import { useState } from "react";
 
 import { useAmbientEvent } from "../../context/AmbientEventContext";
 import { useCelebration } from "../../context/CelebrationContext";
-import { useDevTools } from "../../context/DevToolsContext";
+import { useDevTools, type TimePreset } from "../../context/DevToolsContext";
 import { usePerformance } from "../../context/PerformanceContext";
+import { PerformanceLab } from "../../debug/performance/PerformanceLab";
 import type { AmbientEventType } from "../../engines/ambient/types";
 import type { PerformanceTier } from "../../engines/performanceEngine";
 import type { SceneName } from "../../engines/sceneEngine";
@@ -27,18 +28,24 @@ const AMBIENT_TYPES: AmbientEventType[] = [
   "sparkle",
 ];
 
+const TIME_PRESETS: { label: string; value: TimePreset }[] = [
+  { label: "Real",      value: "real"      },
+  { label: "T−60s",     value: "final-60"  },
+  { label: "T−10s",     value: "final-10"  },
+  { label: "Birthday",  value: "birthday"  },
+];
+
 export function DeveloperPanel() {
   if (!import.meta.env.DEV) return null;
-
   return <DeveloperPanelInner />;
 }
 
 function DeveloperPanelInner() {
   const [open, setOpen] = useState(false);
 
-  const devTools     = useDevTools();
-  const { quality, qualityMode, fps } = usePerformance();
-  const { emitDebugEvent } = useAmbientEvent();
+  const devTools = useDevTools();
+  const { quality, qualityMode } = usePerformance();
+  const { emitDebugEvent }       = useAmbientEvent();
   const {
     startCelebration,
     replayCelebration,
@@ -65,12 +72,17 @@ function DeveloperPanelInner() {
 
       {open && (
         <div className="developer-panel__body">
-          {/* Stats */}
+          {/* Live performance metrics */}
           <section>
-            <strong>Stats</strong>
-            <div style={{ marginTop: 6, lineHeight: 1.6 }}>
-              <div>FPS: {fps ?? "—"}</div>
-              <div>Quality: {quality.toUpperCase()} ({qualityMode})</div>
+            <strong>Metrics</strong>
+            <PerformanceLab />
+          </section>
+
+          {/* Quick summary */}
+          <section>
+            <strong>Quick</strong>
+            <div style={{ marginTop: 4, lineHeight: 1.6, fontSize: 11 }}>
+              <div>{quality.toUpperCase()} · {qualityMode}</div>
             </div>
           </section>
 
@@ -83,11 +95,7 @@ function DeveloperPanelInner() {
                   Auto
                 </button>
                 {SCENES.map(s => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => devTools.setScene(s)}
-                  >
+                  <button key={s} type="button" onClick={() => devTools.setScene(s)}>
                     {s}
                   </button>
                 ))}
@@ -104,12 +112,31 @@ function DeveloperPanelInner() {
                   Auto
                 </button>
                 {QUALITIES.map(q => (
-                  <button
-                    key={q}
-                    type="button"
-                    onClick={() => devTools.setQuality(q)}
-                  >
+                  <button key={q} type="button" onClick={() => devTools.setQuality(q)}>
                     {q}
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Time preview */}
+          {devTools && (
+            <section>
+              <strong>Time</strong>
+              <div className="dev-buttons">
+                {TIME_PRESETS.map(({ label, value }) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => devTools.setTimePreset(value)}
+                    style={
+                      devTools.timePreset === value
+                        ? { outline: "1px solid rgba(255,255,255,0.7)" }
+                        : undefined
+                    }
+                  >
+                    {label}
                   </button>
                 ))}
               </div>
@@ -121,11 +148,7 @@ function DeveloperPanelInner() {
             <strong>Ambient</strong>
             <div className="dev-buttons">
               {AMBIENT_TYPES.map(t => (
-                <button
-                  key={t}
-                  type="button"
-                  onClick={() => emitDebugEvent(t)}
-                >
+                <button key={t} type="button" onClick={() => emitDebugEvent(t)}>
                   {t}
                 </button>
               ))}
