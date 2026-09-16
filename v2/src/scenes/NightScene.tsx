@@ -1,7 +1,6 @@
 import { GardenLayer } from "../components/garden/GardenLayer";
 import { Moon } from "../components/garden/Moon";
 import { VirgoConstellation } from "../components/garden/VirgoConstellation";
-import { GardenMessage } from "../components/narrative/GardenMessage";
 import { FireflyField } from "../effects/FireflyField";
 import { PetalField } from "../effects/PetalField";
 import { StarField } from "../effects/StarField";
@@ -31,10 +30,6 @@ export function NightScene() {
       <FireflyField />
 
       <PetalField intensity={0.35} />
-
-      <div className="night-scene__content">
-        <GardenMessage scene="night" />
-      </div>
     </section>
   );
 }

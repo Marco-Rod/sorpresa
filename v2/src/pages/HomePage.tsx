@@ -1,3 +1,4 @@
+import { GardenMessage } from "../components/narrative/GardenMessage";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { BIRTHDAY_CONFIG } from "../config/birthday";
@@ -38,7 +39,7 @@ export function HomePage() {
       <p className="home-page__subtitle">Cada segundo nos acerca al {birthdayDate}.</p>
       <Countdown />
       <p className="home-page__season">{seasonLabel} · {scene === "night" ? "Noche" : "Día"} en Colombia</p>
-      <p className="home-page__message">Este jardín te espera para celebrar tu próximo cumpleaños, el {birthdayDate}. 💗</p>
+      <GardenMessage className="home-page__message" />
       <MusicControl inline />
       <Link className="home-page__relive" to="/memories/2026?replay=1" onClick={prepareMemoryMusic}>
         <span aria-hidden="true">↻</span> Revivir aquel momento

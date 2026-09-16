@@ -95,3 +95,11 @@ La configuración Vercel de la raíz sigue sirviendo la versión original. No ap
 ## Validación pendiente
 
 Build y lint pueden ejecutarse con los comandos anteriores. Comprobar navegación y recarga directa de las tres rutas, ancho de 320 px, safe areas y navegación por teclado en el preview. Las mediciones FPS, Lighthouse y pruebas en dispositivos reales pertenecen a fases posteriores; esta base no representa todavía una optimización medida de 2026.
+
+## Frases de la portada
+
+La portada contiene 136 frases en src/config/phrases.ts: ciencia, cosmetología, mascotas, naturaleza, comida, historia, misterios, lecturas y amor propio. Los datos incluyen un enlace a su fuente; las paráfrasis y reflexiones originales se identifican explícitamente. Las teorías no se presentan como hechos.
+
+La frase cambia cada 20 segundos, con 600 ms de transición. Se pausa con la pestaña oculta o mientras se consulta el bloque con el puntero o el teclado. El historial usa localStorage (garden.phrases.history.v1): recorre toda la colección antes de repetir y protege las últimas 20 al empezar otra vuelta. Se alternan temas cuando hay candidatos disponibles. El historial pertenece al navegador y al sitio; no se sincroniza entre dispositivos y se pierde al borrar sus datos. Sin almacenamiento disponible se conserva en memoria durante la visita. Las selecciones leen los cambios guardados por otras pestañas, aunque dos selecciones exactamente simultáneas no son una transacción entre pestañas.
+
+Conservar los IDs al editar frases. Los IDs nuevos entran en la ronda pendiente y los retirados se descartan del historial. El recuerdo de 2026 conserva su propia colección.

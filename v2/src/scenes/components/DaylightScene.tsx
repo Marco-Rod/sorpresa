@@ -4,7 +4,6 @@ import { ButterflyLayer } from "../../components/garden/ButterflyLayer";
 import { CloudLayer } from "../../components/garden/CloudLayer";
 import { GardenLayer } from "../../components/garden/GardenLayer";
 import { Sun } from "../../components/garden/Sun";
-import { GardenMessage } from "../../components/narrative/GardenMessage";
 import { PetalField } from "../../effects/PetalField";
 
 type DaylightMood = "morning" | "day" | "sunset";
@@ -41,10 +40,6 @@ export function DaylightScene({
       {(mood === "day" || mood === "sunset") && <ButterflyLayer />}
 
       {petalIntensity > 0 && <PetalField intensity={petalIntensity} />}
-
-      <div className="daylight-scene__content">
-        <GardenMessage scene={mood} />
-      </div>
     </section>
   );
 }

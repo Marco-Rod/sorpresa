@@ -97,3 +97,11 @@
   .home-page { padding-top: calc(20px + env(safe-area-inset-top, 0px)); padding-bottom: calc(36px + env(safe-area-inset-bottom, 0px)); }
 }
 .home-page--birthday, .home-page--final-countdown { padding: 0; }
+
+/* Reserve reading space so phrase changes do not move the controls below. */
+.home-page .home-page__message { min-height: 190px; margin: 22px 0 18px; font-size: 1rem; font-weight: 400; font-style: normal; letter-spacing: normal; }
+.garden-message__category { display: block; font-size: .68rem; font-weight: 600; letter-spacing: .05em; }
+.garden-message__text { margin: 10px 0; line-height: 1.6; text-wrap: pretty; }
+.garden-message__source { display: inline-block; max-width: 100%; padding: 6px 0; font-size: .68rem; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.garden-message__source:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 3px; }
+@media (max-width: 520px) { .home-page .home-page__message { min-height: 225px; font-size: .95rem; } }
